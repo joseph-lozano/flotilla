@@ -548,6 +548,7 @@ async fn a_session_the_swift_replica_replays() {
             cap_reached: false,
         }),
         read_ms: Some(1_793_466_000_000),
+        sizes_unavailable: Vec::new(),
     });
     server.engine(Event::Usage(Ok(world.usage.clone().unwrap())));
     phone.barrier().await;

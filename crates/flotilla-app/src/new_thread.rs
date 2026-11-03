@@ -59,6 +59,8 @@ pub struct NewThreadPage {
     /// The machine size picked for the next thread (boat's name); `None`: the project's
     /// (with No project, boat's default).
     machine_type: Option<String>,
+    /// The sizes the plan won't start, and why (from boat's limits).
+    sizes_unavailable: Vec<(String, String)>,
     prompt: Entity<TextareaState>,
     /// Files to go with the first prompt.
     attachments: crate::attachments::Pending,
@@ -143,6 +145,7 @@ impl NewThreadPage {
             in_use: Vec::new(),
             on_branch: None,
             machine_type: None,
+            sizes_unavailable: Vec::new(),
             prompt,
             attachments: Default::default(),
             menu: Default::default(),
@@ -568,6 +571,25 @@ impl NewThreadPage {
         cx.notify();
     }
 
+    /// The sizes boat's limits say the plan won't start changed.
+    pub fn set_sizes_unavailable(&mut self, sizes: Vec<(String, String)>, cx: &mut Context<Self>) {
+        if self.sizes_unavailable != sizes {
+            self.sizes_unavailable = sizes;
+            cx.notify();
+        }
+    }
+
+    /// Why the next thread's size won't start on this plan, in words, if it won't.
+    fn size_refused(&self) -> Option<String> {
+        let t = self.machine_type();
+        crate::machine_size::unavailable(&self.sizes_unavailable, t).map(|why| {
+            format!(
+                "{} {why}: pick another size.",
+                flotilla_proto::machine_type_label(t)
+            )
+        })
+    }
+
     /// boat's room for more VMs changed.
     pub fn set_room(&mut self, room: Option<i64>, cx: &mut Context<Self>) {
         if self.room != room {
@@ -625,6 +647,11 @@ impl NewThreadPage {
         let models = self.picker.read(cx).chosen(cx);
         if models.is_empty() {
             self.error = Some("Pick a model.".into());
+            cx.notify();
+            return;
+        }
+        if let Some(why) = self.size_refused() {
+            self.error = Some(why);
             cx.notify();
             return;
         }
@@ -690,7 +717,10 @@ impl NewThreadPage {
             return;
         }
         let on_branch = project.as_ref().and(self.on_branch.clone());
-        if let Some(why) = cant_start(models.len(), on_branch.as_ref(), self.room) {
+        if let Some(why) = self
+            .size_refused()
+            .or_else(|| cant_start(models.len(), on_branch.as_ref(), self.room))
+        {
             self.error = Some(why);
             cx.notify();
             return;
@@ -844,6 +874,7 @@ impl Render for NewThreadPage {
             crate::machine_size::menu(
                 "machine-size",
                 self.machine_type(),
+                &self.sizes_unavailable,
                 self.starting,
                 move |t, _, cx| {
                     let _ = weak.update(cx, |page, cx| {

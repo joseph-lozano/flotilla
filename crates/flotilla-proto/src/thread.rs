@@ -680,6 +680,10 @@ pub struct Usage {
     /// When boat gave these numbers (ms since the epoch).
     #[serde(default)]
     pub read_ms: Option<i64>,
+    /// The machine sizes the plan doesn't start (boat's name) and why, e.g. `xlarge`, "needs
+    /// the $100/month plan or higher". Left out when there are none.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub sizes_unavailable: Vec<(String, String)>,
 }
 
 /// boat's extra starts: whether they're on, and this billing month's so far.
