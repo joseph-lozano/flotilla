@@ -172,9 +172,12 @@ pub fn tile(
             .into_any_element()
     };
     let body = match path.filter(|_| kind == Kind::Image) {
-        Some(p) => base.w(px(TILE)).child(
+        // Square, and clipped: left without an aspect ratio, `img` takes the picture's own, and
+        // a tall screenshot then runs out of the tile and over the composer's text.
+        Some(p) => base.w(px(TILE)).overflow_hidden().child(
             img(p)
                 .size_full()
+                .aspect_square()
                 .rounded(px(7.))
                 .object_fit(ObjectFit::Cover)
                 .with_loading(placeholder)
