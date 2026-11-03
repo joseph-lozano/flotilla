@@ -1,0 +1,119 @@
+#!/bin/bash
+# The pull request checks, run here instead of on GitHub: the checks the CI workflows run on
+# main, for what the branch changes, then `gh signoff` (https://github.com/basecamp/gh-signoff)
+# marks the commit green. A required `signoff` status (`gh signoff install`) is what a pull
+# request needs to merge. When a check fails, the commit gets a red `signoff` status instead,
+# saying which.
+#
+# Run it after every push to a pull request's branch. It checks the commit that's pushed, so the
+# tree must be clean and HEAD pushed.
+#
+#   script/signoff              # the checks for what the branch changes since main, then sign off
+#   script/signoff --all        # every check, whatever changed
+#   script/signoff --no-signoff # the checks alone: nothing is posted, nothing need be pushed
+#
+# Which checks, by the paths the branch changes (the same paths as the workflows'):
+#   Rust (ci.yml):            cargo fmt --check, clippy with and without the snapshot
+#                             feature, cargo test
+#   Docs (docs.yml):          script/docs-md --check
+#   FlotillaKit (flotillakit.yml): swift test, on a Mac only. Elsewhere it's skipped with a
+#                             warning, and flotillakit.yml runs it on main after the merge.
+set -euo pipefail
+root=$(cd "$(dirname "$0")/.." && pwd)
+cd "$root"
+
+usage() {
+  echo "usage: script/signoff [--all] [--no-signoff]" >&2
+  exit 2
+}
+all=0 post=1
+while (( $# )); do
+  case $1 in
+    --all) all=1 ;;
+    --no-signoff) post=0 ;;
+    *) usage ;;
+  esac
+  shift
+done
+fail() { echo "script/signoff: $*" >&2; exit 1; }
+
+if (( post )); then
+  [[ -z $(git status --porcelain) ]] || fail "the tree has changes: commit and push them first"
+  if ! gh signoff --help > /dev/null 2>&1; then
+    echo "==> Installing gh-signoff"
+    gh extension install basecamp/gh-signoff
+  fi
+fi
+
+# What the branch changes since it left main. Before the checks, so a commit that isn't pushed
+# stops here rather than after them.
+git fetch -q origin main
+if (( post )); then
+  branch=$(git symbolic-ref --short -q HEAD) || fail "not on a branch"
+  git fetch -q origin "+refs/heads/$branch:refs/remotes/origin/$branch" 2> /dev/null ||
+    fail "$branch isn't on origin: push it first"
+  git merge-base --is-ancestor HEAD "origin/$branch" || fail "HEAD isn't pushed: push it first"
+fi
+base=$(git merge-base origin/main HEAD)
+# The work tree too, and new files, for --no-signoff; signing off needs them committed.
+changed=$(git diff --name-only "$base"; git ls-files --others --exclude-standard)
+touches() {
+  (( all )) && return 0
+  local pattern
+  for pattern in "$@"; do
+    grep -Eq "$pattern" <<< "$changed" && return 0
+  done
+  return 1
+}
+
+steps=() skipped=()
+# Keep these in step with the paths in .github/workflows.
+if touches '^crates/' '^mobile/fixtures/' '^relay/test/vectors\.json$' '^m0-samples/' \
+  '^Cargo\.(toml|lock)$' '^rustfmt\.toml$' '^\.github/workflows/ci\.yml$' '^script/signoff$'; then
+  steps+=(rustfmt clippy clippy-snapshot tests)
+fi
+if touches '^www/' '^script/docs-md$' '^\.github/workflows/docs\.yml$' '^script/signoff$'; then
+  steps+=(docs)
+fi
+if touches '^ios/FlotillaKit/' '^mobile/fixtures/' '^relay/test/vectors\.json$' \
+  '^\.github/workflows/flotillakit\.yml$'; then
+  if [[ $(uname -s) == Darwin ]] && command -v swift > /dev/null; then
+    steps+=(swift)
+  else
+    skipped+=("swift test (FlotillaKit): needs a Mac; flotillakit.yml runs it on main after the merge")
+  fi
+fi
+
+run() {
+  case $1 in
+    rustfmt) cargo fmt --all --check ;;
+    clippy) cargo clippy --workspace --all-targets --locked -- -D warnings ;;
+    clippy-snapshot) cargo clippy --workspace --all-targets --locked --features flotilla-app/snapshot -- -D warnings ;;
+    tests) cargo test --workspace --locked --no-fail-fast ;;
+    docs) script/docs-md --check ;;
+    swift) (cd ios/FlotillaKit && swift test) ;;
+  esac
+}
+
+# ${a[@]+"${a[@]}"}: an empty array is an error under set -u in the Mac's bash 3.2.
+for step in ${steps[@]+"${steps[@]}"}; do
+  echo "==> $step"
+  if ! run "$step"; then
+    echo "script/signoff: $step failed" >&2
+    if (( post )); then
+      gh signoff fail --description "$step failed" || true
+    fi
+    exit 1
+  fi
+done
+
+(( ${#steps[@]} )) || echo "==> Nothing to check: the branch changes no paths the checks cover"
+for note in ${skipped[@]+"${skipped[@]}"}; do
+  echo "script/signoff: skipped $note" >&2
+done
+if (( post )); then
+  echo "==> gh signoff"
+  gh signoff
+else
+  echo "==> Passed (not signed off: --no-signoff)"
+fi

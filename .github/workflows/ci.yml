@@ -1,6 +1,8 @@
 # The Rust checks: rustfmt, clippy (with and without the snapshot feature) and the tests, on
-# Linux. The local gates already run on a Mac, so the Mac only runs clippy where it's free (a
-# public repo) or for a pull request. FlotillaKit's Swift tests are in flotillakit.yml.
+# Linux, for each push to main. Pull requests don't run them here: script/signoff runs the same
+# checks where the work was done and signs off on the commit (gh-signoff), and that's the check
+# a pull request needs. The Mac runs clippy where it's free (a public repo), or when run by
+# hand. FlotillaKit's Swift tests are in flotillakit.yml.
 #
 # Nothing here names the repo: the same file works in any fork or copy.
 name: CI
@@ -8,7 +10,7 @@ name: CI
 on:
   push:
     branches: [main]
-    paths: &rust-paths
+    paths:
       - "crates/**"
       - "mobile/fixtures/**"
       # The push relay's encryption vectors, which the tests read.
@@ -18,17 +20,14 @@ on:
       - "Cargo.lock"
       - "rustfmt.toml"
       - ".github/workflows/ci.yml"
-  pull_request:
-    branches: [main]
-    paths: *rust-paths
   workflow_dispatch:
 
 permissions:
   contents: read
 
-# A newer push replaces the run still going for the same branch or pull request.
+# A newer push replaces the run still going for the same branch.
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
@@ -71,9 +70,9 @@ jobs:
 
   macos:
     name: macOS (clippy)
-    # Free in a public repo; in a private one the Mac costs ten times Linux's minutes, and the
-    # local gates already ran on a Mac, so only pull requests check here.
-    if: ${{ !github.event.repository.private || github.event_name == 'pull_request' }}
+    # Free in a public repo; in a private one the Mac costs ten times Linux's minutes, so it
+    # runs only when started by hand.
+    if: ${{ !github.event.repository.private || github.event_name == 'workflow_dispatch' }}
     runs-on: macos-26
     timeout-minutes: 60
     steps:
