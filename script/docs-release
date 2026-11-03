@@ -27,12 +27,15 @@ docs="$(cd "$(dirname "$0")/.." && pwd)/www/docs"
 
 cp -R "$docs/main" "$docs/$version"
 
-# The copy names its own version: the picker's fallback and the canonical links.
+# The copy names its own version: the picker's fallback, the canonical links, and its own
+# release's downloads (main's point at the latest release).
 for page in "$docs/$version"/*.html; do
   sed -i.bak \
     -e "s|data-current=\"main\"|data-current=\"$version\"|" \
     -e "s|<option value=\"main\" selected>main</option>|<option value=\"$version\" selected>$version</option>|" \
     -e "s|https://useflotilla.com/docs/main/|https://useflotilla.com/docs/$version/|g" \
+    -e "s|/releases/latest/download/|/releases/download/v$version/|g" \
+    -e "s|/releases/latest\([\"<]\)|/releases/tag/v$version\\1|g" \
     "$page"
   rm "$page.bak"
 done

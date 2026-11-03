@@ -110,21 +110,21 @@ When you're done, tell me what you installed, and anything left for me to do.
 
 ### On a Mac
 
-Download [Flotilla.dmg](https://github.com/joseph-lozano/flotilla/releases/latest/download/Flotilla.dmg), open it and drag Flotilla to Applications.
+Download [Flotilla.dmg](https://github.com/joseph-lozano/flotilla/releases/download/v0.1.0/Flotilla.dmg), open it and drag Flotilla to Applications.
 
 ### On Linux
 
 On Debian or Ubuntu, download the package for your machine and install it, then open Flotilla from your apps:
 
 ```
-curl -fLO https://github.com/joseph-lozano/flotilla/releases/latest/download/Flotilla-$(dpkg --print-architecture).deb
+curl -fLO https://github.com/joseph-lozano/flotilla/releases/download/v0.1.0/Flotilla-$(dpkg --print-architecture).deb
 sudo apt install ./Flotilla-$(dpkg --print-architecture).deb
 ```
 
 On any other distribution, use the AppImage:
 
 ```
-curl -fLO https://github.com/joseph-lozano/flotilla/releases/latest/download/Flotilla-$(uname -m).AppImage
+curl -fLO https://github.com/joseph-lozano/flotilla/releases/download/v0.1.0/Flotilla-$(uname -m).AppImage
 chmod +x Flotilla-$(uname -m).AppImage && ./Flotilla-$(uname -m).AppImage
 ```
 
@@ -756,7 +756,7 @@ Download the `flotilla` command into `~/.local/bin`. It's linked statically, so 
 
 ```
 mkdir -p ~/.local/bin
-curl -fL https://github.com/joseph-lozano/flotilla/releases/latest/download/flotilla-cli-linux-$(uname -m).tar.gz |
+curl -fL https://github.com/joseph-lozano/flotilla/releases/download/v0.1.0/flotilla-cli-linux-$(uname -m).tar.gz |
   tar -xz --strip-components=1 -C ~/.local/bin flotilla-cli-linux-$(uname -m)/flotilla
 ```
 
@@ -1375,10 +1375,10 @@ Download it into `~/.local/bin`, and check that's on your `PATH`:
 ```
 mkdir -p ~/.local/bin
 # Linux
-curl -fL https://github.com/joseph-lozano/flotilla/releases/latest/download/flotilla-cli-linux-$(uname -m).tar.gz |
+curl -fL https://github.com/joseph-lozano/flotilla/releases/download/v0.1.0/flotilla-cli-linux-$(uname -m).tar.gz |
   tar -xz --strip-components=1 -C ~/.local/bin flotilla-cli-linux-$(uname -m)/flotilla
 # Mac
-curl -fL https://github.com/joseph-lozano/flotilla/releases/latest/download/flotilla-cli-macos-universal.tar.gz |
+curl -fL https://github.com/joseph-lozano/flotilla/releases/download/v0.1.0/flotilla-cli-macos-universal.tar.gz |
   tar -xz --strip-components=1 -C ~/.local/bin flotilla-cli-macos-universal/flotilla
 ```
 

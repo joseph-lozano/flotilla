@@ -49,7 +49,7 @@ Download the `flotilla` command into `~/.local/bin`. It's linked statically, so 
 
 ```
 mkdir -p ~/.local/bin
-curl -fL https://github.com/joseph-lozano/flotilla/releases/latest/download/flotilla-cli-linux-$(uname -m).tar.gz |
+curl -fL https://github.com/joseph-lozano/flotilla/releases/download/v0.1.0/flotilla-cli-linux-$(uname -m).tar.gz |
   tar -xz --strip-components=1 -C ~/.local/bin flotilla-cli-linux-$(uname -m)/flotilla
 ```
 
