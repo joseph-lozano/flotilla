@@ -1800,6 +1800,15 @@ impl FlotillaApp {
                     page.update(cx, |p, cx| p.type_prompt("Add exponential backoff to the webhook sender in src/webhooks.rs, at most 5 tries, and add a test for it.", window, cx));
                 }
             }
+            // Attach the files in FLOTILLA_SNAPSHOT_ATTACH (`:`-separated) to New thread.
+            "new-thread-attached" => {
+                let paths: Vec<std::path::PathBuf> = std::env::var_os("FLOTILLA_SNAPSHOT_ATTACH")
+                    .map(|v| std::env::split_paths(&v).collect())
+                    .unwrap_or_default();
+                if let Some(page) = &self.new_thread {
+                    page.update(cx, |p, cx| p.add_files(&paths, cx));
+                }
+            }
             "settings" => {
                 window.close_all_dialogs(cx);
                 self.open_settings(window, cx);
