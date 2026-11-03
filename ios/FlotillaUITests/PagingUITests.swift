@@ -146,7 +146,8 @@ final class PagingUITests: FlotillaUITestCase {
         XCTAssertTrue(showing("of 220.").waitForExistence(timeout: 60), "the thread's last reply")
         let row = app.buttons.matching(NSPredicate(format: "label CONTAINS 'cat logs/retry.log'")).firstMatch
         for _ in 0..<30 where !(row.exists && row.isHittable) {
-            app.swipeDown()
+            unfoldCalls()
+            if !(row.exists && row.isHittable) { app.swipeDown() }
         }
         row.tap()
         let showAll = app.buttons["showAll"]

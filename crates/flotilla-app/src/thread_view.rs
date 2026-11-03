@@ -163,9 +163,18 @@ enum Row {
         /// A question you answered: how the message that took your answer is going (it isn't
         /// shown itself), where there's more to say than that it was answered.
         answer: Option<String>,
+        /// The last call of an open run of calls: room under it, as under the run's line.
+        fold_end: bool,
     },
     /// What an open subagent card's subagent reported, after its calls.
     Report { ident: String, text: String },
+    /// Calls one after another, folded into one line ("Called Bash 9 times"); open, they
+    /// follow on their own rows, on a rail under it.
+    Calls {
+        ident: String,
+        calls: Rc<Calls>,
+        expanded: bool,
+    },
     /// Streaming text, not yet a message.
     Partial { id: String, text: String },
 }
@@ -173,7 +182,9 @@ enum Row {
 impl Row {
     fn ident(&self) -> &str {
         match self {
-            Row::Message { ident, .. } | Row::Report { ident, .. } => ident,
+            Row::Message { ident, .. } | Row::Report { ident, .. } | Row::Calls { ident, .. } => {
+                ident
+            }
             Row::Partial { id, .. } => id,
         }
     }
@@ -195,6 +206,7 @@ impl Row {
                 scheduled,
                 ask,
                 answer,
+                fold_end,
             } => {
                 (
                     ident,
@@ -218,14 +230,151 @@ impl Row {
                     scheduled.as_deref(),
                     ask.as_deref(),
                     answer,
+                    fold_end,
                 )
                     .hash(&mut h)
             }
             Row::Report { ident, text } => (ident, text).hash(&mut h),
+            Row::Calls {
+                ident,
+                calls,
+                expanded,
+            } => (ident, calls.as_ref(), expanded).hash(&mut h),
             Row::Partial { id, text } => (id, text).hash(&mut h),
         }
         h.finish()
     }
+}
+
+/// A run of calls folded into one row, as its line says it.
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+struct Calls {
+    /// "Called Bash 9 times", "Called Bash 6 times, Read twice".
+    label: String,
+    /// Its calls' messages, by seq: a search hit among them opens it.
+    seqs: Vec<i64>,
+    /// While one runs: its summary, to see what it's at.
+    running: Option<String>,
+    /// How many failed.
+    failed: usize,
+    /// The last one's status in words (interrupted…), once none runs.
+    status: Option<String>,
+}
+
+/// Calls in a run this long or longer fold into one row.
+const FOLD_CALLS: usize = 2;
+
+/// "Called Bash 9 times", or for a run of several tools each with its count, in the order
+/// they were first called: "Called Bash 6 times, Read twice, Grep once".
+fn called_label<'a>(names: impl IntoIterator<Item = &'a str>) -> String {
+    let mut counts: Vec<(&str, usize)> = Vec::new();
+    for name in names {
+        match counts.iter_mut().find(|(n, _)| *n == name) {
+            Some((_, k)) => *k += 1,
+            None => counts.push((name, 1)),
+        }
+    }
+    let said: Vec<String> = counts
+        .into_iter()
+        .map(|(name, k)| match k {
+            1 => format!("{name} once"),
+            2 => format!("{name} twice"),
+            k => format!("{name} {k} times"),
+        })
+        .collect();
+    format!("Called {}", said.join(", "))
+}
+
+/// A row that folds into a run of calls: a call of the thread's own (not a subagent's, nor
+/// one shown as a card).
+fn foldable(r: &Row) -> bool {
+    matches!(
+        r,
+        Row::Message {
+            msg,
+            nested: false,
+            sub: None,
+            handoff: None,
+            ..
+        } if msg.kind == "tool"
+    )
+}
+
+/// Each run of `FOLD_CALLS` or more calls in a row folds into one line, which opens (it's in
+/// `open`) to show them under it. `target`: a message gone to from search, whose run opens if
+/// `unfold` (going back to a place doesn't open one: its line is the place).
+fn fold_calls(
+    rows: Vec<Row>,
+    open: &mut HashSet<String>,
+    target: Option<i64>,
+    unfold: bool,
+) -> Vec<Row> {
+    let mut out = Vec::with_capacity(rows.len());
+    let mut rows = rows.into_iter().peekable();
+    while let Some(row) = rows.next() {
+        if !foldable(&row) {
+            out.push(row);
+            continue;
+        }
+        let mut run = vec![row];
+        while let Some(next) = rows.next_if(foldable) {
+            run.push(next);
+        }
+        if run.len() < FOLD_CALLS {
+            out.extend(run);
+            continue;
+        }
+        let msgs: Vec<&Message> = run
+            .iter()
+            .filter_map(|r| match r {
+                Row::Message { msg, .. } => Some(&**msg),
+                _ => None,
+            })
+            .collect();
+        let ident = format!("calls:{}", run[0].ident());
+        let seqs: Vec<i64> = msgs.iter().map(|m| m.seq).collect();
+        if unfold && target.is_some_and(|t| seqs.contains(&t)) {
+            open.insert(ident.clone());
+        }
+        let running = msgs
+            .iter()
+            .rev()
+            .find(|m| m.pending)
+            .map(|m| m.tool_summary.clone().unwrap_or_default());
+        let calls = Calls {
+            label: called_label(
+                msgs.iter()
+                    .map(|m| m.tool_name.as_deref().unwrap_or("tool")),
+            ),
+            running: running.clone(),
+            failed: msgs.iter().filter(|m| m.is_error).count(),
+            status: msgs
+                .last()
+                .and_then(|m| m.status.clone())
+                .filter(|_| running.is_none()),
+            seqs,
+        };
+        let expanded = open.contains(&ident);
+        out.push(Row::Calls {
+            ident,
+            calls: Rc::new(calls),
+            expanded,
+        });
+        if expanded {
+            let last = run.len() - 1;
+            out.extend(run.into_iter().enumerate().map(|(k, mut r)| {
+                if let Row::Message {
+                    nested, fold_end, ..
+                } = &mut r
+                {
+                    *nested = true;
+                    *fold_end = k == last;
+                }
+                r
+            }));
+        }
+    }
+    out
 }
 
 pub struct ThreadView {
@@ -590,6 +739,7 @@ impl ThreadView {
             .iter()
             .find_map(|r| match r {
                 Row::Message { msg, .. } => Some(msg.seq),
+                Row::Calls { calls, .. } => calls.seqs.first().copied(),
                 _ => None,
             })
     }
@@ -2039,6 +2189,7 @@ impl ThreadView {
                     scheduled: None,
                     ask: None,
                     answer: None,
+                    fold_end: false,
                 });
                 if let (true, Some(report)) = (open_card, h.card.report.clone()) {
                     rows.push(Row::Report {
@@ -2098,6 +2249,7 @@ impl ThreadView {
                     files,
                     handoff: None,
                     from,
+                    fold_end: false,
                 });
             }
             for &c in reports_after.get(&i).into_iter().flatten() {
@@ -2131,6 +2283,8 @@ impl ThreadView {
         self.pinned = pinned;
         self.pinned_calls = (running_calls, running_latest);
         self.handoffs = handoffs;
+        let target = self.target.map(|(seq, _)| seq);
+        let mut rows = fold_calls(rows, &mut self.expanded, target, !self.target_quiet);
         let mut partials: Vec<&RawEvent> = self.partials.iter().collect();
         partials.sort_by_key(|p| p.timestamp);
         for p in partials {
@@ -2191,11 +2345,24 @@ impl ThreadView {
         self.signatures = signatures;
         self.rows = Rc::new(rows);
         // The message gone to is here now: to the top, marked.
+        // (Its own row, else the folded calls it's among.)
         if let Some((seq, _)) = self.target
-            && let Some((ix, ident)) = self.rows.iter().enumerate().find_map(|(i, r)| match r {
-                Row::Message { msg, ident, .. } if msg.seq == seq => Some((i, ident.clone())),
-                _ => None,
-            })
+            && let Some((ix, ident)) = self
+                .rows
+                .iter()
+                .enumerate()
+                .find_map(|(i, r)| match r {
+                    Row::Message { msg, ident, .. } if msg.seq == seq => Some((i, ident.clone())),
+                    _ => None,
+                })
+                .or_else(|| {
+                    self.rows.iter().enumerate().find_map(|(i, r)| match r {
+                        Row::Calls { calls, ident, .. } if calls.seqs.contains(&seq) => {
+                            Some((i, ident.clone()))
+                        }
+                        _ => None,
+                    })
+                })
         {
             #[cfg(feature = "snapshot")]
             if let Some((_, at)) = self.target {
@@ -2253,6 +2420,27 @@ impl ThreadView {
         self.rows.len()
     }
 
+    /// Every run of calls opened, so each call has its row.
+    #[cfg(feature = "snapshot")]
+    fn unfold_calls(&mut self, cx: &mut Context<Self>) {
+        let folded: Vec<String> = self
+            .rows
+            .iter()
+            .filter_map(|r| match r {
+                Row::Calls {
+                    ident,
+                    expanded: false,
+                    ..
+                } => Some(ident.clone()),
+                _ => None,
+            })
+            .collect();
+        if !folded.is_empty() {
+            self.expanded.extend(folded);
+            self.rebuild_rows(cx);
+        }
+    }
+
     /// The newest cut tool output, a Bash one if there is one (its last lines say it's whole).
     #[cfg(feature = "snapshot")]
     fn last_cut(&self) -> Option<(usize, String, Message)> {
@@ -2279,6 +2467,7 @@ impl ThreadView {
     /// Scroll to the row after the newest cut tool output (its end just above the top).
     #[cfg(feature = "snapshot")]
     pub(crate) fn snapshot_after_cut(&mut self, cx: &mut Context<Self>) {
+        self.unfold_calls(cx);
         if let Some((ix, _, _)) = self.last_cut() {
             self.scroller
                 .update(cx, |s, cx| s.scroll_to_item(ix + 1, cx));
@@ -2287,6 +2476,7 @@ impl ThreadView {
 
     #[cfg(feature = "snapshot")]
     pub(crate) fn snapshot_expand_cut(&mut self, cx: &mut Context<Self>) {
+        self.unfold_calls(cx);
         if let Some((_, ident, _)) = self.last_cut() {
             if !self.expanded.contains(&ident) {
                 self.toggle(ident.clone(), cx);
@@ -2300,6 +2490,7 @@ impl ThreadView {
 
     #[cfg(feature = "snapshot")]
     pub(crate) fn snapshot_show_all(&mut self, cx: &mut Context<Self>) {
+        self.unfold_calls(cx);
         if let Some((_, _, m)) = self.last_cut() {
             self.ask_whole(&m, false, cx);
         }
@@ -2347,6 +2538,7 @@ impl ThreadView {
 
     #[cfg(feature = "snapshot")]
     pub(crate) fn expand_last_tool(&mut self, cx: &mut Context<Self>) {
+        self.unfold_calls(cx);
         let first = self.rows.iter().rev().find_map(|r| match r {
             Row::Message { msg, ident, .. } if msg.kind == "tool" => Some(ident.clone()),
             _ => None,
@@ -4079,6 +4271,11 @@ fn render_row(
                     .code_block_actions(code_block_actions),
             )
             .into_any_element(),
+        Row::Calls {
+            ident,
+            calls,
+            expanded,
+        } => calls_line(ident, calls, *expanded, view.clone(), &theme),
         Row::Message {
             msg: m,
             ident,
@@ -4608,9 +4805,20 @@ fn render_row(
         Row::Message { msg, .. } if msg.kind == "prompt" => (px(14.), px(6.)),
         Row::Message { sub: Some(_), .. } => (px(4.), px(2.)),
         Row::Message { msg, .. } if msg.kind == "tool" => (px(1.), px(1.)),
+        Row::Calls { .. } => (px(1.), px(1.)),
         Row::Message { msg, .. } if msg.kind == flotilla_proto::ask::KIND => (px(8.), px(8.)),
         _ => (px(4.), px(4.)),
     };
+    // A run of calls ends with room under it: its line, folded, or its last call, open (under
+    // the rail, which ends with the call).
+    let after = matches!(
+        row,
+        Row::Calls {
+            expanded: false,
+            ..
+        } | Row::Message { fold_end: true, .. }
+    )
+    .then_some(px(8.));
     // A subagent's own calls and report hang off its card, on a rail under its chevron.
     let nested = matches!(row, Row::Message { nested: true, .. } | Row::Report { .. });
     // Gone to from search: the selection's lavender behind it, for a moment.
@@ -4619,6 +4827,7 @@ fn render_row(
         return div()
             .px_4()
             .when_some(tint, |el, t| el.bg(t))
+            .when_some(after, |el, a| el.pb(a))
             .child(
                 div()
                     .ml(px(14.))
@@ -4634,9 +4843,77 @@ fn render_row(
     div()
         .px_4()
         .pt(top)
-        .pb(bottom)
+        .pb(bottom + after.unwrap_or_default())
         .when_some(tint, |el, t| el.bg(t))
         .child(body)
+        .into_any_element()
+}
+
+/// Calls folded into one line, as a call's own line looks: what was called how often, and
+/// while one runs, what it's at. A click opens it (its calls follow on their rows) or folds it.
+fn calls_line(
+    ident: &str,
+    calls: &Calls,
+    open: bool,
+    view: WeakEntity<ThreadView>,
+    theme: &gpui_kit::component::Theme,
+) -> AnyElement {
+    let status: AnyElement = if calls.running.is_some() {
+        Spinner::new().xsmall().into_any_element()
+    } else if calls.failed > 0 {
+        div()
+            .text_xs()
+            .text_color(theme.danger)
+            .child(format!("{} failed", calls.failed))
+            .into_any_element()
+    } else if let Some(s) = calls.status.clone() {
+        div()
+            .text_xs()
+            .text_color(theme.warning)
+            .child(s)
+            .into_any_element()
+    } else {
+        div().into_any_element()
+    };
+    let toggle_ident = ident.to_string();
+    h_flex()
+        .id(SharedString::from(format!("calls-{ident}")))
+        .gap_2()
+        .px_2()
+        .py(px(3.))
+        .rounded_md()
+        .cursor_pointer()
+        .hover(|el| el.bg(theme.secondary))
+        .font_family(theme.mono_font_family.clone())
+        .text_xs()
+        .on_click(move |_, _, cx| {
+            let ident = toggle_ident.clone();
+            let _ = view.update(cx, |v, cx| v.toggle(ident, cx));
+        })
+        .child(
+            Icon::new(if open {
+                IconName::ChevronDown
+            } else {
+                IconName::ChevronRight
+            })
+            .xsmall()
+            .text_color(theme.muted_foreground),
+        )
+        .child(
+            div()
+                .flex_none()
+                .text_color(theme.foreground)
+                .child(calls.label.clone()),
+        )
+        .child(
+            div()
+                .flex_1()
+                .min_w_0()
+                .truncate()
+                .text_color(theme.muted_foreground)
+                .child(calls.running.clone().unwrap_or_default()),
+        )
+        .child(status)
         .into_any_element()
 }
 
@@ -5658,6 +5935,95 @@ mod tests {
             ..m
         });
         assert!(super::tool_text(&cut, false).starts_with("result line\nresult line"));
+    }
+
+    #[test]
+    fn a_run_of_calls_is_said_by_tool_and_count() {
+        assert_eq!(super::called_label(["Bash"; 9]), "Called Bash 9 times");
+        assert_eq!(
+            super::called_label(["Bash", "Read", "Bash", "Grep", "Read", "Bash"]),
+            "Called Bash 3 times, Read twice, Grep once"
+        );
+    }
+
+    /// Calls one after another fold into one line, which opens to show them on its rail; a
+    /// lone call, and calls with a reply between them, stay as they were.
+    #[test]
+    fn runs_of_calls_fold_into_one_line() {
+        use super::{Row, fold_calls};
+        use std::collections::HashSet;
+        let row = |seq: i64, kind: &str, name: &str| Row::Message {
+            msg: Box::new(flotilla_proto::Message {
+                seq,
+                kind: kind.into(),
+                tool_name: Some(name.into()),
+                is_error: seq == 3,
+                ..Default::default()
+            }),
+            ident: format!("m{seq}"),
+            expanded: false,
+            actions: false,
+            nested: false,
+            sub: None,
+            files: Vec::new(),
+            handoff: None,
+            from: None,
+            whole: None,
+            scheduled: None,
+            ask: None,
+            answer: None,
+            fold_end: false,
+        };
+        let rows = || {
+            vec![
+                row(1, "tool", "Bash"),
+                row(2, "tool", "Bash"),
+                row(3, "tool", "Bash"),
+                row(4, "text", ""),
+                row(5, "tool", "Read"),
+                row(6, "steer", ""),
+                row(7, "tool", "Bash"),
+                row(8, "tool", "Read"),
+            ]
+        };
+        let shown = |rows: &[Row]| {
+            rows.iter()
+                .map(|r| match r {
+                    Row::Calls { calls, .. } => {
+                        format!("[{}, {} failed]", calls.label, calls.failed)
+                    }
+                    Row::Message {
+                        nested: true,
+                        ident,
+                        ..
+                    } => format!("  {ident}"),
+                    r => r.ident().to_string(),
+                })
+                .collect::<Vec<_>>()
+        };
+        let mut open = HashSet::new();
+        assert_eq!(
+            shown(&fold_calls(rows(), &mut open, None, true)),
+            [
+                "[Called Bash 3 times, 1 failed]",
+                "m4",
+                "m5",
+                "m6",
+                "[Called Bash once, Read once, 0 failed]",
+            ]
+        );
+        // Opened: its calls under it.
+        open.insert("calls:m1".to_string());
+        assert_eq!(
+            shown(&fold_calls(rows(), &mut open, None, true))[..4],
+            ["[Called Bash 3 times, 1 failed]", "  m1", "  m2", "  m3"]
+        );
+        // A search hit in a folded run opens it; going back to a place doesn't.
+        let mut open = HashSet::new();
+        fold_calls(rows(), &mut open, Some(8), false);
+        assert!(open.is_empty());
+        fold_calls(rows(), &mut open, Some(8), true);
+        assert!(open.contains("calls:m7"));
     }
 
     #[test]

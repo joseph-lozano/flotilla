@@ -147,6 +147,7 @@ final class PolishUITests: FlotillaUITestCase {
         app.buttons["Done"].tap()
         sleep(1)
 
+        unfoldCalls()
         let tool = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Bash'")).firstMatch
         XCTAssertTrue(tool.waitForExistence(timeout: 5))
         tool.press(forDuration: 1.0)

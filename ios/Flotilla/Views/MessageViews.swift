@@ -262,6 +262,72 @@ struct ToolRow: View {
     }
 }
 
+/// Calls one after another, folded into one line as a call's own looks: what was called how
+/// often, and while one runs, what it's at. Open, its calls follow on a rail under it.
+struct CallsRow: View {
+    let calls: [Message]
+    var thread: String?
+    @Binding var open: Bool
+    /// Opened: the page brings its calls into view.
+    var opened: () -> Void = {}
+
+    var body: some View {
+        let label = ThreadPlan.calledLabel(calls.map { $0.toolName ?? "tool" })
+        let running = calls.last { $0.pending }
+        let failed = calls.filter(\.isError).count
+        let status = running == nil ? calls.last?.status : nil
+        VStack(alignment: .leading, spacing: 7) {
+            Button {
+                withAnimation(.easeOut(duration: 0.2)) { open.toggle() }
+                if open { opened() }
+            } label: {
+                HStack(spacing: 7) {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 9, weight: .semibold))
+                        .rotationEffect(.degrees(open ? 90 : 0))
+                        .foregroundStyle(Palette.dim)
+                    Text(label)
+                        .font(Typeface.mono(.footnote))
+                        .foregroundStyle(Palette.text)
+                        .lineLimit(1)
+                        .layoutPriority(1)
+                    Text(running?.toolSummary ?? "")
+                        .font(Typeface.mono(.footnote))
+                        .foregroundStyle(Palette.dim)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                    Spacer(minLength: 0)
+                    if running != nil {
+                        ProgressView().controlSize(.mini)
+                    } else if failed > 0 {
+                        Text("\(failed) failed").font(Typeface.meta).foregroundStyle(Palette.bad)
+                    } else if let status {
+                        Text(status).font(Typeface.meta).foregroundStyle(Palette.warn)
+                    }
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(label)\(running != nil ? ", running" : failed > 0 ? ", \(failed) failed" : "")")
+            .accessibilityValue(open ? "open" : "folded")
+            .accessibilityHint(open ? "Hides the calls" : "Shows the calls")
+            .accessibilityIdentifier("calls")
+            if open {
+                VStack(alignment: .leading, spacing: 7) {
+                    ForEach(calls, id: \.seq) { m in
+                        ToolRow(message: m, thread: thread)
+                    }
+                }
+                .padding(.leading, 12)
+                .overlay(alignment: .leading) {
+                    Rectangle().fill(Palette.border).frame(width: 1).padding(.leading, 3)
+                }
+            }
+        }
+    }
+}
+
 /// Over a tool output that went out cut: how much came, and Show all / Copy all.
 struct CutBar: View {
     @Environment(AppModel.self) private var model
