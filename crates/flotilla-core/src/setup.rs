@@ -273,6 +273,7 @@ impl Runner<'_> {
                     template,
                     &labels,
                     Ttl::Seconds(RUN_TTL_SECONDS),
+                    None,
                     &self.run.id,
                 ) {
                     Ok(sb) => sb,
@@ -682,6 +683,7 @@ mod tests {
             head_sha: None,
             head_etag: None,
             checked_at: None,
+            machine_type: None,
         };
         store.insert_project(&p, &[]).unwrap();
         let run = new_run(&store, "p", "fresh", "added", "3f2a1c9d").unwrap();

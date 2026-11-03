@@ -56,6 +56,9 @@ pub struct NewThreadPage {
     in_use: Vec<String>,
     /// An existing branch to start on; `None`: a new branch.
     on_branch: Option<OnBranch>,
+    /// The machine size picked for the next thread (boat's name); `None`: the project's
+    /// (with No project, boat's default).
+    machine_type: Option<String>,
     prompt: Entity<TextareaState>,
     /// Files to go with the first prompt.
     attachments: crate::attachments::Pending,
@@ -139,6 +142,7 @@ impl NewThreadPage {
             lists: None,
             in_use: Vec::new(),
             on_branch: None,
+            machine_type: None,
             prompt,
             attachments: Default::default(),
             menu: Default::default(),
@@ -213,6 +217,7 @@ impl NewThreadPage {
         if project != self.project {
             self.project = project;
             self.on_branch = None;
+            self.machine_type = None;
             if let Some(id) = &self.project {
                 cx.emit(NewThreadEvent::WantBranches(id.clone()));
             }
@@ -527,6 +532,13 @@ impl NewThreadPage {
         cx.notify();
     }
 
+    /// The size the next thread starts on: the one picked, else the project's.
+    fn machine_type(&self) -> Option<&str> {
+        self.machine_type
+            .as_deref()
+            .or_else(|| self.chosen()?.machine_type.as_deref())
+    }
+
     fn chosen(&self) -> Option<&Project> {
         self.project
             .as_ref()
@@ -540,6 +552,7 @@ impl NewThreadPage {
         self.starting = false;
         self.error = None;
         self.on_branch = None;
+        self.machine_type = None;
         self.refresh_branches(window, cx);
         self.prompt
             .update(cx, |p, cx| p.set_value(String::new(), window, cx));
@@ -626,7 +639,7 @@ impl NewThreadPage {
                     model: s.model,
                     effort: s.effort,
                     fast: s.fast,
-                    machine_type: None,
+                    machine_type: self.machine_type.clone(),
                     on_branch: on_branch.clone(),
                 };
                 (fresh, label)
@@ -694,7 +707,7 @@ impl NewThreadPage {
                 effort: s.effort,
                 fast: s.fast,
                 title: None,
-                machine_type: None,
+                machine_type: self.machine_type.clone(),
                 prompt: prompt.clone(),
                 attachments: self.attachments.files.clone(),
                 wait_ready: false,
@@ -706,10 +719,12 @@ impl NewThreadPage {
             .collect();
         self.error = None;
         if stay {
-            // Ready for the next one now: the prompt and files go; the rest stays.
+            // Ready for the next one now: the prompt, files and size picked go; the rest
+            // stays.
             self.prompt
                 .update(cx, |p, cx| p.set_value(String::new(), window, cx));
             self.attachments.clear();
+            self.machine_type = None;
             self.menu.close();
             self.focus_prompt(window, cx);
         } else {
@@ -824,6 +839,20 @@ impl Render for NewThreadPage {
                         }),
                     )
             });
+        let size_menu = {
+            let weak = cx.weak_entity();
+            crate::machine_size::menu(
+                "machine-size",
+                self.machine_type(),
+                self.starting,
+                move |t, _, cx| {
+                    let _ = weak.update(cx, |page, cx| {
+                        page.machine_type = Some(t);
+                        cx.notify();
+                    });
+                },
+            )
+        };
         // A set width: the select's trigger fills whatever it's given.
         let branch_menu = self.chosen().map(|_| {
             div().flex_none().w(px(240.)).child(
@@ -1000,7 +1029,9 @@ impl Render for NewThreadPage {
                                     .text_xs()
                                     .text_color(theme.muted_foreground)
                                     .child(project_menu)
-                                    .children(branch_menu),
+                                    .children(branch_menu)
+                                    .child(div().flex_1())
+                                    .child(size_menu),
                             ),
                     )
                     .children(self.error.clone().map(|e| div().text_sm().text_color(theme.danger).child(e))),

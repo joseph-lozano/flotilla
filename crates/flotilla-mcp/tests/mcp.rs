@@ -158,6 +158,7 @@ fn start_with(name: &str, before: impl FnOnce(&Store)) -> World {
         head_sha: None,
         head_etag: None,
         checked_at: None,
+        machine_type: None,
     };
     store.insert_project(&project, &[]).unwrap();
     // A long thread: 130 turns, so its oldest pages come over HTTP; turn 5 ran a command with

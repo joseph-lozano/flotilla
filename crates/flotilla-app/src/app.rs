@@ -4322,6 +4322,10 @@ impl FlotillaApp {
                         Notification::error(e).title("Couldn't save the scripts"),
                         cx,
                     ),
+                    Request::SetMachineType { .. } => window.push_notification(
+                        Notification::error(e).title("Couldn't save the machine size"),
+                        cx,
+                    ),
                     Request::SetBoatKey(_) => window.push_notification(
                         Notification::error(e).title("Couldn't save the key"),
                         cx,
@@ -5619,6 +5623,12 @@ impl FlotillaApp {
                         project: id.clone(),
                         scripts: scripts.clone(),
                         run: *run,
+                    });
+                }
+                ProjectEvent::SetMachineType(t) => {
+                    this.ask(Request::SetMachineType {
+                        project: id.clone(),
+                        machine_type: Some(t.clone()),
                     });
                 }
                 ProjectEvent::Remove => this.confirm_remove_project(id.clone(), window, cx),

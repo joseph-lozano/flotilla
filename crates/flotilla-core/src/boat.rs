@@ -729,11 +729,14 @@ impl BoatClient {
     /// Copy a sandbox from its newest snapshot (fork a stopped one: a running one's newest
     /// snapshot can be ~40 s old). Labels are set here (a fork doesn't inherit them); the
     /// name can't be, so it's renamed after.
+    /// `machine_type`: fork onto another machine size (boat refuses a smaller one the disk
+    /// doesn't fit); `None`: the source's.
     pub fn fork_sandbox(
         &self,
         source: &str,
         labels: &[(String, String)],
         ttl: Ttl,
+        machine_type: Option<&str>,
         idempotency_key: &str,
     ) -> BoatResult<Sandbox> {
         let mut body = Map::new();
@@ -741,6 +744,9 @@ impl BoatClient {
             labels.iter().map(|(k, v)| (k.clone(), json!(v))).collect();
         body.insert("labels".into(), Value::Object(labels));
         ttl.insert_into(&mut body);
+        if let Some(t) = machine_type {
+            body.insert("type".into(), json!(t));
+        }
         let resp = self.send(
             Method::POST,
             &format!("/sandboxes/{}/fork", enc(source)),

@@ -817,7 +817,7 @@ fn migrations_are_idempotent_and_settings_are_immutable() {
         .conn()
         .pragma_query_value(None, "user_version", |r| r.get(0))
         .unwrap();
-    assert_eq!(v, 16);
+    assert_eq!(v, 17);
     drop(s);
 
     let store = store_with_thread();

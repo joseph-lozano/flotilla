@@ -83,6 +83,7 @@ mod tests {
             head_sha: None,
             head_etag: None,
             checked_at: None,
+            machine_type: None,
         };
         let scripts = [
             SetupScript::every("npm ci"),

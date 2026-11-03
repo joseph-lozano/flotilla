@@ -239,6 +239,10 @@ const MIGRATIONS: &[&str] = &[
     DROP TABLE agent_usage;
     ALTER TABLE agent_usage_16 RENAME TO agent_usage;
     "#,
+    // 17: the machine size a project's new threads start on (boat's name; NULL: its default).
+    r#"
+    ALTER TABLE projects ADD COLUMN machine_type TEXT;
+    "#,
 ];
 
 /// `messages` and its search index (`crate::search`), derived from `events` together: both are
@@ -438,7 +442,7 @@ mod opening {
             .conn()
             .pragma_query_value(None, "user_version", |r| r.get(0))
             .unwrap();
-        assert_eq!(v, 16);
+        assert_eq!(v, MIGRATIONS.len() as i64);
         let kept: (i64, i64, i64, i64) = store
             .conn()
             .query_row(
@@ -882,6 +886,39 @@ mod schedule_tests {
 #[cfg(test)]
 mod preview_tests {
     #[test]
+    fn a_projects_machine_size_is_kept() {
+        let store = super::Store::open_in_memory().unwrap();
+        let project = super::Project {
+            id: "p1".into(),
+            owner: "acme".into(),
+            repo: "web".into(),
+            default_branch: "main".into(),
+            environment_name: "flotilla-web".into(),
+            created_at: crate::util::now_iso(),
+            template_sandbox_id: None,
+            template_sha: None,
+            template_built_at: None,
+            prev_template_sandbox_id: None,
+            head_sha: None,
+            head_etag: None,
+            checked_at: None,
+            machine_type: None,
+        };
+        store.insert_project(&project, &[]).unwrap();
+        let size = || store.project("p1").unwrap().unwrap().machine_type;
+        assert_eq!(size(), None);
+        store.set_project_machine_type("p1", Some("large")).unwrap();
+        assert_eq!(size().as_deref(), Some("large"));
+        assert_eq!(
+            store.projects().unwrap()[0].machine_type.as_deref(),
+            Some("large")
+        );
+        store.set_project_machine_type("p1", None).unwrap();
+        assert_eq!(size(), None);
+        assert!(store.set_project_machine_type("p2", Some("small")).is_err());
+    }
+
+    #[test]
     fn publishing_is_refused_once_a_project_is_being_removed() {
         let store = super::Store::open_in_memory().unwrap();
         let project = super::Project {
@@ -898,6 +935,7 @@ mod preview_tests {
             head_sha: None,
             head_etag: None,
             checked_at: None,
+            machine_type: None,
         };
         store.insert_project(&project, &[]).unwrap();
         assert_eq!(store.set_template("p1", "bx_1", "aaa").unwrap(), None);
@@ -986,6 +1024,7 @@ mod preview_tests {
             head_sha: None,
             head_etag: None,
             checked_at: None,
+            machine_type: None,
         };
         store.insert_project(&project, &[]).unwrap();
         let names: Vec<String> = store
@@ -1652,7 +1691,7 @@ impl Store {
     // ---- projects (GitHub repos) ----
 
     const PROJECT_COLS: &str = "id, owner, repo, default_branch, environment_name, created_at, template_sandbox_id, template_sha,
-        template_built_at, prev_template_sandbox_id, head_sha, head_etag, checked_at";
+        template_built_at, prev_template_sandbox_id, head_sha, head_etag, checked_at, machine_type";
 
     fn project_row(r: &Row) -> rusqlite::Result<Project> {
         Ok(Project {
@@ -1669,6 +1708,7 @@ impl Store {
             head_sha: r.get(10)?,
             head_etag: r.get(11)?,
             checked_at: r.get(12)?,
+            machine_type: r.get(13)?,
         })
     }
 
@@ -1763,6 +1803,18 @@ impl Store {
                 "INSERT INTO project_scripts (project_id, position, command, fresh_only) VALUES (?1, ?2, ?3, ?4)",
                 params![project_id, i as i64, sc.command.trim(), sc.fresh_only],
             )?;
+        }
+        Ok(())
+    }
+
+    /// The machine size the project's new threads start on unless they pick one.
+    pub fn set_project_machine_type(&self, id: &str, machine_type: Option<&str>) -> Result<()> {
+        let n = self.conn.execute(
+            "UPDATE projects SET machine_type=?2 WHERE id=?1",
+            params![id, machine_type],
+        )?;
+        if n == 0 {
+            return Err(Error::NotFound(format!("project {id}")));
         }
         Ok(())
     }
@@ -2365,6 +2417,7 @@ impl Store {
             format!("archive:{id}"),
             format!("thread_setup:{id}"),
             format!("on_branch:{id}"),
+            format!("machine_type:{id}"),
             format!("services:{id}"),
             format!("service_ports:{id}"),
             format!("lineage:{id}"),
