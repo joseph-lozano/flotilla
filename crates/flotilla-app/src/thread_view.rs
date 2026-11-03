@@ -3375,6 +3375,35 @@ impl ThreadView {
             .as_ref()
             .and_then(|(_, b, _)| *b)
             .filter(|n| *n > 0 && !pr_done);
+        // Beside the count: a prompt to rebase on the default branch, to read over and send. With
+        // the VM gone, it goes to a new thread on the branch instead (as the PR row's do).
+        let catch_up = behind.zip(self.project.as_ref()).map(|(n, (_, _, into))| {
+            let prompt = flotilla_model::fix::catch_up(into, n);
+            let gone = t.vm_gone();
+            let blocked = self.prompt_blocked(t);
+            let id = t.id.clone();
+            Button::new("catch-up")
+                .ghost()
+                .xsmall()
+                .icon(IconName::Sparkles)
+                .label("Catch up")
+                .tooltip(if gone {
+                    "Opens a new thread on this branch"
+                } else {
+                    blocked.unwrap_or("Ask the agent to rebase on the default branch")
+                })
+                .disabled(blocked.is_some())
+                .on_click(cx.listener(move |this, _, window, cx| {
+                    if gone {
+                        cx.emit(ThreadViewEvent::OnBranch {
+                            thread: id.clone(),
+                            prompt: prompt.clone(),
+                        });
+                    } else {
+                        this.fill_prompt(&prompt, window, cx);
+                    }
+                }))
+        });
         let conflicts = self
             .summary
             .as_ref()
@@ -3495,6 +3524,7 @@ impl ThreadView {
                                 .gap_2()
                                 .child(sep())
                                 .child(div().text_color(theme.danger).child(format!("{n} behind")))
+                                .children(catch_up)
                         }))
                         .when(conflicts, |el| {
                             el.child(
