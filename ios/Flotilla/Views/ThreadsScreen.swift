@@ -430,11 +430,11 @@ struct ThreadsScreen: View {
         .accessibilityIdentifier("newThread")
     }
 
-    /// "Usage, 3 of 100 VMs", or why VMs can't start.
+    /// "Usage, 7 of 556 VM hours", or why VMs can't start.
     private var usageSpoken: String {
         guard let u = model.sidebar?.usage else { return "Usage" }
         if u.blocked != nil { return "Usage, can't start VMs" }
-        return u.vms.map { "Usage, \($0.used) of \($0.limit) VMs" } ?? "Usage"
+        return Format.vmHoursUsed(u).map { "Usage, \($0.used) of \($0.limit) VM hours" } ?? "Usage"
     }
 
     private func tone(_ t: Format.Tone) -> Color {

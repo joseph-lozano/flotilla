@@ -522,7 +522,8 @@ func detail(_ id: String) throws -> ThreadDetail {
         #expect([Format.dollars(8000), Format.dollars(29), Format.dollars(1205)] == ["$80", "$0.29", "$12.05"])
         let now: Int64 = 1_000_000_000_000
         #expect([Format.agoPhrase(now - 20_000, now: now), Format.agoPhrase(now - 4 * 60_000, now: now)] == ["just now", "4m ago"])
-        #expect(Format.usage(Usage(vms: Count(3, of: 100)))?.rest == "/100 VMs")
+        #expect(Format.usage(Usage(vms: Count(3, of: 100), vmHours: Count(549, of: 556))).map { $0.used + $0.rest } == "7/556 VM hours")
+        #expect(Format.usage(Usage(vms: Count(3, of: 100))) == nil)
         #expect(Format.usage(Usage(vms: Count(3, of: 100), blocked: "Payment failed"))?.tone == .bad)
     }
 }

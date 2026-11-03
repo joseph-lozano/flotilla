@@ -186,9 +186,9 @@ struct UsageSheet: View {
         ForEach(Array(windows.enumerated()), id: \.offset) { i, w in
             UsageRow(label: w.1, count: w.0, note: i == windows.count - 1 ? startsFree(u, windows.map(\.0)) : nil)
         }
-        if let h = u.vmHours {
+        if let h = Format.vmHoursUsed(u) {
             // Used against the plan, as every row here is: the meter fills as they go (as on the Mac).
-            UsageRow(label: "VM hours used", count: Count(h.limit - h.used, of: h.limit),
+            UsageRow(label: "VM hours used", count: h,
                      note: Format.date(u.renews).map { ("Renews \($0)", .plain) })
         }
         if let x = u.extraStarts { ExtraStartsRow(x: x) }

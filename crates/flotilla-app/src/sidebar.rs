@@ -380,9 +380,9 @@ fn counts_room(app: &FlotillaApp, width: f32, text: &impl Fn(&str) -> f32) -> f3
         - 1.
 }
 
-/// Beside Settings: VMs running of the most at once, and starts in the last hour, or in
-/// whichever window (minute, 24 hours) is closer to its limit once it's three-quarters used.
-/// The count that moves stands out; its limit and unit stay quiet. Where both don't fit in
+/// Beside Settings: the plan's VM hours used of those it includes, and starts in the last
+/// hour, or in whichever window (minute, 24 hours) is closer to its limit once it's
+/// three-quarters used. The count that moves stands out; its limit and unit stay quiet. Where both don't fit in
 /// `room` (as wide as they lay out: `text` measures), it keeps the count closest to its limit,
 /// and then, still too narrow, leaves out its info icon, then its unit. Clicking it opens every
 /// count.
@@ -402,8 +402,9 @@ fn usage(
         }
     };
     let mut stats: Vec<((i64, i64), &str)> = Vec::new();
-    if let Some(v) = u.vms {
-        stats.push((v, "VMs"));
+    // The plan's VM hours used, not those left: the count climbs to its limit, as the rest do.
+    if let Some((left, of)) = u.vm_hours {
+        stats.push(((of - left, of), "VM hours"));
     }
     if u.blocked.is_none() {
         let tight = [(u.minute, "starts/min"), (u.day, "starts/day")]
