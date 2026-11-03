@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# Flotilla's setup for its own threads: the packages GPUI builds against, Rust stable with
+# clippy and rustfmt, the push relay's npm packages, and a debug build of the workspace, so
+# `cargo build` starts warm (and `cargo test` only has the test binaries left to build). Runs at
+# every thread start, so each step skips itself when nothing changed. CI's Linux job
+# (.github/workflows/ci.yml) is the reference for what's needed.
+#
+# Flotilla stops this script after 20 minutes, and a fresh clone builds everything, so the
+# build is kept small: no test binaries (`--all-targets`), and in a Flotilla VM, line tables
+# in place of full debug info (see "Cargo's settings").
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+step() { printf '\n== %s (at %ss)\n' "$*" "$SECONDS"; }
+
+step "GPUI's build packages"
+packages=(build-essential cmake pkg-config libfontconfig-dev libxkbcommon-x11-dev)
+missing=()
+for p in "${packages[@]}"; do
+  dpkg-query -W -f='${Status}' "$p" 2>/dev/null | grep -q 'install ok installed' || missing+=("$p")
+done
+if ((${#missing[@]})); then
+  sudo=""
+  [ "$(id -u)" -eq 0 ] || sudo="sudo"
+  $sudo apt-get update -qq
+  DEBIAN_FRONTEND=noninteractive $sudo apt-get install -y -qq --no-install-recommends "${missing[@]}"
+else
+  echo "all installed"
+fi
+
+step "Rust"
+# Only when something's missing: a fresh clone doesn't download Rust again.
+if ! command -v rustup >/dev/null 2>&1; then
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
+    sh -s -- -y --profile minimal --default-toolchain stable --component clippy,rustfmt
+  # shellcheck disable=SC1091
+  . "$HOME/.cargo/env"
+elif ! cargo clippy --version >/dev/null 2>&1 || ! cargo fmt --version >/dev/null 2>&1; then
+  rustup toolchain install stable --profile minimal --component clippy,rustfmt --no-self-update
+  rustup default stable
+fi
+rustc --version
+
+step "Cargo's settings"
+# Line tables in place of full debug info: a much smaller, faster build, and backtraces still
+# name each file and line. In the VM's own cargo config, not Cargo.toml or env vars, so an
+# agent's own `cargo build` and `cargo test` use the same settings and reuse this build.
+# Only in a Flotilla VM, and never over profiles someone already set.
+config="${CARGO_HOME:-$HOME/.cargo}/config.toml"
+if [ "${FLOTILLA:-}" != 1 ]; then
+  echo "not in Flotilla: left as is"
+elif grep -Eqs '^\[profile\.(dev|test)\]' "$config"; then
+  echo "already set in $config"
+else
+  mkdir -p "$(dirname "$config")"
+  cat >>"$config" <<'EOF'
+
+# Written by flotilla's .agents/setup: smaller, faster debug builds.
+[profile.dev]
+debug = "line-tables-only"
+
+[profile.test]
+debug = "line-tables-only"
+EOF
+  echo "wrote debug = \"line-tables-only\" to $config"
+fi
+
+step "The push relay's packages"
+# Not `npm ci`: it deletes node_modules every time. Only when the lockfile changed.
+if command -v npm >/dev/null 2>&1; then
+  if [ ! -f relay/node_modules/.package-lock.json ] ||
+    [ relay/package-lock.json -nt relay/node_modules/.package-lock.json ]; then
+    (cd relay && npm install --no-audit --no-fund)
+  else
+    echo "up to date"
+  fi
+else
+  echo "no npm: skipped (only relay/ needs it)"
+fi
+
+step "Build ($(nproc) CPUs)"
+cargo build --workspace --locked
+
+step "Done"
