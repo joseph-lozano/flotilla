@@ -10,8 +10,13 @@
 # branch doesn't change is marked green without running, as CI's path filters would skip it.
 # Every check runs, even after one fails, and the script fails if any did.
 #
-# Run it after every push to a pull request's branch. It checks the commit that's pushed, so the
-# tree must be clean and HEAD pushed.
+# Run it after every push to a pull request's branch. The checks decide how it exits: 1 if any
+# failed, 0 if they all passed. Posting the statuses is on top: when they can't be posted (the
+# tree has changes, HEAD isn't pushed, or you can't write statuses to the repo, as from a fork),
+# the checks still run and report here, with a warning that GitHub wasn't told.
+#
+# A pull request from a fork: the contributor runs it to see the results; a maintainer checks
+# the pull request out (`gh pr checkout <number>`), reads the diff, and runs it to sign off.
 #
 #   script/signoff              # the checks for what the branch changes since main, then sign off
 #   script/signoff --all        # every check, whatever changed
@@ -41,28 +46,48 @@ while (( $# )); do
   esac
   shift
 done
-fail() { echo "script/signoff: $*" >&2; exit 1; }
+warn() { echo "script/signoff: warning: $*" >&2; }
 
-if (( post )); then
-  [[ -z $(git status --porcelain) ]] || fail "the tree has changes: commit and push them first"
-  if ! gh signoff --help > /dev/null 2>&1; then
-    echo "==> Installing gh-signoff"
-    gh extension install basecamp/gh-signoff
+# Why nothing is posted, when it isn't. A failed post is a warning, not a failed run.
+not_posted=
+(( post )) || not_posted="--no-signoff"
+no_post() {
+  [[ -n $not_posted ]] || not_posted=$1
+}
+if [[ -z $not_posted && -n $(git status --porcelain) ]]; then
+  no_post "the tree has changes: the checks ran on them, not on a commit"
+fi
+if [[ -z $not_posted ]] && ! command -v gh > /dev/null; then
+  no_post "the gh command isn't installed"
+fi
+if [[ -z $not_posted ]] && ! gh signoff --help > /dev/null 2>&1; then
+  echo "==> Installing gh-signoff"
+  gh extension install basecamp/gh-signoff || no_post "gh-signoff couldn't be installed"
+fi
+# gh signoff <args>: post, or say why it couldn't. After one fails, the rest aren't tried.
+post_status() {
+  [[ -z $not_posted ]] || return 0
+  local out
+  if ! out=$(gh signoff "$@" 2>&1); then
+    printf '%s\n' "$out" >&2
+    no_post "\`gh signoff $*\` didn't post (its error is above)"
+    return 0
   fi
-fi
+  printf '%s\n' "$out"
+}
 
-# What the branch changes since it left main. Before the checks, so a commit that isn't pushed
-# stops here rather than after them.
-git fetch -q origin main
-if (( post )); then
-  branch=$(git symbolic-ref --short -q HEAD) || fail "not on a branch"
-  git fetch -q origin "+refs/heads/$branch:refs/remotes/origin/$branch" 2> /dev/null ||
-    fail "$branch isn't on origin: push it first"
-  git merge-base --is-ancestor HEAD "origin/$branch" || fail "HEAD isn't pushed: push it first"
+# What the branch changes since it left main: the upstream remote's main in a fork's clone,
+# else origin's. If main can't be fetched, the last fetched copy will do, or every check runs.
+remote=origin
+git remote get-url upstream > /dev/null 2>&1 && remote=upstream
+git fetch -q "$remote" main 2> /dev/null || warn "couldn't fetch $remote's main; using the last fetched copy"
+if base=$(git merge-base "$remote/main" HEAD 2> /dev/null); then
+  # The work tree too, and new files.
+  changed=$(git diff --name-only "$base"; git ls-files --others --exclude-standard)
+else
+  warn "no $remote/main to compare with: running every check"
+  all=1 changed=
 fi
-base=$(git merge-base origin/main HEAD)
-# The work tree too, and new files, for --no-signoff; signing off needs them committed.
-changed=$(git diff --name-only "$base"; git ls-files --others --exclude-standard)
 touches() {
   (( all )) && return 0
   local pattern
@@ -90,7 +115,7 @@ if touches '^ios/FlotillaKit/' '^mobile/fixtures/' '^relay/test/vectors\.json$' 
   if [[ $(uname -s) == Darwin ]] && command -v swift > /dev/null; then
     steps+=(swift)
   else
-    skipped+=("swift test (FlotillaKit): needs a Mac; flotillakit.yml runs it on main after the merge")
+    skipped+=(swift)
   fi
 fi
 
@@ -108,30 +133,41 @@ run() {
 # ${a[@]+"${a[@]}"}: an empty array is an error under set -u in the Mac's bash 3.2.
 if (( ${#unaffected[@]} )); then
   echo "==> Nothing to check for ${unaffected[*]}: the branch doesn't change their paths"
-  if (( post )); then gh signoff ${unaffected[@]+"${unaffected[@]}"}; fi
+  post_status ${unaffected[@]+"${unaffected[@]}"}
 fi
 
-failed=()
+results=() failed=0
 for step in ${steps[@]+"${steps[@]}"}; do
   echo "==> $step"
   if run "$step"; then
-    if (( post )); then gh signoff "$step"; fi
+    results+=("$step|passed")
+    post_status "$step"
   else
     echo "script/signoff: $step failed" >&2
-    failed+=("$step")
-    if (( post )); then gh signoff fail "$step" --description "$step failed" || true; fi
+    results+=("$step|FAILED")
+    failed=1
+    post_status fail "$step" --description "$step failed"
   fi
 done
-
-for note in ${skipped[@]+"${skipped[@]}"}; do
-  echo "script/signoff: skipped $note" >&2
+for step in ${unaffected[@]+"${unaffected[@]}"}; do
+  results+=("$step|nothing to check")
 done
-if (( ${#failed[@]} )); then
-  fail "failed: ${failed[*]}"
-fi
-if (( post )); then
-  signed=(${unaffected[@]+"${unaffected[@]}"} ${steps[@]+"${steps[@]}"})
-  echo "==> Signed off: ${signed[*]}"
+for step in ${skipped[@]+"${skipped[@]}"}; do
+  results+=("$step|skipped: needs a Mac; flotillakit.yml runs it on main after the merge")
+done
+
+echo
+echo "==> Results"
+for result in "${results[@]}"; do
+  printf '  %-16s %s\n' "${result%%|*}" "${result#*|}"
+done
+if [[ -n $not_posted ]]; then
+  if [[ $not_posted == --no-signoff ]]; then
+    echo "==> Not posted to GitHub (--no-signoff)"
+  else
+    warn "not posted to GitHub: $not_posted"
+  fi
 else
-  echo "==> Passed (not signed off: --no-signoff)"
+  echo "==> Posted to GitHub"
 fi
+exit "$failed"

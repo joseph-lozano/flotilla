@@ -19,9 +19,10 @@ script/signoff
 | `docs` | `script/docs-md --check` | `www/`, `script/docs-md` |
 | `swift` | `swift test` in `ios/FlotillaKit`, on a Mac only. Not required. | `ios/FlotillaKit/`, the shared fixtures |
 
-A check whose paths the branch doesn't change is signed off without running. Every check runs even after one fails, and the script fails if any did. It installs gh-signoff if it's missing.
+A check whose paths the branch doesn't change is signed off without running. Every check runs even after one fails. It ends with each check's result, and exits 1 if any failed, 0 if they all passed. It installs gh-signoff if it's missing.
 
-- Commit and push first: it checks the commit that's pushed, and stops if the tree has changes or HEAD isn't pushed.
+- Commit and push first. The statuses go on the pushed commit, so when the tree has changes or HEAD isn't pushed, it runs the checks and posts nothing.
+- When it can't post (`warning: not posted to GitHub`), it still exits 0 if the checks passed. On your own branch that's a problem to fix, usually an unpushed commit: push, and run it again. From a fork it's expected, since only people with write access to the repo can sign off: a maintainer checks the pull request out (`gh pr checkout <number>`), reads the diff, and runs it to sign off.
 - When a check fails, its status goes red, saying which. Fix it, commit, push, and run it again. Each push needs its own signoffs: a new commit has none.
 - Don't sign off by hand (`gh signoff <check>`, or `-f`) on a check that hasn't passed.
 - If it skips something, such as `swift test` off a Mac, say so in your reply.
