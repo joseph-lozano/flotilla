@@ -3383,7 +3383,7 @@ impl FlotillaApp {
             s.thread.id == id && !matches!(s.activity, Activity::Archived | Activity::Expired)
         });
         if archivable {
-            self.run_command(id, ThreadCommand::Archive, window, cx);
+            self.archive(id, cx);
         }
         // Archiving is a move you asked for: rows held in place go where they belong.
         self.held.clear();
@@ -4455,8 +4455,16 @@ impl FlotillaApp {
                 .confirm()
                 .ok_text("Delete")
                 .ok_variant(gpui_kit::component::button::ButtonVariant::Danger)
-                .on_ok(move |_, _, cx| {
-                    let _ = this.update(cx, |app, cx| app.perform(req.clone(), cx));
+                .on_ok(move |_, window, cx| {
+                    let _ = this.update(cx, |app, cx| {
+                        let Request::Delete(id) = &req else { return };
+                        // Deleting the open thread leaves it for New thread.
+                        let open = app.selected() == Some(id.as_str());
+                        app.perform(req.clone(), cx);
+                        if open {
+                            app.open_new_thread(window, cx);
+                        }
+                    });
                     true
                 })
         });
@@ -4562,10 +4570,12 @@ impl FlotillaApp {
                 self.ask(Request::MarkViewed(id));
             }
             ThreadCommand::Archive => {
-                // It moves at once; the engine runs `.agents/archive` (waking a stopped VM for
-                // it if the repo has one) and stops the VM.
-                self.note_archived(id.clone(), true, cx);
-                self.perform(Request::Archive(id), cx);
+                // Archiving the open thread leaves it for New thread (Undo opens it again).
+                let open = self.selected() == Some(id.as_str());
+                self.archive(id, cx);
+                if open {
+                    self.open_new_thread(window, cx);
+                }
             }
             ThreadCommand::Unarchive => {
                 self.ask(Request::Unarchive(id));
@@ -4614,6 +4624,13 @@ impl FlotillaApp {
             ThreadCommand::NewThreadOnBranch => self.new_thread_on_branch(&id, None),
         }
         cx.notify();
+    }
+
+    /// Archive a thread. It moves at once; the engine runs `.agents/archive` (waking a stopped
+    /// VM for it if the repo has one) and stops the VM.
+    fn archive(&mut self, id: String, cx: &mut Context<Self>) {
+        self.note_archived(id.clone(), true, cx);
+        self.perform(Request::Archive(id), cx);
     }
 
     /// New thread on `thread`'s branch (its PR's base, else the branch it merges into), once
