@@ -70,6 +70,15 @@ class FlotillaUITestCase: XCTestCase {
 
     func any(_ id: String) -> XCUIElement { app.descendants(matching: .any)[id] }
 
+    /// Opens the runs of calls on screen, each folded into one line, so each call has a row.
+    func unfoldCalls() {
+        let folded = app.buttons.matching(NSPredicate(format: "identifier == 'calls' AND value == 'folded'"))
+        for _ in 0..<10 {
+            guard let fold = folded.allElementsBoundByIndex.first(where: { $0.isHittable }) else { return }
+            fold.tap()
+        }
+    }
+
     /// Text on screen containing `text`.
     func showing(_ text: String) -> XCUIElement {
         app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", text)).firstMatch

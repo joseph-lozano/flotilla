@@ -206,8 +206,8 @@ struct ThreadScreen: View {
 
     private func go(to row: String, proxy: ScrollViewProxy) {
         model.jumps[id] = nil
-        // A call folded into a subagent's card: the card opens.
-        if row.hasPrefix("agent:") || row.hasPrefix("sub:") { openCards.insert(row) }
+        // A call folded into a subagent's card, or into a run of calls: it opens.
+        if row.hasPrefix("agent:") || row.hasPrefix("sub:") || row.hasPrefix("calls:") { openCards.insert(row) }
         Task {
             // The lazy stack places the rows that just went in first.
             try? await Task.sleep(for: .milliseconds(80))
@@ -244,7 +244,7 @@ struct ThreadScreen: View {
     private func spacing(_ row: Row, after prev: Row) -> CGFloat {
         switch row {
         case .prompt, .answered: 22
-        case .tool: prev.isTool ? 7 : 12
+        case .tool, .calls: prev.isTool ? 7 : 12
         case .card: 10
         default: 12
         }
@@ -261,6 +261,12 @@ struct ThreadScreen: View {
         case .tool(_, let m):
             ToolRow(message: m, thread: id) {
                 // Its output goes in under it: bring the row up so the output shows, as a card does.
+                Task { keep.scroll(proxy, to: row.id, anchor: .top, animation: .default) }
+            }
+        case .calls(_, let calls):
+            CallsRow(calls: calls, thread: id, open: Binding(get: { openCards.contains(row.id) }, set: { open in
+                if open { openCards.insert(row.id) } else { openCards.remove(row.id) }
+            })) {
                 Task { keep.scroll(proxy, to: row.id, anchor: .top, animation: .default) }
             }
         case .notice(_, let text, let isError):

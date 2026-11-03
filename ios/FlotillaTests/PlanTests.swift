@@ -320,6 +320,30 @@ func detail(_ id: String) throws -> ThreadDetail {
         #expect(plan.rows.contains { if case .tool = $0 { true } else { false } })
     }
 
+    /// Calls one after another fold into one line, and a search hit among them goes to it; a
+    /// lone call stays as it was.
+    @Test func `runs of calls fold into one line`() throws {
+        func call(_ seq: Int64, _ name: String) -> Message {
+            var m = Message(seq: seq, kind: "tool", taskID: "t")
+            m.toolName = name
+            m.isError = seq == 3
+            return m
+        }
+        let data: JSON = ["id": "x", "messages": []]
+        guard case .thread(var d) = try ServerView(key: .thread("x"), data: data) else { throw CocoaError(.coderReadCorrupt) }
+        d.messages = [
+            Message(seq: 1, kind: "prompt", text: "Go", taskID: "t"), call(2, "Bash"), call(3, "Bash"), call(4, "Read"),
+            Message(seq: 5, kind: "text", text: "Now one more.", taskID: "t"), call(6, "Bash"),
+        ]
+        let plan = ThreadPlan.plan(d, summary: nil, partials: [], local: [], catalog: nil)
+        #expect(plan.rows.map(\.id) == ["m1", "calls:m2", "m5", "m6"])
+        guard case .calls(_, let calls) = plan.rows[1] else { Issue.record("no fold"); return }
+        #expect(calls.map(\.seq) == [2, 3, 4])
+        #expect(ThreadPlan.calledLabel(calls.map { $0.toolName ?? "" }) == "Called Bash twice, Read once")
+        #expect(plan.row(for: 3) == "calls:m2" && plan.row(for: 6) == "m6")
+        #expect(ThreadPlan.calledLabel(Array(repeating: "Bash", count: 9)) == "Called Bash 9 times")
+    }
+
     @Test func `streaming text shows only while a turn runs`() throws {
         let d = try detail(id)
         let partial = RawEvent(id: "p1", kind: "response", timestamp: 5, data: ["content": "Half a repl", "is_streaming": true])

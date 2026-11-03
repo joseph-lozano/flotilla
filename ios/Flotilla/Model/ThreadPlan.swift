@@ -39,6 +39,9 @@ enum Row: Identifiable, Hashable {
     case steer(id: String, text: String, status: String?)
     case text(id: String, text: String)
     case tool(id: String, Message)
+    /// Calls one after another, folded into one line ("Called Bash 9 times") that opens to
+    /// show them; `id` is `calls:` and the first one's.
+    case calls(id: String, [Message])
     case notice(id: String, text: String, isError: Bool)
     /// A question the agent asked you (`AskCard`). `answer`: once answered, how the message
     /// that took the answer is going, where it isn't done (that message has no row of its own).
@@ -52,12 +55,17 @@ enum Row: Identifiable, Hashable {
 
     var id: String {
         switch self {
-        case .prompt(let id, _, _, _, _, _), .steer(let id, _, _), .text(let id, _), .tool(let id, _), .notice(let id, _, _), .ask(let id, _, _), .answered(let id, _, _), .partial(let id, _): id
+        case .prompt(let id, _, _, _, _, _), .steer(let id, _, _), .text(let id, _), .tool(let id, _), .calls(let id, _), .notice(let id, _, _), .ask(let id, _, _), .answered(let id, _, _), .partial(let id, _): id
         case .card(let c): c.id
         }
     }
 
-    var isTool: Bool { if case .tool = self { true } else { false } }
+    var isTool: Bool {
+        switch self {
+        case .tool, .calls: true
+        default: false
+        }
+    }
 }
 
 /// Turns a thread's view into the rows its page shows, as the desktop's thread view does
@@ -231,6 +239,11 @@ enum ThreadPlan {
             stamps.insert((s.startedMs, false), at: at)
         }
 
+        // Calls one after another fold into one line; a search hit among them goes to it.
+        let (folded, into) = foldCalls(rows)
+        rows = folded
+        at = at.mapValues { into[$0] ?? $0 }
+
         // The running turn's text as it streams.
         if summary?.turnStartedMs != nil {
             for p in partials.sorted(by: { $0.timestamp < $1.timestamp }) {
@@ -243,6 +256,54 @@ enum ThreadPlan {
             return nil
         }
         return Plan(rows: rows, pinned: pinned, at: at)
+    }
+
+    /// Calls in a run this long or longer fold into one line (`FOLD_CALLS`).
+    static let foldAt = 2
+
+    /// Each run of `foldAt` or more calls in a row as one `.calls` line (`fold_calls`), and
+    /// the line each folded call's row went into, by its id.
+    static func foldCalls(_ rows: [Row]) -> ([Row], [String: String]) {
+        var out: [Row] = []
+        var into: [String: String] = [:]
+        var run: [(id: String, m: Message)] = []
+        func flush() {
+            if run.count >= foldAt {
+                let id = "calls:\(run[0].id)"
+                for r in run { into[r.id] = id }
+                out.append(.calls(id: id, run.map(\.m)))
+            } else {
+                out += run.map { Row.tool(id: $0.id, $0.m) }
+            }
+            run = []
+        }
+        for row in rows {
+            if case .tool(let id, let m) = row {
+                run.append((id, m))
+            } else {
+                flush()
+                out.append(row)
+            }
+        }
+        flush()
+        return (out, into)
+    }
+
+    /// "Called Bash 9 times", or for a run of several tools each with its count, in the order
+    /// they were first called: "Called Bash 6 times, Read twice, Grep once" (`called_label`).
+    static func calledLabel(_ names: [String]) -> String {
+        var counts: [(name: String, n: Int)] = []
+        for name in names {
+            if let i = counts.firstIndex(where: { $0.name == name }) { counts[i].n += 1 } else { counts.append((name, 1)) }
+        }
+        let said = counts.map { c -> String in
+            switch c.n {
+            case 1: "\(c.name) once"
+            case 2: "\(c.name) twice"
+            default: "\(c.name) \(c.n) times"
+            }
+        }
+        return "Called " + said.joined(separator: ", ")
     }
 
     /// A prompt or steer that took your answer to a question whose card is among `cards`: the
