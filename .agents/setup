@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# Flotilla's setup for its own threads: the packages GPUI builds against, Rust stable with
+# clippy and rustfmt, the push relay's npm packages, and a debug build of the workspace with
+# its tests, so `cargo build` and `cargo test` start warm. Runs at every thread start, so each
+# step skips itself when nothing changed. CI's Linux job (.github/workflows/ci.yml) is the
+# reference for what's needed.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+step() { printf '\n== %s\n' "$*"; }
+
+step "GPUI's build packages"
+packages=(build-essential cmake pkg-config libfontconfig-dev libxkbcommon-x11-dev)
+missing=()
+for p in "${packages[@]}"; do
+  dpkg-query -W -f='${Status}' "$p" 2>/dev/null | grep -q 'install ok installed' || missing+=("$p")
+done
+if ((${#missing[@]})); then
+  sudo=""
+  [ "$(id -u)" -eq 0 ] || sudo="sudo"
+  $sudo apt-get update -qq
+  DEBIAN_FRONTEND=noninteractive $sudo apt-get install -y -qq --no-install-recommends "${missing[@]}"
+else
+  echo "all installed"
+fi
+
+step "Rust"
+if ! command -v rustup >/dev/null 2>&1; then
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
+    sh -s -- -y --profile minimal --default-toolchain stable --component clippy,rustfmt
+  # shellcheck disable=SC1091
+  . "$HOME/.cargo/env"
+elif [ "${FLOTILLA_SETUP:-update}" = fresh ] || ! cargo clippy --version >/dev/null 2>&1 ||
+  ! cargo fmt --version >/dev/null 2>&1; then
+  rustup toolchain install stable --profile minimal --component clippy,rustfmt --no-self-update
+  rustup default stable
+fi
+rustc --version
+
+step "The push relay's packages"
+# Not `npm ci`: it deletes node_modules every time. Only when the lockfile changed.
+if command -v npm >/dev/null 2>&1; then
+  if [ ! -f relay/node_modules/.package-lock.json ] ||
+    [ relay/package-lock.json -nt relay/node_modules/.package-lock.json ]; then
+    (cd relay && npm install --no-audit --no-fund)
+  else
+    echo "up to date"
+  fi
+else
+  echo "no npm: skipped (only relay/ needs it)"
+fi
+
+step "Build"
+cargo build --workspace --all-targets --locked
