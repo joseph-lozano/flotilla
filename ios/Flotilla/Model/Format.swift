@@ -154,12 +154,17 @@ enum Format {
         s.split(whereSeparator: { $0.isWhitespace }).joined(separator: " ")
     }
 
-    /// The account's VMs, as the sidebar's footer shows them: "3/100 VMs".
+    /// The plan's VM hours used, as the sidebar's footer shows them: "7/556 VM hours".
     static func usage(_ u: Usage?) -> (used: String, rest: String, tone: Tone)? {
         guard let u else { return nil }
         if u.blocked != nil { return ("Can't start VMs", "", .bad) }
-        guard let vms = u.vms else { return nil }
-        return ("\(vms.used)", "/\(vms.limit) VMs", tone(vms))
+        guard let used = vmHoursUsed(u) else { return nil }
+        return ("\(used.used)", "/\(used.limit) VM hours", tone(used))
+    }
+
+    /// The plan's VM hours used of those it includes (boat reports those left).
+    static func vmHoursUsed(_ u: Usage) -> Count? {
+        u.vmHours.map { Count($0.limit - $0.used, of: $0.limit) }
     }
 
     /// A count against its limit: amber from 80% of it, red at it (`sidebar::tone`).
