@@ -246,6 +246,12 @@ a {
 
 .button:active { transform: scale(0.97); }
 
+.button.quiet { background: var(--raised); color: var(--text); box-shadow: inset 0 0 0 1px var(--border); }
+
+@media (hover: hover) and (pointer: fine) {
+  .button.quiet:hover { background: var(--surface); }
+}
+
 .play-link {
   display: inline-flex;
   align-items: center;
@@ -1277,6 +1283,10 @@ a {
       <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
       Get it on GitHub
     </a>
+    <a class="button quiet" href="https://github.com/joseph-lozano/flotilla/releases/latest">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M2.5 13.5h11"/></svg>
+      Download
+    </a>
     <button class="play-link" type="button" data-play>
       <span class="play" aria-hidden="true"><svg viewBox="0 0 12 12" fill="currentColor"><path d="M2 1.2v9.6a.6.6 0 0 0 .9.5l7.7-4.8a.6.6 0 0 0 0-1L2.9.7a.6.6 0 0 0-.9.5z"/></svg></span>
       Watch the video <span class="len">1:44</span>
@@ -1748,16 +1758,16 @@ When you're done, tell me the server's address (doctor's Tailscale line says it)
       <p class="cost">Idle VMs stop on their own, so a quiet thread costs nothing.</p>
     </div>
     <div>
-      <h2>Build it from source</h2>
-      <p class="cost">There's no download yet. You'll need:</p>
+      <h2>Download it, or build it</h2>
+      <p class="cost"><a href="https://github.com/joseph-lozano/flotilla/releases/latest">Download Flotilla</a> for the Mac or Linux, or build it from source. You'll need:</p>
       <ul class="needs">
-        <li>A Mac with Xcode, or a Linux desktop running Debian or Ubuntu, and <a href="https://rustup.rs">Rust</a></li>
         <li>A <a href="https://boat.dev">boat.dev</a> account on a paid plan</li>
         <li>For projects, the <a href="https://cli.github.com">GitHub CLI</a>, signed in</li>
+        <li>To build it: a Mac with Xcode, or a Linux desktop running Debian or Ubuntu, and <a href="https://rustup.rs">Rust</a></li>
         <li>Optional: a Linux box that stays on, for hand-offs, schedules and your iPhone while the laptop is shut</li>
       </ul>
       <div class="commands">
-        <div class="cap"><span>On your Mac</span><button class="copy" type="button" data-copy="build"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 5.5V4A1.5 1.5 0 0 0 9 2.5H4A1.5 1.5 0 0 0 2.5 4v5A1.5 1.5 0 0 0 4 10.5h1.5"/></svg><span>Copy</span></button></div>
+        <div class="cap"><span>To build it on your Mac</span><button class="copy" type="button" data-copy="build"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 5.5V4A1.5 1.5 0 0 0 9 2.5H4A1.5 1.5 0 0 0 2.5 4v5A1.5 1.5 0 0 0 4 10.5h1.5"/></svg><span>Copy</span></button></div>
 <pre><code id="build">git clone https://github.com/joseph-lozano/flotilla.git
 cd flotilla
 script/bundle-macos
