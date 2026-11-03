@@ -677,7 +677,7 @@ mod tests {
     fn live_branch_names_are_short() {
         let s = Summarizer::new(DEFAULT_MODEL).unwrap();
         for prompt in [
-            "This project's setup fails on `main` at e9b5a14: .agents/setup exited 1. Reproduce it, fix it, open a pull request.",
+            "This project's setup fails on `main` at e9b5a14: .agents/setup exited 1. Reproduce it, fix it, prove the fix.",
             "Add jitter to retry's backoff so callers don't all retry at the same moment. Keep the change small, then open a draft pull request.",
             "what does this repo do?",
         ] {
