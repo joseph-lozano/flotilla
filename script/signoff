@@ -1,0 +1,173 @@
+#!/bin/bash
+# The pull request checks, run here instead of on GitHub: the checks the CI workflows run on
+# main, each signed off on its own with `gh signoff <check>`
+# (https://github.com/basecamp/gh-signoff), as the commit status signoff/<check>. The signoff
+# ruleset requires them for a pull request to merge:
+#
+#   gh signoff install rustfmt clippy clippy-snapshot tests docs
+#
+# A check that passes is marked green, one that fails red, saying so. A check for paths the
+# branch doesn't change is marked green without running, as CI's path filters would skip it.
+# Every check runs, even after one fails, and the script fails if any did.
+#
+# Run it after every push to a pull request's branch. The checks decide how it exits: 1 if any
+# failed, 0 if they all passed. Posting the statuses is on top: when they can't be posted (the
+# tree has changes, HEAD isn't pushed, or you can't write statuses to the repo, as from a fork),
+# the checks still run and report here, with a warning that GitHub wasn't told.
+#
+# A pull request from a fork: the contributor runs it to see the results; a maintainer checks
+# the pull request out (`gh pr checkout <number>`), reads the diff, and runs it to sign off.
+#
+#   script/signoff              # the checks for what the branch changes since main, then sign off
+#   script/signoff --all        # every check, whatever changed
+#   script/signoff --no-signoff # the checks alone: nothing is posted, nothing need be pushed
+#
+# The checks, by the paths the branch changes (the same paths as the workflows'):
+#   rustfmt, clippy, clippy-snapshot, tests (ci.yml): cargo fmt --check, clippy without and
+#                             with the snapshot feature, cargo test
+#   docs (docs.yml):          script/docs-md --check
+#   swift (flotillakit.yml):  swift test, on a Mac only. It isn't required: off a Mac it's
+#                             skipped with a warning and nothing is posted, and flotillakit.yml
+#                             runs it on main after the merge.
+set -euo pipefail
+root=$(cd "$(dirname "$0")/.." && pwd)
+cd "$root"
+
+usage() {
+  echo "usage: script/signoff [--all] [--no-signoff]" >&2
+  exit 2
+}
+all=0 post=1
+while (( $# )); do
+  case $1 in
+    --all) all=1 ;;
+    --no-signoff) post=0 ;;
+    *) usage ;;
+  esac
+  shift
+done
+warn() { echo "script/signoff: warning: $*" >&2; }
+
+# Why nothing is posted, when it isn't. A failed post is a warning, not a failed run.
+not_posted=
+(( post )) || not_posted="--no-signoff"
+no_post() {
+  [[ -n $not_posted ]] || not_posted=$1
+}
+if [[ -z $not_posted && -n $(git status --porcelain) ]]; then
+  no_post "the tree has changes: the checks ran on them, not on a commit"
+fi
+if [[ -z $not_posted ]] && ! command -v gh > /dev/null; then
+  no_post "the gh command isn't installed"
+fi
+if [[ -z $not_posted ]] && ! gh signoff --help > /dev/null 2>&1; then
+  echo "==> Installing gh-signoff"
+  gh extension install basecamp/gh-signoff || no_post "gh-signoff couldn't be installed"
+fi
+# gh signoff <args>: post, or say why it couldn't. After one fails, the rest aren't tried.
+post_status() {
+  [[ -z $not_posted ]] || return 0
+  local out
+  if ! out=$(gh signoff "$@" 2>&1); then
+    printf '%s\n' "$out" >&2
+    no_post "\`gh signoff $*\` didn't post (its error is above)"
+    return 0
+  fi
+  printf '%s\n' "$out"
+}
+
+# What the branch changes since it left main: the upstream remote's main in a fork's clone,
+# else origin's. If main can't be fetched, the last fetched copy will do, or every check runs.
+remote=origin
+git remote get-url upstream > /dev/null 2>&1 && remote=upstream
+git fetch -q "$remote" main 2> /dev/null || warn "couldn't fetch $remote's main; using the last fetched copy"
+if base=$(git merge-base "$remote/main" HEAD 2> /dev/null); then
+  # The work tree too, and new files.
+  changed=$(git diff --name-only "$base"; git ls-files --others --exclude-standard)
+else
+  warn "no $remote/main to compare with: running every check"
+  all=1 changed=
+fi
+touches() {
+  (( all )) && return 0
+  local pattern
+  for pattern in "$@"; do
+    grep -Eq "$pattern" <<< "$changed" && return 0
+  done
+  return 1
+}
+
+steps=() unaffected=() skipped=()
+# Keep these in step with the paths in .github/workflows.
+if touches '^crates/' '^mobile/fixtures/' '^relay/test/vectors\.json$' '^m0-samples/' \
+  '^Cargo\.(toml|lock)$' '^rustfmt\.toml$' '^\.github/workflows/ci\.yml$' '^script/signoff$'; then
+  steps+=(rustfmt clippy clippy-snapshot tests)
+else
+  unaffected+=(rustfmt clippy clippy-snapshot tests)
+fi
+if touches '^www/' '^script/docs-md$' '^\.github/workflows/docs\.yml$' '^script/signoff$'; then
+  steps+=(docs)
+else
+  unaffected+=(docs)
+fi
+if touches '^ios/FlotillaKit/' '^mobile/fixtures/' '^relay/test/vectors\.json$' \
+  '^\.github/workflows/flotillakit\.yml$'; then
+  if [[ $(uname -s) == Darwin ]] && command -v swift > /dev/null; then
+    steps+=(swift)
+  else
+    skipped+=(swift)
+  fi
+fi
+
+run() {
+  case $1 in
+    rustfmt) cargo fmt --all --check ;;
+    clippy) cargo clippy --workspace --all-targets --locked -- -D warnings ;;
+    clippy-snapshot) cargo clippy --workspace --all-targets --locked --features flotilla-app/snapshot -- -D warnings ;;
+    tests) cargo test --workspace --locked --no-fail-fast ;;
+    docs) script/docs-md --check ;;
+    swift) (cd ios/FlotillaKit && swift test) ;;
+  esac
+}
+
+# ${a[@]+"${a[@]}"}: an empty array is an error under set -u in the Mac's bash 3.2.
+if (( ${#unaffected[@]} )); then
+  echo "==> Nothing to check for ${unaffected[*]}: the branch doesn't change their paths"
+  post_status ${unaffected[@]+"${unaffected[@]}"}
+fi
+
+results=() failed=0
+for step in ${steps[@]+"${steps[@]}"}; do
+  echo "==> $step"
+  if run "$step"; then
+    results+=("$step|passed")
+    post_status "$step"
+  else
+    echo "script/signoff: $step failed" >&2
+    results+=("$step|FAILED")
+    failed=1
+    post_status fail "$step" --description "$step failed"
+  fi
+done
+for step in ${unaffected[@]+"${unaffected[@]}"}; do
+  results+=("$step|nothing to check")
+done
+for step in ${skipped[@]+"${skipped[@]}"}; do
+  results+=("$step|skipped: needs a Mac; flotillakit.yml runs it on main after the merge")
+done
+
+echo
+echo "==> Results"
+for result in "${results[@]}"; do
+  printf '  %-16s %s\n' "${result%%|*}" "${result#*|}"
+done
+if [[ -n $not_posted ]]; then
+  if [[ $not_posted == --no-signoff ]]; then
+    echo "==> Not posted to GitHub (--no-signoff)"
+  else
+    warn "not posted to GitHub: $not_posted"
+  fi
+else
+  echo "==> Posted to GitHub"
+fi
+exit "$failed"

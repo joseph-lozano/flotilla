@@ -6,10 +6,12 @@ For maintainers. Releases are GitHub Releases, built by GitHub Actions when a `v
 
 | Workflow | Runs on | Does |
 | --- | --- | --- |
-| `ci.yml` | pushes and pull requests to `main` that touch `crates/`, the Cargo files or the shared fixtures | `cargo fmt --all --check`, clippy with and without `--features flotilla-app/snapshot`, and `cargo test --workspace`, on Linux. clippy on macOS too, but only for pull requests, or always once the repo is public. |
-| `flotillakit.yml` | changes to `ios/FlotillaKit/` or `mobile/fixtures/` | `swift test` on macOS 26 |
-| `docs.yml` | changes to `www/` or `script/docs-md` | `script/docs-md --check`: the docs' `.md` pages, `llms.txt` and `llms-full.txt` match the HTML |
+| `ci.yml` | pushes to `main` that touch `crates/`, the Cargo files or the shared fixtures | `cargo fmt --all --check`, clippy with and without `--features flotilla-app/snapshot`, and `cargo test --workspace`, on Linux. clippy on macOS too, in a public repo, or when run by hand. |
+| `flotillakit.yml` | pushes to `main` that change `ios/FlotillaKit/` or `mobile/fixtures/` | `swift test` on macOS 26 |
+| `docs.yml` | pushes to `main` that change `www/` or `script/docs-md` | `script/docs-md --check`: the docs' `.md` pages, `llms.txt` and `llms-full.txt` match the HTML |
 | `release.yml` | a pushed `v*` tag, or by hand as a dry run | builds every download and publishes the release |
+
+Pull requests run none of them. `script/signoff` runs the same checks where the work was done and signs off on each one with [gh-signoff](https://github.com/basecamp/gh-signoff), as a `signoff/<check>` status on the commit; the `signoff` ruleset (`gh signoff install rustfmt clippy clippy-snapshot tests docs`) requires them to merge. The script's header has the details.
 
 A release has these files:
 
@@ -121,7 +123,7 @@ The plan: rename this repo to `flotilla-archive`, and start a new public `flotil
 
 7. Once the release is public, point the site's and the README's download wording at `https://github.com/<owner>/flotilla/releases/latest`.
 
-In a public repo, the standard runners cost nothing, so `ci.yml` checks on macOS for every push too.
+In a public repo, the standard runners cost nothing, so `ci.yml` checks on macOS for every push to `main`.
 
 ## What a run costs
 
@@ -133,7 +135,6 @@ Measured on the private repo, November 2026:
 | --- | --- | --- | --- |
 | CI, a push that touches the Rust side, cargo cache warm | 6 min | none | about $0.04 |
 | CI, cache cold (the first run, or after `Cargo.lock` or the toolchain changes) | 14 min | none | about $0.08 |
-| CI on a pull request, in addition | none | 2 min (clippy) | about $0.12 |
 | FlotillaKit, when the package or its fixtures change | none | 1 min | about $0.06 |
 | A release or a dry run | 58 min (6 jobs) | 11 min (app and CLI) | about $1 |
 

@@ -1,18 +1,16 @@
 # The docs' Markdown, llms.txt and llms-full.txt are made from the HTML by script/docs-md.
-# This fails when one is missing or stale. Its own workflow, so a docs edit doesn't start the
-# Rust checks in ci.yml. Nothing here names the repo.
+# This fails when one is missing or stale, on a push to main; pull requests are checked by
+# script/signoff instead. Its own workflow, so a docs edit doesn't start the Rust checks in
+# ci.yml. Nothing here names the repo.
 name: Docs
 
 on:
   push:
     branches: [main]
-    paths: &docs-paths
+    paths:
       - "www/**"
       - "script/docs-md"
       - ".github/workflows/docs.yml"
-  pull_request:
-    branches: [main]
-    paths: *docs-paths
   workflow_dispatch:
 
 permissions:
