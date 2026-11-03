@@ -11,7 +11,7 @@ For maintainers. Releases are GitHub Releases, built by GitHub Actions when a `v
 | `docs.yml` | pushes to `main` that change `www/` or `script/docs-md` | `script/docs-md --check`: the docs' `.md` pages, `llms.txt` and `llms-full.txt` match the HTML |
 | `release.yml` | a pushed `v*` tag, or by hand as a dry run | builds every download and publishes the release |
 
-Pull requests run none of them. `script/signoff` runs the same checks where the work was done and signs off on the commit with [gh-signoff](https://github.com/basecamp/gh-signoff); the `signoff` ruleset (`gh signoff install`) requires that status to merge. AGENTS.md has the details.
+Pull requests run none of them. `script/signoff` runs the same checks where the work was done and signs off on each one with [gh-signoff](https://github.com/basecamp/gh-signoff), as a `signoff/<check>` status on the commit; the `signoff` ruleset (`gh signoff install rustfmt clippy clippy-snapshot tests docs`) requires them to merge. AGENTS.md has the details.
 
 A release has these files:
 

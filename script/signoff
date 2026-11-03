@@ -1,9 +1,14 @@
 #!/bin/bash
 # The pull request checks, run here instead of on GitHub: the checks the CI workflows run on
-# main, for what the branch changes, then `gh signoff` (https://github.com/basecamp/gh-signoff)
-# marks the commit green. A required `signoff` status (`gh signoff install`) is what a pull
-# request needs to merge. When a check fails, the commit gets a red `signoff` status instead,
-# saying which.
+# main, each signed off on its own with `gh signoff <check>`
+# (https://github.com/basecamp/gh-signoff), as the commit status signoff/<check>. The signoff
+# ruleset requires them for a pull request to merge:
+#
+#   gh signoff install rustfmt clippy clippy-snapshot tests docs
+#
+# A check that passes is marked green, one that fails red, saying so. A check for paths the
+# branch doesn't change is marked green without running, as CI's path filters would skip it.
+# Every check runs, even after one fails, and the script fails if any did.
 #
 # Run it after every push to a pull request's branch. It checks the commit that's pushed, so the
 # tree must be clean and HEAD pushed.
@@ -12,12 +17,13 @@
 #   script/signoff --all        # every check, whatever changed
 #   script/signoff --no-signoff # the checks alone: nothing is posted, nothing need be pushed
 #
-# Which checks, by the paths the branch changes (the same paths as the workflows'):
-#   Rust (ci.yml):            cargo fmt --check, clippy with and without the snapshot
-#                             feature, cargo test
-#   Docs (docs.yml):          script/docs-md --check
-#   FlotillaKit (flotillakit.yml): swift test, on a Mac only. Elsewhere it's skipped with a
-#                             warning, and flotillakit.yml runs it on main after the merge.
+# The checks, by the paths the branch changes (the same paths as the workflows'):
+#   rustfmt, clippy, clippy-snapshot, tests (ci.yml): cargo fmt --check, clippy without and
+#                             with the snapshot feature, cargo test
+#   docs (docs.yml):          script/docs-md --check
+#   swift (flotillakit.yml):  swift test, on a Mac only. It isn't required: off a Mac it's
+#                             skipped with a warning and nothing is posted, and flotillakit.yml
+#                             runs it on main after the merge.
 set -euo pipefail
 root=$(cd "$(dirname "$0")/.." && pwd)
 cd "$root"
@@ -66,14 +72,18 @@ touches() {
   return 1
 }
 
-steps=() skipped=()
+steps=() unaffected=() skipped=()
 # Keep these in step with the paths in .github/workflows.
 if touches '^crates/' '^mobile/fixtures/' '^relay/test/vectors\.json$' '^m0-samples/' \
   '^Cargo\.(toml|lock)$' '^rustfmt\.toml$' '^\.github/workflows/ci\.yml$' '^script/signoff$'; then
   steps+=(rustfmt clippy clippy-snapshot tests)
+else
+  unaffected+=(rustfmt clippy clippy-snapshot tests)
 fi
 if touches '^www/' '^script/docs-md$' '^\.github/workflows/docs\.yml$' '^script/signoff$'; then
   steps+=(docs)
+else
+  unaffected+=(docs)
 fi
 if touches '^ios/FlotillaKit/' '^mobile/fixtures/' '^relay/test/vectors\.json$' \
   '^\.github/workflows/flotillakit\.yml$'; then
@@ -96,24 +106,32 @@ run() {
 }
 
 # ${a[@]+"${a[@]}"}: an empty array is an error under set -u in the Mac's bash 3.2.
+if (( ${#unaffected[@]} )); then
+  echo "==> Nothing to check for ${unaffected[*]}: the branch doesn't change their paths"
+  if (( post )); then gh signoff ${unaffected[@]+"${unaffected[@]}"}; fi
+fi
+
+failed=()
 for step in ${steps[@]+"${steps[@]}"}; do
   echo "==> $step"
-  if ! run "$step"; then
+  if run "$step"; then
+    if (( post )); then gh signoff "$step"; fi
+  else
     echo "script/signoff: $step failed" >&2
-    if (( post )); then
-      gh signoff fail --description "$step failed" || true
-    fi
-    exit 1
+    failed+=("$step")
+    if (( post )); then gh signoff fail "$step" --description "$step failed" || true; fi
   fi
 done
 
-(( ${#steps[@]} )) || echo "==> Nothing to check: the branch changes no paths the checks cover"
 for note in ${skipped[@]+"${skipped[@]}"}; do
   echo "script/signoff: skipped $note" >&2
 done
+if (( ${#failed[@]} )); then
+  fail "failed: ${failed[*]}"
+fi
 if (( post )); then
-  echo "==> gh signoff"
-  gh signoff
+  signed=(${unaffected[@]+"${unaffected[@]}"} ${steps[@]+"${steps[@]}"})
+  echo "==> Signed off: ${signed[*]}"
 else
   echo "==> Passed (not signed off: --no-signoff)"
 fi

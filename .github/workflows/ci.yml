@@ -1,6 +1,6 @@
 # The Rust checks: rustfmt, clippy (with and without the snapshot feature) and the tests, on
 # Linux, for each push to main. Pull requests don't run them here: script/signoff runs the same
-# checks where the work was done and signs off on the commit (gh-signoff), and that's the check
+# checks where the work was done and signs off on each (gh-signoff), and those are the checks
 # a pull request needs. The Mac runs clippy where it's free (a public repo), or when run by
 # hand. FlotillaKit's Swift tests are in flotillakit.yml.
 #
