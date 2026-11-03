@@ -163,6 +163,8 @@ enum Row {
         /// A question you answered: how the message that took your answer is going (it isn't
         /// shown itself), where there's more to say than that it was answered.
         answer: Option<String>,
+        /// The last call of an open run of calls: room under it, as under the run's line.
+        fold_end: bool,
     },
     /// What an open subagent card's subagent reported, after its calls.
     Report { ident: String, text: String },
@@ -204,6 +206,7 @@ impl Row {
                 scheduled,
                 ask,
                 answer,
+                fold_end,
             } => {
                 (
                     ident,
@@ -227,6 +230,7 @@ impl Row {
                     scheduled.as_deref(),
                     ask.as_deref(),
                     answer,
+                    fold_end,
                 )
                     .hash(&mut h)
             }
@@ -357,9 +361,14 @@ fn fold_calls(
             expanded,
         });
         if expanded {
-            out.extend(run.into_iter().map(|mut r| {
-                if let Row::Message { nested, .. } = &mut r {
+            let last = run.len() - 1;
+            out.extend(run.into_iter().enumerate().map(|(k, mut r)| {
+                if let Row::Message {
+                    nested, fold_end, ..
+                } = &mut r
+                {
                     *nested = true;
+                    *fold_end = k == last;
                 }
                 r
             }));
@@ -2180,6 +2189,7 @@ impl ThreadView {
                     scheduled: None,
                     ask: None,
                     answer: None,
+                    fold_end: false,
                 });
                 if let (true, Some(report)) = (open_card, h.card.report.clone()) {
                     rows.push(Row::Report {
@@ -2239,6 +2249,7 @@ impl ThreadView {
                     files,
                     handoff: None,
                     from,
+                    fold_end: false,
                 });
             }
             for &c in reports_after.get(&i).into_iter().flatten() {
@@ -4798,6 +4809,16 @@ fn render_row(
         Row::Message { msg, .. } if msg.kind == flotilla_proto::ask::KIND => (px(8.), px(8.)),
         _ => (px(4.), px(4.)),
     };
+    // A run of calls ends with room under it: its line, folded, or its last call, open (under
+    // the rail, which ends with the call).
+    let after = matches!(
+        row,
+        Row::Calls {
+            expanded: false,
+            ..
+        } | Row::Message { fold_end: true, .. }
+    )
+    .then_some(px(8.));
     // A subagent's own calls and report hang off its card, on a rail under its chevron.
     let nested = matches!(row, Row::Message { nested: true, .. } | Row::Report { .. });
     // Gone to from search: the selection's lavender behind it, for a moment.
@@ -4806,6 +4827,7 @@ fn render_row(
         return div()
             .px_4()
             .when_some(tint, |el, t| el.bg(t))
+            .when_some(after, |el, a| el.pb(a))
             .child(
                 div()
                     .ml(px(14.))
@@ -4821,7 +4843,7 @@ fn render_row(
     div()
         .px_4()
         .pt(top)
-        .pb(bottom)
+        .pb(bottom + after.unwrap_or_default())
         .when_some(tint, |el, t| el.bg(t))
         .child(body)
         .into_any_element()
@@ -5950,6 +5972,7 @@ mod tests {
             scheduled: None,
             ask: None,
             answer: None,
+            fold_end: false,
         };
         let rows = || {
             vec![

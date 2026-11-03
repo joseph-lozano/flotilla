@@ -242,11 +242,14 @@ struct ThreadScreen: View {
 
     /// Gaps: a turn starts with room above it; a run of tool calls sits tight.
     private func spacing(_ row: Row, after prev: Row) -> CGFloat {
+        // A run of calls ends with more room under it, folded or open.
+        var afterCalls = false
+        if case .calls = prev { afterCalls = true }
         switch row {
-        case .prompt, .answered: 22
-        case .tool, .calls: prev.isTool ? 7 : 12
-        case .card: 10
-        default: 12
+        case .prompt, .answered: return 22
+        case .tool, .calls: return prev.isTool ? 7 : 12
+        case .card: return afterCalls ? 16 : 10
+        default: return afterCalls ? 16 : 12
         }
     }
 
