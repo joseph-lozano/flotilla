@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+# Flotilla's setup for its own threads: the packages GPUI builds against, a GitHub CLI that can
+# attach files, Rust stable with clippy and rustfmt, the push relay's npm packages, and a debug
+# build of the workspace, so `cargo build` starts warm. Runs at every thread start, so each
+# step skips itself when nothing changed. CI's Linux job (.github/workflows/ci.yml) is the
+# reference for what's needed.
+#
+# Flotilla stops this script after 20 minutes, and a fresh setup that's stopped leaves no ready
+# copy. So the build doesn't build the tests (the first `cargo test` compiles them, about a
+# minute and a half on 4 CPUs), and it stops itself in time: what it built stays built.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+step() { printf '\n== %s\n' "$*"; }
+sudo=""
+[ "$(id -u)" -eq 0 ] || sudo="sudo"
+
+step "Packages: GPUI's, and the GitHub CLI"
+packages=(build-essential cmake pkg-config libfontconfig-dev libxkbcommon-x11-dev)
+missing=()
+for p in "${packages[@]}"; do
+  dpkg-query -W -f='${Status}' "$p" 2>/dev/null | grep -q 'install ok installed' || missing+=("$p")
+done
+# gh 2.103.2 or later: `--attach` on `gh pr/issue create`, `edit` and `comment` (2.99.0), with
+# the ghu_ token these VMs sign in with (2.102.0), checked at the upload (2.103.2).
+gh_min=2.103.2
+gh_version=$(gh --version 2>/dev/null | sed -n '1s/^gh version \([^ ]*\).*/\1/p' || true)
+if [ -z "$gh_version" ] || ! dpkg --compare-versions "$gh_version" ge "$gh_min"; then
+  echo "gh ${gh_version:-missing}: installing the latest"
+  missing+=(gh)
+  # GitHub's apt repo, as https://github.com/cli/cli/blob/trunk/docs/install_linux.md adds it.
+  keyring=/etc/apt/keyrings/githubcli-archive-keyring.gpg
+  if ! grep -rqs 'cli.github.com/packages' /etc/apt/sources.list /etc/apt/sources.list.d/; then
+    $sudo mkdir -p -m 755 /etc/apt/keyrings /etc/apt/sources.list.d
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg |
+      $sudo tee "$keyring" >/dev/null
+    $sudo chmod go+r "$keyring"
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=$keyring] https://cli.github.com/packages stable main" |
+      $sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null
+  fi
+fi
+if ((${#missing[@]})); then
+  $sudo apt-get update -qq
+  $sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends "${missing[@]}"
+else
+  echo "all installed"
+fi
+gh --version | sed -n 1p
+
+step "Rust"
+if ! command -v rustup >/dev/null 2>&1; then
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
+    sh -s -- -y --profile minimal --default-toolchain stable --component clippy,rustfmt
+  # shellcheck disable=SC1091
+  . "$HOME/.cargo/env"
+elif ! cargo clippy --version >/dev/null 2>&1 || ! cargo fmt --version >/dev/null 2>&1; then
+  rustup toolchain install stable --profile minimal --component clippy,rustfmt --no-self-update
+  rustup default stable
+fi
+rustc --version
+
+step "Cargo: line tables only"
+# Debug builds keep file and line for backtraces but no full debug info: much less to compile,
+# write and link. In cargo's config for this VM, not in env vars, so an agent's own `cargo
+# build` and `cargo test` (the test profile inherits dev) use the same settings and start warm.
+# Not in Cargo.toml: that would change everyone's local builds. A config that already sets a
+# profile is left alone.
+config="${CARGO_HOME:-$HOME/.cargo}/config.toml"
+if grep -qs 'profile' "$config"; then
+  echo "$config already sets a profile: left alone"
+else
+  mkdir -p "$(dirname "$config")"
+  printf '\n# From flotilla/.agents/setup: faster debug builds.\n[profile.dev]\ndebug = "line-tables-only"\n' >>"$config"
+  echo "added to $config"
+fi
+
+step "The push relay's packages"
+# Not `npm ci`: it deletes node_modules every time. Only when the lockfile changed.
+if command -v npm >/dev/null 2>&1; then
+  if [ ! -f relay/node_modules/.package-lock.json ] ||
+    [ relay/package-lock.json -nt relay/node_modules/.package-lock.json ]; then
+    (cd relay && npm install --no-audit --no-fund)
+  else
+    echo "up to date"
+  fi
+else
+  echo "no npm: skipped (only relay/ needs it)"
+fi
+
+step "Build"
+# Stop by 17 minutes, ahead of Flotilla's 20, and still succeed: the crates built so far stay
+# built, and the next cargo command builds the rest.
+left=$((17 * 60 - SECONDS))
+((left > 0)) || left=1
+status=0
+timeout "$left" cargo build --workspace --locked || status=$?
+if [ "$status" -eq 124 ]; then
+  echo "Build stopped at the time limit: the next cargo command finishes it."
+  exit 0
+fi
+exit "$status"
