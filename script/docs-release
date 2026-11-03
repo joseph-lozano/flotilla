@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# Freeze the docs for a release: copy www/docs/main to www/docs/<version>, list it in
+# www/docs/versions.json (the docs' version picker reads it), and with --default make it the
+# version /docs/ opens and www/llms.txt lists. script/docs-md then makes the copy's Markdown,
+# and the llms files. Commit the result; pushing to main publishes it.
+#
+#   script/docs-release 0.2.0             # add 0.2.0; /docs/ still opens main
+#   script/docs-release 0.2.0 --default   # add 0.2.0 and make /docs/ open it
+set -euo pipefail
+
+usage() { echo "usage: script/docs-release <version> [--default]" >&2; exit 2; }
+
+version=${1:-}
+[ -n "$version" ] || usage
+default=false
+case "${2:-}" in
+  "") ;;
+  --default) default=true ;;
+  *) usage ;;
+esac
+[[ $version =~ ^[0-9A-Za-z][0-9A-Za-z._-]*$ ]] || { echo "docs-release: a version is letters, digits, dots, dashes and underscores" >&2; exit 2; }
+[ "$version" != main ] || { echo "docs-release: main is the docs in progress, not a release" >&2; exit 2; }
+
+docs="$(cd "$(dirname "$0")/.." && pwd)/www/docs"
+[ -d "$docs/main" ] || { echo "docs-release: no $docs/main" >&2; exit 1; }
+[ ! -e "$docs/$version" ] || { echo "docs-release: $docs/$version is already there" >&2; exit 1; }
+
+cp -R "$docs/main" "$docs/$version"
+
+# The copy names its own version: the picker's fallback and the canonical links.
+for page in "$docs/$version"/*.html; do
+  sed -i.bak \
+    -e "s|data-current=\"main\"|data-current=\"$version\"|" \
+    -e "s|<option value=\"main\" selected>main</option>|<option value=\"$version\" selected>$version</option>|" \
+    -e "s|https://useflotilla.com/docs/main/|https://useflotilla.com/docs/$version/|g" \
+    "$page"
+  rm "$page.bak"
+done
+
+python3 -I - "$docs/versions.json" "$version" "$default" <<'EOF'
+import json, sys
+path, version, make_default = sys.argv[1], sys.argv[2], sys.argv[3] == "true"
+with open(path) as f:
+    data = json.load(f)
+versions = [v for v in data["versions"] if v["path"] != version]
+main = next(v for v in versions if v["path"] == "main")
+# Once there's a release, main is the docs for what isn't released yet.
+main["label"] = "main (unreleased)"
+versions.insert(versions.index(main) + 1, {"name": version, "path": version, "label": version})
+data["versions"] = versions
+if make_default:
+    data["default"] = version
+with open(path, "w") as f:
+    json.dump(data, f, indent=2)
+    f.write("\n")
+EOF
+
+if $default; then
+  sed -i.bak \
+    -e "s|url=[^\"]*/\"|url=$version/\"|" \
+    -e "s|location.replace(\"[^\"]*/\"|location.replace(\"$version/\"|" \
+    -e "s|https://useflotilla.com/docs/[^/\"]*/\"|https://useflotilla.com/docs/$version/\"|" \
+    -e "s|<a href=\"[^\"]*/\">[^<]*</a>|<a href=\"$version/\">$version</a>|" \
+    "$docs/index.html"
+  rm "$docs/index.html.bak"
+fi
+
+# The copy's .md pages and prompts, from its HTML; llms.txt and llms-full.txt, for the default.
+"$(dirname "$0")/docs-md"
+
+echo "Added the $version docs at www/docs/$version$($default && echo ", and /docs/ opens them")."
+echo "Check them with: python3 -m http.server -d www 8099"

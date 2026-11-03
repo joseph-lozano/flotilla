@@ -1,0 +1,6 @@
+{
+  "default": "main",
+  "versions": [
+    { "name": "main", "path": "main", "label": "main" }
+  ]
+}

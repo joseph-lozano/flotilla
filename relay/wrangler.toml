@@ -1,0 +1,47 @@
+# Flotilla's push relay. Deploying it: README.md.
+name = "flotilla-push-relay"
+main = "src/index.ts"
+compatibility_date = "2026-08-15"
+# Served only at its own domain: not *.workers.dev, nor a version's preview URL.
+workers_dev = false
+preview_urls = false
+routes = [{ pattern = "push.useflotilla.com", custom_domain = true }]
+
+# No request logs: the relay keeps no addresses.
+[observability]
+enabled = false
+
+[vars]
+# The app bundle ids it serves, comma-separated.
+TOPICS = "com.useflotilla.flotilla"
+# The APNs key's id and the team's, Flotilla's (the key itself is a secret:
+# `wrangler secret put APNS_KEY`). Another app's relay sets its own.
+APNS_KEY_ID = "N3ZKNGG386"
+APNS_TEAM_ID = "64D756D77S"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "flotilla-push-relay"
+# The id `wrangler d1 create flotilla-push-relay` prints.
+database_id = "2d6ab471-43f8-440c-af84-b30280e30b53"
+migrations_dir = "migrations"
+
+# Rough limits (per Cloudflare location), kept in memory only.
+[[ratelimits]]
+name = "REGISTER_LIMIT"
+namespace_id = "7701"
+simple = { limit = 20, period = 60 }
+
+[[ratelimits]]
+name = "PUSH_IP_LIMIT"
+namespace_id = "7702"
+simple = { limit = 300, period = 60 }
+
+[[ratelimits]]
+name = "PUSH_HANDLE_LIMIT"
+namespace_id = "7703"
+simple = { limit = 30, period = 60 }
+
+# Daily: drop handles unused for 90 days.
+[triggers]
+crons = ["17 4 * * *"]

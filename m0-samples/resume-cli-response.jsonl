@@ -1,0 +1,3 @@
+{"event":"accepted","id":"bx_q7m2k9tz","status":"running"}
+{"event":"state","id":"bx_q7m2k9tz","state":"ready"}
+{"archiveAfter":"2026-10-29T15:50:31.579Z","event":"ready","id":"bx_q7m2k9tz","ip":"2001:db8::20","state":"ready","url":"https://box-node-0a1b2c3d4e5f6a7b.on.boat.dev"}

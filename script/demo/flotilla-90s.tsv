@@ -1,0 +1,20 @@
+# The demo video's narration (about two minutes): <segment><TAB><what Marin says>. Segments match flotilla-90s-build.py.
+# For someone who has never heard of Flotilla: the developer who built it, showing what it does, in order. The Mac
+# and the cloud first; then the iPhone.
+# The name never starts a sentence: Marin says "Flotillo" there. The idle and ask lines are Joseph's wording
+# (2026-11-02): the VMs are why agents keep working with the laptop shut. The last line is his (draft 4 notes).
+open	Run four coding agents on one laptop and they fight over its files and ports. In Flotilla, each one works alone in its own cloud VM.
+new	For a new thread, I type the task and pick Claude Code, Codex or OpenCode.
+start	It gets a fresh VM with my repo already set up, and it's working in seconds.
+preview	The app runs in that VM too, and Preview opens it in my browser.
+public	Make public gives anyone the link, for an hour or until I stop it.
+merge	The pull request appears on the thread with its checks. One failed, so I asked for the missing changelog line.
+hold	Once they pass, I hold the button down to merge.
+handoff	Agents can hand work to each other. Here Opus asked Codex and Fable to review its code, then fixed what they found.
+idle	The VMs run on boat.dev, so they keep working with my laptop shut. When one sits idle it stops, and it wakes the moment I send.
+schedule	I can also send prompts on a schedule, like a dependency check every weekday at nine.
+mcp	Other assistants can use Flotilla as well. Here Claude Code starts a thread and reads its answer. Assistants in other clouds, like Grok Bot, can connect too.
+iphone	Here's Flotilla on my iPhone, with the same threads, live.
+ask	When an agent asks me a question, I can answer from the Mac or the phone.
+pocket	All the features of the desktop app, in your pocket.
+close	It's free and open source, at useflotilla.com.

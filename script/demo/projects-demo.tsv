@@ -1,0 +1,24 @@
+# Narration for the projects demo: <caption><TAB><what Kokoro says>. Captions must match the demo script's caption: steps.
+Flotilla	This is Flotilla. It runs coding agents in their own cloud VMs, one thread per task. Now it has projects: GitHub repos it keeps ready, so every new thread starts on its own branch in seconds.
+GitHub, through the gh CLI	Flotilla talks to GitHub through the g h command line tool you're already signed in with, so there's nothing new to set up.
+Add a project	Add project lists the repos your account can see. I'll pick the playground, a tiny TypeScript library.
+Setup comes from .agents/setup	This repo has a dot agents setup script, so Flotilla runs it in every setup. Scripts added here would run just before it.
+Setup runs once, threads copy it	Flotilla now prepares a VM for the project. It clones the repo and runs setup, and every new thread will start from a copy of that VM.
+Ready	Done. From now on, Flotilla checks main every minute, and prepares each new commit in the background.
+New thread	Now, a new thread. The project is picked, and the branch picker says new branch, from the latest main.
+Ask for a change	I'll ask Haiku, a small, cheap model, to add jitter to the retry backoff, and to open a draft pull request.
+Copy, branch, setup	The thread copies the prepared VM, switches to its own branch, and reruns setup, which takes seconds when nothing changed. Then the agent gets the prompt.
+The agent works in its own VM	The agent works in its own VM, and Flotilla follows along.
+A draft pull request	The agent pushed its branch and opened a draft pull request. The header shows the repo, the branch, and the commit it started from. Below it, the pull request and its checks.
+Main moved on	Meanwhile, a teammate changed the same line on main. The header says the branch is one commit behind, and the pull request now has a conflict.
+Resolve	Resolve, like Fix for failing checks, writes a prompt for the agent and puts it in the composer, so I can read it first. Nothing is sent until I press send.
+Conflict resolved, checks pass	The agent merged main, kept both the cap and the jitter, and pushed. The checks are green.
+Ready for review, then merge	Ready for review takes it out of draft. Merge uses the repo's own merge method, after a confirmation.
+Merged, setup follows main	Merged. Flotilla sees it straight away and prepares the new main, so the next thread starts from it.
+Setup broke on main	Now someone pushes a commit that breaks setup. The setup run fails, and new threads keep starting from the last good one.
+Fix in a new thread	Fix in a new thread opens a thread with the commit, the failing script, its exit code, and the end of its log. I'll send it.
+Threads start even when setup fails	A thread starts even when setup fails, so the agent can fix it.
+Start on a branch or pull request	New threads can also start on an existing branch, or an open pull request. Search for it, or paste a link.
+New thread on this branch	And any project thread can hand its branch to a fresh thread, from its menu.
+Settings	In settings: a prefix for new branches, and how soon idle VMs stop, so threads cost nothing while you're away.
+That's projects	That's projects in Flotilla. Repos kept ready, a branch for every thread, and pull requests you can fix and merge without leaving the app.

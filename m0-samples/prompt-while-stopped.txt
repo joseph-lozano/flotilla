@@ -1,0 +1,2 @@
+{"code":"sandbox_not_promptable","error":"Sandbox is archived, so it cannot be prompted.","event":"error","status":409}
+exit=1

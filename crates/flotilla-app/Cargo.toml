@@ -1,0 +1,53 @@
+[package]
+name = "flotilla-app"
+description = "Flotilla: the GPUI desktop app"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "flotilla-app"
+path = "src/main.rs"
+
+[dependencies]
+uuid.workspace = true
+flotilla-proto.workspace = true
+flotilla-model.workspace = true
+# This Mac's own server only (`backend`, and `main` finding its database).
+flotilla-core.workspace = true
+flotilla-engine.workspace = true
+flotilla-client.workspace = true
+flotilla-server.workspace = true
+serde.workspace = true
+gpui-kit = "=0.8.1"
+serde_json.workspace = true
+chrono.workspace = true
+smol = "2"
+unicode-segmentation = "1.13"
+qrcode = { version = "0.14", default-features = false }
+image = { version = "0.25", default-features = false, features = ["png"], optional = true }
+# Only to switch on window capture for `snapshot`; the app itself uses GPUI through gpui-kit.
+gpui-pre = { version = "=0.3.10", optional = true, features = ["test-support"] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+gpui-pre-macos = { version = "=0.3.10", optional = true, features = ["test-support"] }
+# Notifications: GPUI shows the banners; these ask whether it may, and badge the Dock icon. The
+# same versions GPUI's Mac platform uses.
+objc2 = "0.6"
+block2 = "0.6"
+objc2-foundation = { version = "0.3", default-features = false, features = ["std", "NSBundle", "NSError", "NSString"] }
+objc2-app-kit = { version = "0.3", default-features = false, features = ["std", "NSApplication", "NSDockTile", "NSResponder"] }
+objc2-user-notifications = { version = "0.3", default-features = false, features = ["std", "block2", "UNUserNotificationCenter", "UNNotificationSettings"] }
+
+# `snapshot` on Linux: GPUI's X11 window can't read its frame back, so the X server is asked.
+[target.'cfg(target_os = "linux")'.dependencies]
+# The launcher's unread count (Unity's LauncherEntry signal), on the D-Bus library GPUI uses.
+zbus = { version = "5", default-features = false, features = ["async-io"] }
+x11rb = { version = "0.13", optional = true }
+raw-window-handle = { version = "0.6", optional = true }
+anyhow = { version = "1", optional = true }
+
+[features]
+# Dev only: walk the UI through its screens and save PNGs (FLOTILLA_SNAPSHOT_DIR).
+snapshot = ["dep:gpui-pre", "dep:gpui-pre-macos", "dep:x11rb", "dep:raw-window-handle", "dep:anyhow", "dep:image", "flotilla-engine/snapshot"]

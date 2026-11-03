@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# The relay and the server together, on this machine: the Worker under `wrangler dev` and the
+# fake APNs (script/local), then the server's sender against them (push.rs's
+# `relay_end_to_end`): register, push, Forget, and APNs saying a phone's gone.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+export RELAY_PORT=${RELAY_PORT:-8796} APNS_PORT=${APNS_PORT:-8797}
+export RELAY_STATE=$(mktemp -d /tmp/flotilla-relay-e2e.XXXXXX)
+script/local > "$RELAY_STATE/log" 2>&1 &
+LOCAL=$!
+trap 'pkill -P $LOCAL 2>/dev/null; kill $LOCAL 2>/dev/null; pkill -f "port $RELAY_PORT --persist-to $RELAY_STATE" 2>/dev/null || true' EXIT
+for _ in $(seq 1 90); do curl -sf "http://127.0.0.1:$RELAY_PORT/" >/dev/null && break; sleep 1; done
+curl -sf "http://127.0.0.1:$RELAY_PORT/" >/dev/null || { cat "$RELAY_STATE/log"; exit 1; }
+cd ..
+FLOTILLA_RELAY_E2E="http://127.0.0.1:$RELAY_PORT" FLOTILLA_FAKE_APNS="http://127.0.0.1:$APNS_PORT" \
+  cargo test -p flotilla-core relay_end_to_end -- --ignored --nocapture

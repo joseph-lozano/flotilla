@@ -1,0 +1,8 @@
+#!/bin/bash
+# GPUI compiles its Metal shaders as it builds, with Xcode's `metal`. Since Xcode 26 that
+# compiler is a separate download, which a fresh CI Mac may not have yet: fetch it if so.
+set -euo pipefail
+if ! xcrun -sdk macosx metal --version >/dev/null 2>&1; then
+  xcodebuild -downloadComponent MetalToolchain
+fi
+xcrun -sdk macosx metal --version | head -1

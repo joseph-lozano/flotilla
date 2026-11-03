@@ -1,0 +1,26 @@
+[package]
+name = "flotilla-cli"
+description = "Flotilla's CLI: test commands over flotilla-core, and `flotilla serve`"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "flotilla"
+path = "src/main.rs"
+
+[dependencies]
+flotilla-core.workspace = true
+flotilla-proto.workspace = true
+flotilla-model.workspace = true
+flotilla-engine.workspace = true
+flotilla-server.workspace = true
+flotilla-client.workspace = true
+flotilla-mcp.workspace = true
+uuid.workspace = true
+clap.workspace = true
+serde_json.workspace = true
+chrono.workspace = true
+dirs.workspace = true
+qrcode = { version = "0.14", default-features = false }

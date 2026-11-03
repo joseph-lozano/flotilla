@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agents working together · Flotilla docs</title>
+<meta name="description" content="Have an agent hand work to other agents: a second agent in the same VM for a review, or a thread of its own in a new VM, and the limits that keep hand-offs in check.">
+<link rel="canonical" href="https://useflotilla.com/docs/main/agents.html">
+<link rel="alternate" type="text/markdown" href="agents.md">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FCFAFD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1322" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Flotilla">
+<meta property="og:title" content="Agents working together · Flotilla docs">
+<meta property="og:description" content="Have an agent hand work to other agents: a second agent in the same VM for a review, or a thread of its own in a new VM, and the limits that keep hand-offs in check.">
+<meta property="og:image" content="https://useflotilla.com/og.png">
+<link rel="stylesheet" href="docs.css">
+<script src="docs.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="sail-shape" d="M2 0h1v1h1v1h1v1h1v1h1v1h1v1H2z"/>
+    <path id="hull-shape" d="M0 7h8v2H0z"/>
+    <g id="mark">
+      <g fill="#F37173" transform="translate(0 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#F6BC63" transform="translate(10 0)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#C2A7E2" transform="translate(20 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+    </g>
+  </defs>
+</svg>
+
+<header class="wrap site-header">
+  <a class="brand" href="../../" aria-label="Flotilla, home">
+    <svg viewBox="0 0 28 11" width="42" height="17" shape-rendering="crispEdges" aria-hidden="true"><use href="#mark"/></svg>
+    <span class="word">Flotilla</span>
+  </a>
+  <a class="crumb" href="./">Docs</a>
+  <label class="version">
+    <span class="visually-hidden">Docs version</span>
+    <select id="version" data-current="main"><option value="main" selected>main</option></select>
+  </label>
+  <a class="md-link" href="agents.md" title="This page as Markdown">Markdown</a>
+  <span class="tag">Alpha</span>
+  <nav class="site-nav" aria-label="Main">
+    <a class="nav-text" href="../../">Home</a>
+    <a class="nav-github" href="https://github.com/joseph-lozano/flotilla">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span class="label">GitHub</span>
+    </a>
+  </nav>
+</header>
+
+<div class="wrap docs">
+  <aside class="sidebar" aria-label="Docs">
+    <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc">Contents<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
+    <div class="toc" id="toc">
+      <div class="search" role="search">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.75"/><path d="M10.5 10.5L14 14"/></svg>
+        <label class="visually-hidden" for="docs-search">Search the docs</label>
+        <input id="docs-search" type="search" placeholder="Search the docs" autocomplete="off" spellcheck="false">
+        <ul class="results" id="search-results" aria-live="polite"></ul>
+      </div>
+      <nav aria-label="Pages">
+      <p class="group">Start here</p>
+      <ul class="pages">
+        <li><a href="./">Overview</a></li>
+        <li><a href="getting-started.html">Getting started</a></li>
+      </ul>
+      <p class="group">Guides</p>
+      <ul class="pages">
+        <li><a href="threads.html">Threads</a></li>
+        <li><a href="projects.html">Projects and pull requests</a></li>
+        <li><a href="previews.html">Previews and services</a></li>
+        <li><a href="agents.html" aria-current="page">Agents working together</a>
+          <ul class="sections">
+            <li><a href="#ways">Three ways to hand off</a></li>
+            <li><a href="#ask-for-it">Ask for it</a></li>
+            <li><a href="#how-it-looks">How it looks</a></li>
+            <li><a href="#limits">Limits</a></li>
+          </ul>
+        </li>
+        <li><a href="questions.html">Questions from agents</a></li>
+        <li><a href="schedules.html">Scheduled prompts</a></li>
+        <li><a href="server.html">Run a server</a></li>
+        <li><a href="iphone.html">The iPhone app</a></li>
+        <li><a href="agent-api.html">The agent API</a></li>
+      </ul>
+      <p class="group">Reference</p>
+      <ul class="pages">
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="shortcuts.html">Keyboard shortcuts</a></li>
+        <li><a href="cli.html">The CLI</a></li>
+      </ul>
+      <p class="group">Help</p>
+      <ul class="pages">
+        <li><a href="faq.html">FAQ and troubleshooting</a></li>
+      </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="content" class="doc">
+    <p class="version-note" hidden></p>
+    <h1>Agents working together</h1>
+    <p class="lede">An agent can hand work to other agents: a review by another model, a second opinion, or a task that needs a machine of its own. You ask for it in plain words, and the answers come back to your thread.</p>
+
+    <h2 id="ways">Three ways to hand off</h2>
+    <p>The first is built into the agents. The other two come from the <code>flotilla</code> command in every VM, which every agent knows about and when to use:</p>
+    <div class="table"><table>
+      <thead><tr><th>Way</th><th>Where it runs</th><th>Good for</th></tr></thead>
+      <tbody>
+        <tr><td>Subagents</td><td class="wrap-ok">Inside the agent, as Claude Code, Codex and OpenCode do on their own.</td><td class="wrap-ok">Splitting up the agent's own work.</td></tr>
+        <tr><td><code>flotilla agent</code></td><td class="wrap-ok">Another agent in the same VM, on the same files. It can be a different agent and model.</td><td class="wrap-ok">A review or second opinion from another model, or parallel work that doesn't need its own ports, database or branch. The agents started in one turn answer together, in one message.</td></tr>
+        <tr><td><code>flotilla delegate</code></td><td class="wrap-ok">A new thread with a VM of its own, its own copy of the repo and its own branch.</td><td class="wrap-ok">Work that needs its own ports, database or checkout, or that runs long. Each one answers on its own.</td></tr>
+      </tbody>
+    </table></div>
+    <p>An agent in the same VM costs no extra VM. A delegate is a VM like any thread: a start, and its time.</p>
+
+    <h2 id="ask-for-it">Ask for it</h2>
+    <p>Say what you want in your prompt; the agent runs the command. For example:</p>
+    <ul>
+      <li><em>Write the median function, then get reviews from Codex on GPT-6.1 Sol and from Claude Code on Fable 5.1, and sum up what they found.</em></li>
+      <li><em>Delegate the database migration to a Codex agent in its own VM, and tell me when it's pushed.</em></li>
+    </ul>
+    <p>Unless you name one, the other agent runs the same agent and model as the first. The first agent then ends its turn with a line on what it handed off. When the answers arrive, they come into your thread as a new message, and the agent gets a new turn to tell you what they said.</p>
+    <p>An agent can also send a follow-up to an agent it started (<code>flotilla message</code>) or stop one (<code>flotilla cancel</code>). Ask for those in plain words too, such as <em>ask the reviewer to look at the tests as well</em>, or <em>stop the migration</em>.</p>
+
+    <h2 id="how-it-looks">How it looks</h2>
+    <p>Each agent the thread starts gets a card in the thread: its task's title, its agent and model, how many calls it made and how long it took. While it works, the card shows its latest call; open the card for <strong>Asked to</strong>, the task it was given, and its answer.</p>
+    <ul>
+      <li>A bar under the thread's header lists the agents still running. Click one to find its card.</li>
+      <li>When answers arrive, a line such as <em>2 agents answered</em> shows above the agent's reply. Click it to see their cards.</li>
+      <li>A delegate's card has <strong>Open thread</strong>. Its thread sits under the thread that started it in the sidebar, its first prompt reads <em>From</em> and the title of that thread, and its header links back.</li>
+      <li>Threads that agents started don't notify you; their answers go to the thread that asked.</li>
+    </ul>
+    <figure>
+      <picture>
+        <source srcset="img/thread-night.webp" media="(prefers-color-scheme: dark)">
+        <img src="img/thread-day.webp" width="1600" height="1058" loading="lazy" decoding="async" alt="A thread where the agent handed a review to two other agents. Two cards at the top, Codex review of median.py on GPT-5.6 Terra and Haiku review of median.py on Claude Code with Haiku 5.5, each show their calls, time and the start of their answer. Below the agent's reply, a line reads 2 agents answered, followed by its summary of both reviews.">
+      </picture>
+      <figcaption>Two reviewers in the same VM, and the summary after both answered.</figcaption>
+    </figure>
+    <p>The iPhone app shows the same cards, and opens a delegate's thread from its card.</p>
+
+    <h2 id="limits">Limits</h2>
+    <p>Hand-offs have limits, so an agent can't start a runaway chain of VMs. When a hand-off goes over one, it doesn't start, and the agent is told why.</p>
+    <div class="table"><table>
+      <thead><tr><th>Limit</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>How deep</td><td class="wrap-ok">3 hand-offs down from a thread you started. Deeper than that, the agent does the work itself.</td></tr>
+        <tr><td>In one turn</td><td class="wrap-ok">6 tasks handed off.</td></tr>
+        <tr><td>At once, per thread</td><td class="wrap-ok">6 agents running in its VM, and 6 of its delegates with their VMs up.</td></tr>
+        <tr><td>At once, in all</td><td class="wrap-ok">12 delegates with their VMs up under one thread you started, however deep.</td></tr>
+        <tr><td>Since your last message</td><td class="wrap-ok">20 hand-offs, across the thread you started and every thread handed work from it.</td></tr>
+      </tbody>
+    </table></div>
+    <p>The last one stops agents from handing work back and forth all night. When it's reached, the thread says <em>Hand-off limit reached (20 since your last message). Send a message to continue.</em> Sending a message or a steer in the thread resets it.</p>
+
+    <nav class="pager" aria-label="Previous and next">
+    <a class="prev" href="previews.html"><span>Previous</span>Previews and services</a>
+    <a class="next" href="questions.html"><span>Next</span>Questions from agents</a>
+    </nav>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Joseph Lozano</span>
+    <nav aria-label="Footer">
+      <a href="../../">Home</a>
+      <a href="./">Docs</a>
+      <a href="https://github.com/joseph-lozano/flotilla">GitHub</a>
+      <a href="https://github.com/joseph-lozano/flotilla/blob/main/LICENSE">MIT License</a>
+      <a href="../../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

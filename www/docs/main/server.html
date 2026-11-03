@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Run a server · Flotilla docs</title>
+<meta name="description" content="Run Flotilla&#x27;s server on a Linux machine that stays on, reach it over Tailscale, pair your Mac, Linux desktop and iPhone, and manage devices.">
+<link rel="canonical" href="https://useflotilla.com/docs/main/server.html">
+<link rel="alternate" type="text/markdown" href="server.md">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FCFAFD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1322" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Flotilla">
+<meta property="og:title" content="Run a server · Flotilla docs">
+<meta property="og:description" content="Run Flotilla&#x27;s server on a Linux machine that stays on, reach it over Tailscale, pair your Mac, Linux desktop and iPhone, and manage devices.">
+<meta property="og:image" content="https://useflotilla.com/og.png">
+<link rel="stylesheet" href="docs.css">
+<script src="docs.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="sail-shape" d="M2 0h1v1h1v1h1v1h1v1h1v1h1v1H2z"/>
+    <path id="hull-shape" d="M0 7h8v2H0z"/>
+    <g id="mark">
+      <g fill="#F37173" transform="translate(0 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#F6BC63" transform="translate(10 0)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#C2A7E2" transform="translate(20 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+    </g>
+  </defs>
+</svg>
+
+<header class="wrap site-header">
+  <a class="brand" href="../../" aria-label="Flotilla, home">
+    <svg viewBox="0 0 28 11" width="42" height="17" shape-rendering="crispEdges" aria-hidden="true"><use href="#mark"/></svg>
+    <span class="word">Flotilla</span>
+  </a>
+  <a class="crumb" href="./">Docs</a>
+  <label class="version">
+    <span class="visually-hidden">Docs version</span>
+    <select id="version" data-current="main"><option value="main" selected>main</option></select>
+  </label>
+  <a class="md-link" href="server.md" title="This page as Markdown">Markdown</a>
+  <span class="tag">Alpha</span>
+  <nav class="site-nav" aria-label="Main">
+    <a class="nav-text" href="../../">Home</a>
+    <a class="nav-github" href="https://github.com/joseph-lozano/flotilla">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span class="label">GitHub</span>
+    </a>
+  </nav>
+</header>
+
+<div class="wrap docs">
+  <aside class="sidebar" aria-label="Docs">
+    <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc">Contents<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
+    <div class="toc" id="toc">
+      <div class="search" role="search">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.75"/><path d="M10.5 10.5L14 14"/></svg>
+        <label class="visually-hidden" for="docs-search">Search the docs</label>
+        <input id="docs-search" type="search" placeholder="Search the docs" autocomplete="off" spellcheck="false">
+        <ul class="results" id="search-results" aria-live="polite"></ul>
+      </div>
+      <nav aria-label="Pages">
+      <p class="group">Start here</p>
+      <ul class="pages">
+        <li><a href="./">Overview</a></li>
+        <li><a href="getting-started.html">Getting started</a></li>
+      </ul>
+      <p class="group">Guides</p>
+      <ul class="pages">
+        <li><a href="threads.html">Threads</a></li>
+        <li><a href="projects.html">Projects and pull requests</a></li>
+        <li><a href="previews.html">Previews and services</a></li>
+        <li><a href="agents.html">Agents working together</a></li>
+        <li><a href="questions.html">Questions from agents</a></li>
+        <li><a href="schedules.html">Scheduled prompts</a></li>
+        <li><a href="server.html" aria-current="page">Run a server</a>
+          <ul class="sections">
+            <li><a href="#why">Why run one</a></li>
+            <li><a href="#agent-setup">Set it up with an agent</a></li>
+            <li><a href="#install">Install</a></li>
+            <li><a href="#setup">Set up</a></li>
+            <li><a href="#service">Run it as a service</a></li>
+            <li><a href="#doctor">Check it</a></li>
+            <li><a href="#pair">Pair your devices</a></li>
+            <li><a href="#tailscale">Reach it over Tailscale</a></li>
+            <li><a href="#caddy">Reach it from the internet with Caddy</a></li>
+            <li><a href="#docker">Run it in Docker</a></li>
+            <li><a href="#this-mac">Use your Mac as the server</a></li>
+            <li><a href="#import">Move your Mac's threads to the server</a></li>
+            <li><a href="#data">Where the server keeps its data</a></li>
+          </ul>
+        </li>
+        <li><a href="iphone.html">The iPhone app</a></li>
+        <li><a href="agent-api.html">The agent API</a></li>
+      </ul>
+      <p class="group">Reference</p>
+      <ul class="pages">
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="shortcuts.html">Keyboard shortcuts</a></li>
+        <li><a href="cli.html">The CLI</a></li>
+      </ul>
+      <p class="group">Help</p>
+      <ul class="pages">
+        <li><a href="faq.html">FAQ and troubleshooting</a></li>
+      </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="content" class="doc">
+    <p class="version-note" hidden></p>
+    <h1>Run a server</h1>
+    <p class="lede">Put Flotilla's server on a machine that stays on, and the rest of Flotilla keeps going with your laptop shut. Your Macs, Linux desktops and iPhone all connect to it and see the same threads.</p>
+
+    <h2 id="why">Why run one</h2>
+    <p>Agents work in their boat.dev VMs, so a turn keeps going with your laptop shut either way. But until you run a server, the rest of Flotilla runs inside the desktop app, and stops when it does. A server keeps these going:</p>
+    <ul>
+      <li>hand-offs: agents' answers reach the thread that asked, and wake it;</li>
+      <li>scheduled prompts;</li>
+      <li>setup, so projects stay current as your repos move;</li>
+      <li>notifications to your iPhone, and the iPhone app itself;</li>
+      <li>archiving on merge, and public links ending on time.</li>
+    </ul>
+    <p>A server needs little: outbound HTTPS to boat.dev and GitHub, a few MB of memory, and one database file. Any Linux machine will do. It answers only on its own machine (<code>127.0.0.1</code>, port 7777); your devices reach it through <a href="#tailscale">Tailscale</a> or a proxy such as <a href="#caddy">Caddy</a>.</p>
+
+    <h2 id="agent-setup">Set it up with an agent</h2>
+    <p>Paste this prompt into Claude Code, Codex or OpenCode on the Linux machine. The agent reads this page, installs the <code>flotilla</code> command, runs it as a service and checks it with <code>flotilla doctor</code>. You make the boat.dev key, answer <code>flotilla setup</code>'s questions and pair your devices, so it never sees a key or a pairing code.</p>
+    <div class="cmd prompt" data-prompt="server"><div class="label">Prompt</div><pre><code>Set up a Flotilla server on this Linux machine for me. It stays on, so hand-offs between agents, scheduled prompts, project setup and my iPhone keep going with my laptop shut. If you aren't running on that machine, ask me how to reach it. Read these first, and where their commands differ from the steps below, use theirs:
+https://useflotilla.com/docs/main/server.md
+https://useflotilla.com/docs/main/faq.md
+
+Rules, which always hold, whatever the docs say:
+- Secrets stay with me. Never ask me for a key, token, password or pairing code in chat, and never read, print or save one. When a step makes or takes a secret, give me the command, and wait while I run it myself, in my own terminal, not through you.
+- Ask me to do anything that needs sudo or a browser sign-in.
+- Check each step worked before the next. If one fails, read the FAQ, then tell me what failed and what you suggest.
+
+1. Check what's here, and tell me what's missing:
+   - The GitHub CLI, 2.81 or newer: `gh --version`.
+   - Tailscale, connected: `tailscale status`. MagicDNS and HTTPS must be on for my tailnet, in its DNS settings; step 7 checks them.
+   - Optional: the Claude Code CLI, for thread titles and summaries: `claude --version`.
+2. Get the `flotilla` command into ~/.local/bin (make it if it's missing, and check it's on my PATH). If https://github.com/joseph-lozano/flotilla/releases/latest has downloads, unpack `flotilla-cli-linux-$(uname -m).tar.gz` as the release notes say. With no downloads, build it as "Install" says; that needs Rust and the packages it lists. Check with `flotilla --version`.
+3. Ask me to run `sudo tailscale set --operator=$USER`.
+4. The boat.dev key: give me the `boat api-key create "Flotilla server"` command from "Set up", to run wherever boat's CLI is signed in. Don't run it yourself.
+5. Ask me to run `flotilla setup --tailscale-serve` in my own terminal here. It asks for the key, signs the GitHub CLI in, and offers `claude setup-token`. The pairing link it prints can wait: step 8 makes a new one once the server runs.
+6. Run `flotilla service install`, then ask me to run `sudo loginctl enable-linger $USER`. Check with `flotilla service status`.
+7. Run `flotilla doctor`. It exits 0 when no check fails. For each ✗, run the fix it gives, or ask me if it's mine to do.
+8. Pairing: ask me to run `flotilla pair` here, then open its link on my Mac or Linux desktop and press Connect, or scan its QR code in the iPhone app. Check with `flotilla devices`.
+
+When you're done, tell me the server's address (doctor's Tailscale line says it), and anything left for me to do.</code></pre></div>
+
+    <h2 id="install">Install</h2>
+    <p>Build the <code>flotilla</code> command and put it somewhere lasting:</p>
+    <div class="cmd"><pre><code>git clone https://github.com/joseph-lozano/flotilla.git
+cd flotilla
+cargo build --release -p flotilla-cli
+cp target/release/flotilla ~/.local/bin/</code></pre></div>
+    <p>On Debian or Ubuntu, the build needs <code>build-essential cmake pkg-config</code>. For one static binary that runs on any x86-64 Linux, add <code>musl-tools</code>, run <code>rustup target add x86_64-unknown-linux-musl</code>, and build with <code>--target x86_64-unknown-linux-musl</code>.</p>
+    <p>The server also uses the <a href="https://cli.github.com">GitHub CLI</a> for projects, and optionally the <a href="https://docs.claude.com/en/docs/claude-code">Claude Code CLI</a> for titles and summaries and <a href="https://tailscale.com/download">Tailscale</a> to reach it.</p>
+
+    <h2 id="setup">Set up</h2>
+    <p>Give the server a boat.dev key of its own, so you can tell its use apart and revoke it alone. Make it wherever boat's command-line tool is signed in:</p>
+    <div class="cmd"><pre><code>boat api-key create "Flotilla server" --ttl 365d --actions sandbox.create,sandbox.read,sandbox.update,sandbox.stop,sandbox.resume,sandbox.fork,sandbox.delete-own,agent.prompt,exec,host,snapshot.read,snapshot.write,environment.read,environment.write,account.read</code></pre></div>
+    <p>Then, on the server:</p>
+    <div class="cmd"><pre><code>flotilla setup --tailscale-serve</code></pre></div>
+    <p><code>setup</code> asks for the boat.dev key, signs the GitHub CLI in, sets up titles and summaries with <code>claude setup-token</code>, checks everything, and prints a pairing link and a QR code. The key and the Claude token are kept in files only you can read.</p>
+    <p>To set up without questions, put the key in a file only you can read and pass it:</p>
+    <div class="cmd"><pre><code>flotilla setup --non-interactive --boat-key-file ~/boat-key --tailscale-serve</code></pre></div>
+    <p>Notifications to your iPhone go through Flotilla's push relay, encrypted so the relay can't read them. <code>--no-push-relay</code> turns that off. See <a href="iphone.html#push-relay">how they reach your phone</a>.</p>
+
+    <h2 id="service">Run it as a service</h2>
+    <p>On Linux, <code>flotilla service install</code> keeps the server running as a systemd user service, and starts it again if it fails. To start it at boot and keep it running after you log out, turn on lingering once:</p>
+    <div class="cmd"><pre><code>flotilla service install
+sudo loginctl enable-linger $USER</code></pre></div>
+    <div class="table"><table>
+      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>flotilla service status</code></td><td class="wrap-ok">Whether it's running, and its latest log lines.</td></tr>
+        <tr><td><code>flotilla service restart</code></td><td class="wrap-ok">Restart it, after <code>flotilla setup</code> or after updating <code>flotilla</code>.</td></tr>
+        <tr><td><code>flotilla service stop</code>, <code>start</code></td><td class="wrap-ok">Stop or start it.</td></tr>
+        <tr><td><code>flotilla service uninstall</code></td><td class="wrap-ok">Stop it and remove the service. Your data stays.</td></tr>
+        <tr><td><code>journalctl --user -u flotilla -f</code></td><td class="wrap-ok">Follow its log.</td></tr>
+      </tbody>
+    </table></div>
+    <p>The service finds <code>gh</code>, <code>claude</code> and <code>tailscale</code> where they were when you installed it. Run <code>flotilla service install</code> again after moving any of them.</p>
+
+    <h2 id="doctor">Check it</h2>
+    <p><code>flotilla doctor</code> lists what isn't set up and the command that fixes each. Every connected device shows the same checks in <strong>Settings</strong> under <strong>Server setup</strong>, with <strong>Check again</strong>.</p>
+    <div class="table"><table>
+      <thead><tr><th>Check</th><th>What it looks at</th></tr></thead>
+      <tbody>
+        <tr><td>boat API key</td><td class="wrap-ok">That boat.dev takes the key, that it has every permission Flotilla uses, and when it expires.</td></tr>
+        <tr><td>GitHub</td><td class="wrap-ok">That <code>gh</code> is installed, 2.81 or newer, signed in to github.com, with the <code>repo</code> scope.</td></tr>
+        <tr><td>Titles and previews</td><td class="wrap-ok">That the <code>claude</code> CLI is there and answers with the chosen model. <em>Off</em> if you turned titles off.</td></tr>
+        <tr><td>Tailscale</td><td class="wrap-ok">That Tailscale is connected, with MagicDNS and HTTPS on, and forwards the server's address to it.</td></tr>
+        <tr><td>Database</td><td class="wrap-ok">That Flotilla can write its database.</td></tr>
+        <tr><td>Push</td><td class="wrap-ok">How notifications reach iPhones: through Flotilla's push relay, your own Apple key, or off. See <a href="iphone.html#push-relay">how they reach your phone</a>.</td></tr>
+        <tr><td>Remote MCP</td><td class="wrap-ok">Whether remote MCP is on, and public. See <a href="agent-api.html#remote">remote MCP</a>.</td></tr>
+        <tr><td>Other Flotillas</td><td class="wrap-ok">For information: VMs on the same boat.dev account that another Flotilla made. This one leaves them alone.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="pair">Pair your devices</h2>
+    <p>Each device pairs with a one-time code. On the server, run:</p>
+    <div class="cmd"><pre><code>flotilla pair</code></pre></div>
+    <p>It prints a link and a QR code. Then:</p>
+    <ul>
+      <li><strong>On a Mac or Linux desktop</strong>, open the link, check the address, and press <strong>Connect</strong>. Or pick <strong>Flotilla → Connect to a Server…</strong> (on Linux, <strong>Settings → Server → Connect to a server…</strong>) and paste the link or type the address and code.</li>
+      <li><strong>On your iPhone</strong>, scan the QR code in the app. See <a href="iphone.html#pair">The iPhone app</a>.</li>
+    </ul>
+    <p>A code works once, for 5 minutes. <code>flotilla pair --ttl 2h</code> gives it longer, up to <code>24h</code>. <code>flotilla pair --list</code> shows codes not used yet, and <code>--revoke</code> cancels one. From any paired device, <strong>Add device</strong> in <strong>Settings → Devices</strong> makes a code too, with its QR code and link.</p>
+
+    <h3 id="devices">Manage devices</h3>
+    <p>Each device gets a token of its own, kept in its Keychain on a Mac or iPhone, or in a file only you can read on Linux. <strong>Settings → Devices</strong> lists every device, connected or when it was last seen, with <strong>Rename</strong> and <strong>Revoke</strong>. Revoking signs a device out at once; it has to pair again to connect. On the server, <code>flotilla devices</code> lists them and <code>flotilla devices revoke &lt;id&gt;</code> signs one out.</p>
+
+    <h3 id="one-server">One server per app</h3>
+    <p>Each app pairs with one server. Connecting to another takes its place: the first server's token is deleted, and that server is asked to sign the device out.</p>
+    <p>On a Mac or Linux desktop, <strong>Settings → Server</strong> switches between the paired server and <strong>This Mac</strong> (<strong>This computer</strong> on Linux), the app's own server. Only one runs at a time, and what you were typing waits for you in each. <strong>Forget</strong> removes the pairing.</p>
+
+    <h2 id="tailscale">Reach it over Tailscale</h2>
+    <p>With Tailscale on the server and your devices, and MagicDNS and HTTPS turned on for your tailnet (<a href="https://login.tailscale.com/admin/dns">DNS settings</a>), <code>flotilla setup --tailscale-serve</code> is all it takes. While the server runs, Tailscale forwards <code>https://box.tail1234.ts.net</code> (your machine's name on your tailnet) to it, and pairing links use that address. Only your tailnet can reach it.</p>
+    <ul>
+      <li>On Linux, let your user change Tailscale's settings once: <code>sudo tailscale set --operator=$USER</code>.</li>
+      <li>Flotilla uses Tailscale's port 443 and nothing else, unless you publish <a href="agent-api.html#remote">remote MCP</a> with Funnel. If something else already serves that port on the machine, Flotilla leaves it alone and says so.</li>
+    </ul>
+
+    <h2 id="caddy">Reach it from the internet with Caddy</h2>
+    <p>On a public server, put <a href="https://caddyserver.com">Caddy</a> in front for HTTPS, and tell Flotilla its public address:</p>
+    <div class="cmd"><pre><code>flotilla setup --no-tailscale-serve
+flotilla service install --url https://flotilla.example.com</code></pre></div>
+    <div class="cmd"><div class="label">/etc/caddy/Caddyfile</div><pre><code>flotilla.example.com {
+	request_body {
+		max_size 64MiB
+	}
+	reverse_proxy 127.0.0.1:7777
+}</code></pre></div>
+    <p>Caddy gets a certificate and passes the app's live connection through on its own. <code>max_size</code> is the largest upload Flotilla takes. Only paired devices get in: pairing codes work once, for a short time, and wrong ones are limited for each address.</p>
+
+    <h2 id="docker">Run it in Docker</h2>
+    <p>The repo has a Dockerfile for the server:</p>
+    <div class="cmd"><pre><code>docker build -t flotilla .
+docker volume create flotilla
+docker run -it --rm -v flotilla:/data flotilla setup --no-tailscale-serve
+docker run -d --name flotilla --restart unless-stopped -v flotilla:/data -p 127.0.0.1:7777:7777 flotilla serve --host 0.0.0.0 --insecure --url https://flotilla.example.com
+docker exec flotilla flotilla pair</code></pre></div>
+    <p>Everything the server keeps is in the <code>flotilla</code> volume, none of it in the image. Publishing the port on <code>127.0.0.1</code> keeps it on the machine; put Caddy or Tailscale in front. The image has <code>gh</code> but not the <code>claude</code> CLI: for titles and summaries, build with <code>--build-arg CLAUDE=1</code>, or turn them off in Settings. <code>docker exec flotilla flotilla doctor</code> checks the setup.</p>
+
+    <h2 id="this-mac">Use your Mac as the server</h2>
+    <p>Without a separate machine, other devices can connect to the Mac that has your threads, while Flotilla is open there. This is a preview.</p>
+    <ol>
+      <li>On that Mac, open <strong>Settings → Devices</strong> and turn on <strong>Let other devices connect</strong>.</li>
+      <li>To reach it from your tailnet, also turn on <strong>Over Tailscale</strong>.</li>
+      <li>Press <strong>Add device</strong> for a pairing code, link and QR code.</li>
+    </ol>
+    <p>When the Mac sleeps or Flotilla quits, the other devices can't reach it.</p>
+
+    <h2 id="import">Move your Mac's threads to the server</h2>
+    <p>Your Mac's threads, what you typed, what's unread, projects and settings can move to the server:</p>
+    <ol>
+      <li>Connect the Mac to the server (<strong>Flotilla → Connect to a Server…</strong>), so it opens on the server from now on. Then quit Flotilla.</li>
+      <li>Copy its data to the server:
+        <div class="cmd"><pre><code>cd ~/Library/Application\ Support/Flotilla
+ssh server mkdir -p mac &amp;&amp; scp -r flotilla.db blobs server:mac/</code></pre></div>
+      </li>
+      <li>On the server:
+        <div class="cmd"><pre><code>flotilla service stop
+flotilla import ~/mac/flotilla.db
+flotilla service start</code></pre></div>
+      </li>
+      <li>Open Flotilla on the Mac. The threads are there, on the server.</li>
+    </ol>
+    <p>The server takes over the VMs those threads and projects run on. <strong>This Mac</strong> won't run them again, and says where they went. Devices paired with the Mac pair again with the server. If the server already has threads of its own, <code>--replace</code> puts them aside first.</p>
+    <p>boat.dev lets a key delete only the VMs it made, so the server's key can't delete the Mac's. Deleting one of those threads on the server says so: delete its VM in boat's dashboard, or with the Mac's key, then delete the thread again.</p>
+
+    <h2 id="data">Where the server keeps its data</h2>
+    <p>In <code>~/.local/share/Flotilla</code>, or <code>$XDG_DATA_HOME/Flotilla</code>. Pass <code>--data-dir</code> with every command to keep it elsewhere. Back up <code>flotilla.db</code> now and then: once a thread's VM is gone, its history exists nowhere else. This is safe while the server runs:</p>
+    <div class="cmd"><pre><code>sqlite3 flotilla.db ".backup flotilla-backup.db"</code></pre></div>
+    <p>The app on your Mac and a server can share one boat.dev account. Each keeps to the VMs it made, so a hand-off or a setup never happens twice.</p>
+
+    <nav class="pager" aria-label="Previous and next">
+    <a class="prev" href="schedules.html"><span>Previous</span>Scheduled prompts</a>
+    <a class="next" href="iphone.html"><span>Next</span>The iPhone app</a>
+    </nav>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Joseph Lozano</span>
+    <nav aria-label="Footer">
+      <a href="../../">Home</a>
+      <a href="./">Docs</a>
+      <a href="https://github.com/joseph-lozano/flotilla">GitHub</a>
+      <a href="https://github.com/joseph-lozano/flotilla/blob/main/LICENSE">MIT License</a>
+      <a href="../../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

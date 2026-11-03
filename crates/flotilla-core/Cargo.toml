@@ -1,0 +1,37 @@
+[package]
+name = "flotilla-core"
+description = "Flotilla core: boat client, SQLite store, sync engine, thread lifecycle"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+license.workspace = true
+
+[features]
+# `public::testing`: a stand-in for boat's host API, for other crates' tests.
+testing = []
+
+[dependencies]
+flotilla-proto.workspace = true
+flotilla-model.workspace = true
+reqwest.workspace = true
+rusqlite.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde-saphyr.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
+base64.workspace = true
+chrono.workspace = true
+dirs.workspace = true
+sha2 = "0.10"
+subtle = "2.6"
+getrandom = "0.3"
+# ES256 for APNs' provider tokens (`push`); already in the build through rustls.
+ring = "0.17"
+
+[dev-dependencies]
+# A stand-in APNs, over HTTP/2 as Apple's is (`push`'s tests); already in the build through
+# reqwest.
+h2 = "0.4"
+http = "1"
+tokio.workspace = true

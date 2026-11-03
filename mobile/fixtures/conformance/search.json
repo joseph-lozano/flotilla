@@ -1,0 +1,3929 @@
+{
+  "about": "flotilla_proto::search's rules (crates/flotilla-server/tests/conformance.rs), T3 Code's ported: queries folded and split, each thread's match for a query (quality, strength, title marks and a hint's as UTF-8 bytes, picks, score), lists ranked, picked queries and use.",
+  "boosts": [
+    {
+      "activity": null,
+      "boost": 1.0,
+      "opens": null
+    },
+    {
+      "activity": 1792713600000,
+      "boost": 2.0,
+      "opens": null
+    },
+    {
+      "activity": 1791504000000,
+      "boost": 1.5,
+      "opens": null
+    },
+    {
+      "activity": null,
+      "boost": 2.5,
+      "opens": {
+        "at": 1792713600000,
+        "score": 12.0
+      }
+    },
+    {
+      "activity": 1792713600000,
+      "boost": 2.5,
+      "opens": {
+        "at": 1792627200000,
+        "score": 3.0
+      }
+    },
+    {
+      "activity": 1784937600000,
+      "boost": 1.8162122099040725,
+      "opens": {
+        "at": 1787529600000,
+        "score": 40.0
+      }
+    }
+  ],
+  "folds": [
+    {
+      "folded": "fix the cafe",
+      "query": "  “Fix   the CAFÉ” "
+    },
+    {
+      "folded": "",
+      "query": "\"\""
+    },
+    {
+      "folded": "cafe",
+      "query": "café"
+    },
+    {
+      "folded": "don't",
+      "query": "Don’t"
+    },
+    {
+      "folded": "lodz wroclaw",
+      "query": "ŁÓDŹ Wrocław"
+    },
+    {
+      "folded": "istanbul",
+      "query": "İstanbul"
+    },
+    {
+      "folded": "straße ﬁle",
+      "query": "Straße ﬁle"
+    },
+    {
+      "folded": "σισυφοσ",
+      "query": "ΣΊΣΥΦΟΣ"
+    },
+    {
+      "folded": "abc",
+      "query": "Ａｂｃ"
+    },
+    {
+      "folded": "tieng viet",
+      "query": "tiếng Việt"
+    },
+    {
+      "folded": "🚀 launch",
+      "query": "🚀 launch"
+    },
+    {
+      "folded": "# fix",
+      "query": "# fix"
+    },
+    {
+      "folded": "",
+      "query": "´´´"
+    },
+    {
+      "folded": "日本語のコメント",
+      "query": "日本語のコメント"
+    },
+    {
+      "folded": "quoted' x",
+      "query": "'quoted' x"
+    }
+  ],
+  "now": 1792713600000,
+  "picked": [
+    {
+      "picked": "upl",
+      "query": "  Upl "
+    },
+    {
+      "picked": "investigate workspace thread res",
+      "query": "investigate    workspace thread reset bug"
+    },
+    {
+      "picked": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "query": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa🚀"
+    },
+    {
+      "picked": "quoted",
+      "query": "“Quoted”"
+    }
+  ],
+  "ranks": [
+    {
+      "order": [
+        "Share auth across worktrees",
+        "Authentication cleanup",
+        "Fix oauth redirect"
+      ],
+      "query": "auth",
+      "threads": [
+        {
+          "activity": 1792713600000,
+          "title": "Fix oauth redirect"
+        },
+        {
+          "activity": 1790121600000,
+          "title": "Authentication cleanup"
+        },
+        {
+          "activity": 1790121600000,
+          "title": "Share auth across worktrees"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Goldbug processes",
+        "Goldbug epilogue"
+      ],
+      "query": "goldbug",
+      "threads": [
+        {
+          "activity": 1790985600000,
+          "title": "Goldbug epilogue"
+        },
+        {
+          "activity": 1792627200000,
+          "title": "Goldbug processes"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Goldbug notes",
+        "Goldbug processes"
+      ],
+      "query": "goldbug",
+      "threads": [
+        {
+          "activity": 1792627200000,
+          "title": "Goldbug processes"
+        },
+        {
+          "activity": 1789257600000,
+          "opens": {
+            "at": 1792627200000,
+            "picks": [],
+            "score": 12.0
+          },
+          "title": "Goldbug notes"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Release checklist",
+        "Relay pairing"
+      ],
+      "query": "rel",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "opens": {
+            "at": 1792281600000,
+            "picks": [
+              {
+                "at": 1792281600000,
+                "query": "rel"
+              }
+            ],
+            "score": 1.0
+          },
+          "title": "Release checklist"
+        },
+        {
+          "activity": 1792713600000,
+          "title": "Relay pairing"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Relay pairing",
+        "Release checklist"
+      ],
+      "query": "re",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "opens": {
+            "at": 1792281600000,
+            "picks": [
+              {
+                "at": 1792281600000,
+                "query": "rel"
+              }
+            ],
+            "score": 1.0
+          },
+          "title": "Release checklist"
+        },
+        {
+          "activity": 1792713600000,
+          "title": "Relay pairing"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Relay pairing"
+      ],
+      "query": "rela",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "opens": {
+            "at": 1792281600000,
+            "picks": [
+              {
+                "at": 1792281600000,
+                "query": "rel"
+              }
+            ],
+            "score": 1.0
+          },
+          "title": "Release checklist"
+        },
+        {
+          "activity": 1792713600000,
+          "title": "Relay pairing"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Share auth across worktrees",
+        "Fix oauth redirect"
+      ],
+      "query": "auth",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "opens": {
+            "at": 1792627200000,
+            "picks": [
+              {
+                "at": 1792627200000,
+                "query": "auth"
+              }
+            ],
+            "score": 1.0
+          },
+          "title": "Fix oauth redirect"
+        },
+        {
+          "activity": 1790121600000,
+          "title": "Share auth across worktrees"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Relay pairing",
+        "Release checklist"
+      ],
+      "query": "rel",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "opens": {
+            "at": 1792627200000,
+            "picks": [
+              {
+                "at": 1790121600000,
+                "query": "rel"
+              }
+            ],
+            "score": 2.0
+          },
+          "title": "Release checklist"
+        },
+        {
+          "activity": 1790121600000,
+          "opens": {
+            "at": 1792627200000,
+            "picks": [
+              {
+                "at": 1792627200000,
+                "query": "rel"
+              }
+            ],
+            "score": 1.0
+          },
+          "title": "Relay pairing"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Deploy timeout on Railway",
+        "Deploy"
+      ],
+      "query": "deploy",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "opens": {
+            "at": 1792627200000,
+            "picks": [
+              {
+                "at": 1792627200000,
+                "query": "deploy"
+              }
+            ],
+            "score": 1.0
+          },
+          "title": "Deploy"
+        },
+        {
+          "activity": 1790121600000,
+          "opens": {
+            "at": 1792713600000,
+            "picks": [
+              {
+                "at": 1792713600000,
+                "query": "deploy"
+              }
+            ],
+            "score": 1.0
+          },
+          "title": "Deploy timeout on Railway"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Fix sidebar",
+        "Fix browser"
+      ],
+      "query": "fix",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "opens": {
+            "at": 1792713600000,
+            "picks": [
+              {
+                "at": 1792713600000,
+                "query": "fix browser"
+              },
+              {
+                "at": 1792540800000,
+                "query": "fix"
+              }
+            ],
+            "score": 2.0
+          },
+          "title": "Fix browser"
+        },
+        {
+          "activity": 1790121600000,
+          "opens": {
+            "at": 1792627200000,
+            "picks": [
+              {
+                "at": 1792627200000,
+                "query": "fix"
+              }
+            ],
+            "score": 1.0
+          },
+          "title": "Fix sidebar"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Lakebed",
+        "Lakebed perf audit"
+      ],
+      "query": "lakebed",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "opens": {
+            "at": 1792713600000,
+            "picks": [
+              {
+                "at": 1792713600000,
+                "query": "lakebed perf"
+              }
+            ],
+            "score": 1.0
+          },
+          "title": "Lakebed perf audit"
+        },
+        {
+          "activity": 1790121600000,
+          "title": "Lakebed"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Deploy timeout",
+        "Deploy notes"
+      ],
+      "query": "deploy",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "opens": {
+            "at": 1792713600000,
+            "picks": [
+              {
+                "at": 1792713600000,
+                "query": "scripts"
+              },
+              {
+                "at": 1787529600000,
+                "query": "deploy"
+              }
+            ],
+            "score": 2.0
+          },
+          "title": "Deploy notes"
+        },
+        {
+          "activity": 1790121600000,
+          "opens": {
+            "at": 1792627200000,
+            "picks": [
+              {
+                "at": 1792627200000,
+                "query": "deploy"
+              }
+            ],
+            "score": 1.0
+          },
+          "title": "Deploy timeout"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Rename index.ts",
+        "Fix parser.tsx"
+      ],
+      "query": ".ts",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "title": "Fix parser.tsx"
+        },
+        {
+          "activity": 1790121600000,
+          "title": "Rename index.ts"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Hosting alternatives to Railway"
+      ],
+      "query": "railwya",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "title": "Hosting alternatives to Railway"
+        },
+        {
+          "activity": 1790121600000,
+          "title": "Trim MCP model lists"
+        }
+      ]
+    },
+    {
+      "order": [
+        "De-risk idle tunnel cleanup",
+        "Typesafe App Builder"
+      ],
+      "query": "ilde",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "title": "Typesafe App Builder"
+        },
+        {
+          "activity": 1790121600000,
+          "title": "De-risk idle tunnel cleanup"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Server restart"
+      ],
+      "query": "srv",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "title": "Server restart"
+        },
+        {
+          "activity": 1790121600000,
+          "title": "Other"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Fix Cmd+Enter"
+      ],
+      "query": "cmd enter",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "title": "Fix Cmd+Enter"
+        },
+        {
+          "activity": 1790121600000,
+          "title": "Open links external"
+        }
+      ]
+    },
+    {
+      "order": [
+        "VS Code remote support",
+        "Old work"
+      ],
+      "query": "vscode",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "title": "VS Code remote support"
+        },
+        {
+          "activity": 1758153600000,
+          "branch": "vscode",
+          "title": "Old work"
+        }
+      ]
+    },
+    {
+      "order": [
+        "Flotilla Connect Tunnel Lifecycle Review",
+        "Diagnose Connect provisioning failures"
+      ],
+      "query": "flotilla connect",
+      "threads": [
+        {
+          "activity": 1792713600000,
+          "branch": "flotilla/diagnose-connect",
+          "opens": {
+            "at": 1792713600000,
+            "picks": [],
+            "score": 6.0
+          },
+          "project": "acme/flotilla",
+          "title": "Diagnose Connect provisioning failures"
+        },
+        {
+          "activity": 1790121600000,
+          "project": "acme/flotilla",
+          "title": "Flotilla Connect Tunnel Lifecycle Review"
+        }
+      ]
+    },
+    {
+      "order": [],
+      "query": "posthog",
+      "threads": [
+        {
+          "activity": 1790121600000,
+          "title": "Projectless threads without Git"
+        },
+        {
+          "activity": 1790121600000,
+          "title": "Concern about connection setup"
+        },
+        {
+          "activity": 1790121600000,
+          "title": "Design notes"
+        }
+      ]
+    }
+  ],
+  "threads": [
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            9,
+            15
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "search",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "useThreadSearch hook"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            9,
+            15
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "search",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "useThreadSearch hook"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            12,
+            16
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "perf",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "fix/sidebar-perf"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            12,
+            16
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "perf",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "fix/sidebar-perf"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            15,
+            17
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "12",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Upgrade to pnpm12"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            15,
+            17
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "12",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Upgrade to pnpm12"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.7999999999999999,
+        "ranges": [
+          [
+            8,
+            11
+          ]
+        ],
+        "score": 0.9811447328527814,
+        "strong": true
+      },
+      "query": "sch",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix JSONSchema parsing"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.7999999999999999,
+        "ranges": [
+          [
+            8,
+            11
+          ]
+        ],
+        "score": 0.9811447328527814,
+        "strong": true
+      },
+      "query": "sch",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix JSONSchema parsing"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.7999999999999999,
+        "ranges": [
+          [
+            8,
+            11
+          ]
+        ],
+        "score": 0.9811447328527814,
+        "strong": true
+      },
+      "query": "ser",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix HTTPServer crash"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.7999999999999999,
+        "ranges": [
+          [
+            8,
+            11
+          ]
+        ],
+        "score": 0.9811447328527814,
+        "strong": true
+      },
+      "query": "ser",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix HTTPServer crash"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            12,
+            15
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": ".ts",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Rename index.ts"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            12,
+            15
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": ".ts",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Rename index.ts"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.85,
+        "ranges": [
+          [
+            10,
+            13
+          ]
+        ],
+        "score": 1.0424662786560803,
+        "strong": true
+      },
+      "query": ".ts",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix parser.tsx"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.85,
+        "ranges": [
+          [
+            10,
+            13
+          ]
+        ],
+        "score": 1.0424662786560803,
+        "strong": true
+      },
+      "query": ".ts",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix parser.tsx"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.8076923076923077,
+        "ranges": [
+          [
+            0,
+            7
+          ]
+        ],
+        "score": 0.9905788168225197,
+        "strong": true
+      },
+      "query": "githuba",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "GitHubActions setup"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.8076923076923077,
+        "ranges": [
+          [
+            0,
+            7
+          ]
+        ],
+        "score": 0.9905788168225197,
+        "strong": true
+      },
+      "query": "githuba",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "GitHubActions setup"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "ci",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Decision log"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "ci",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Decision log"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.3,
+        "ranges": [
+          [
+            5,
+            9
+          ]
+        ],
+        "score": 0.36792927481979304,
+        "strong": false
+      },
+      "query": "auth",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix oauth redirect"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.3,
+        "ranges": [
+          [
+            5,
+            9
+          ]
+        ],
+        "score": 0.36792927481979304,
+        "strong": false
+      },
+      "query": "auth",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix oauth redirect"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.7571428571428571,
+        "ranges": [
+          [
+            0,
+            4
+          ]
+        ],
+        "score": 0.9285834078785252,
+        "strong": true
+      },
+      "query": "auth",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Authentication cleanup"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.7571428571428571,
+        "ranges": [
+          [
+            0,
+            4
+          ]
+        ],
+        "score": 0.9285834078785252,
+        "strong": true
+      },
+      "query": "auth",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Authentication cleanup"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            6,
+            10
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "auth",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Share auth across worktrees"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            6,
+            10
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "auth",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Share auth across worktrees"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.3,
+        "ranges": [
+          [
+            4,
+            8
+          ]
+        ],
+        "score": 0.36792927481979304,
+        "strong": false
+      },
+      "query": "arch",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Research notes"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.3,
+        "ranges": [
+          [
+            4,
+            8
+          ]
+        ],
+        "score": 0.36792927481979304,
+        "strong": false
+      },
+      "query": "arch",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Research notes"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "arch",
+      "thread": {
+        "activity": 1790121600000,
+        "branch": "research-extension-system",
+        "title": "Notes"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "arch",
+      "thread": {
+        "activity": 1790121600000,
+        "branch": "research-extension-system",
+        "title": "Notes"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            0,
+            2
+          ],
+          [
+            3,
+            7
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "vscode",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "VS Code extension settings"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            0,
+            2
+          ],
+          [
+            3,
+            7
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "vscode",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "VS Code extension settings"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            14,
+            16
+          ],
+          [
+            17,
+            21
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "vscode",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fixvscode and VS Code"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            14,
+            16
+          ],
+          [
+            17,
+            21
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "vscode",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fixvscode and VS Code"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            6
+          ],
+          [
+            7,
+            10
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "fixuibug",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix UI bug in sidebar"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            6
+          ],
+          [
+            7,
+            10
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "fixuibug",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix UI bug in sidebar"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            7
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "fixsid",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            7
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "fixsid",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            9,
+            12
+          ],
+          [
+            13,
+            16
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "fixsid",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Feature: Fix sidebar lag"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            9,
+            12
+          ],
+          [
+            13,
+            16
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "fixsid",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Feature: Fix sidebar lag"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "fsl",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "fsl",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "inth",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Show skill names in thread overview"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "inth",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Show skill names in thread overview"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "tos",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Move Client State to Server"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "tos",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Move Client State to Server"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            0,
+            2
+          ],
+          [
+            3,
+            5
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "t3co",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "T3 Code vs Gemini"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            0,
+            2
+          ],
+          [
+            3,
+            5
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "t3co",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "T3 Code vs Gemini"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            11,
+            13
+          ],
+          [
+            14,
+            17
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "gomod",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Migrate to Go modules"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            11,
+            13
+          ],
+          [
+            14,
+            17
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "gomod",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Migrate to Go modules"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.25,
+        "ranges": [
+          [
+            4,
+            11
+          ],
+          [
+            12,
+            15
+          ]
+        ],
+        "score": 1.533038645082471,
+        "strong": true
+      },
+      "query": "\"sidebar lag\"",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.25,
+        "ranges": [
+          [
+            4,
+            11
+          ],
+          [
+            12,
+            15
+          ]
+        ],
+        "score": 1.533038645082471,
+        "strong": true
+      },
+      "query": "\"sidebar lag\"",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            5
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "café",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Café menu"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            5
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "café",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Café menu"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            7
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "lodz",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "ŁÓDŹ, Wrocław"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            7
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "lodz",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "ŁÓDŹ, Wrocław"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            11,
+            15
+          ],
+          [
+            16,
+            18
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "pnpm12",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Upgrade to pnpm 12"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            11,
+            15
+          ],
+          [
+            16,
+            18
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "pnpm12",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Upgrade to pnpm 12"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "gpt5",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "GPT-5 eval"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "gpt5",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "GPT-5 eval"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            6
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "ios26",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "iOS 26 support"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            6
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": false
+      },
+      "query": "ios26",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "iOS 26 support"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "pnpm13",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Upgrade to pnpm 12"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "pnpm13",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Upgrade to pnpm 12"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "railwya",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Hosting alternatives to Railway"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.45,
+        "ranges": [
+          [
+            24,
+            31
+          ]
+        ],
+        "score": 0.5518939122296895,
+        "strong": false
+      },
+      "query": "railwya",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Hosting alternatives to Railway"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "trim mpc",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Trim MCP model lists"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.725,
+        "ranges": [
+          [
+            0,
+            4
+          ],
+          [
+            5,
+            8
+          ]
+        ],
+        "score": 0.8891624141478331,
+        "strong": false
+      },
+      "query": "trim mpc",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Trim MCP model lists"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "drga",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Restore drag handles"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.45,
+        "ranges": [
+          [
+            8,
+            12
+          ]
+        ],
+        "score": 0.5518939122296895,
+        "strong": false
+      },
+      "query": "drga",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Restore drag handles"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "t3coed",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "t3code perf audit"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.45,
+        "ranges": [
+          [
+            0,
+            6
+          ]
+        ],
+        "score": 0.5518939122296895,
+        "strong": false
+      },
+      "query": "t3coed",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "t3code perf audit"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "oath2",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix oauth2 redirect"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.45,
+        "ranges": [
+          [
+            4,
+            10
+          ]
+        ],
+        "score": 0.5518939122296895,
+        "strong": false
+      },
+      "query": "oath2",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix oauth2 redirect"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.3,
+        "ranges": [
+          [
+            15,
+            19
+          ]
+        ],
+        "score": 0.36792927481979304,
+        "strong": false
+      },
+      "query": "ilde",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Typesafe App Builder"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.3,
+        "ranges": [
+          [
+            15,
+            19
+          ]
+        ],
+        "score": 0.36792927481979304,
+        "strong": false
+      },
+      "query": "ilde",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Typesafe App Builder"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "ilde",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "De-risk idle tunnel cleanup"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.45,
+        "ranges": [
+          [
+            8,
+            12
+          ]
+        ],
+        "score": 0.5518939122296895,
+        "strong": false
+      },
+      "query": "ilde",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "De-risk idle tunnel cleanup"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "ing",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Nightly build fix"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "ing",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Nightly build fix"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "srv",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Server restart"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.45,
+        "ranges": [
+          [
+            0,
+            4
+          ]
+        ],
+        "score": 0.5518939122296895,
+        "strong": false
+      },
+      "query": "srv",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Server restart"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "sidb",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.45,
+        "ranges": [
+          [
+            4,
+            9
+          ]
+        ],
+        "score": 0.5518939122296895,
+        "strong": false
+      },
+      "query": "sidb",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "cron",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Config cleanup"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "cron",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Config cleanup"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            11
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "fix the sidebar",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix Sidebar Lag"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            11
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "fix the sidebar",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix Sidebar Lag"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "the",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "the",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            7
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "don't",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Don’t merge yet"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            7
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "don't",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Don’t merge yet"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "githbu",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "GitHub API usage"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.45,
+        "ranges": [
+          [
+            0,
+            6
+          ]
+        ],
+        "score": 0.5518939122296895,
+        "strong": false
+      },
+      "query": "githbu",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "GitHub API usage"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "macso",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix macOS window"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.45,
+        "ranges": [
+          [
+            4,
+            9
+          ]
+        ],
+        "score": 0.5518939122296895,
+        "strong": false
+      },
+      "query": "macso",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix macOS window"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            4,
+            7
+          ],
+          [
+            8,
+            13
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "cmd enter",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix Cmd+Enter"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            4,
+            7
+          ],
+          [
+            8,
+            13
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "cmd enter",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix Cmd+Enter"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "cmd enter",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Open links external"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "cmd enter",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Open links external"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            3
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "# fix",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            3
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "# fix",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "#",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "#",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "´´´",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "´´´",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Fix sidebar lag"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            4
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "🚀",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "🚀 Launch checklist"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            4
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "🚀",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "🚀 Launch checklist"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            12,
+            18
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "搜索",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "实现全文搜索"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            12,
+            18
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "搜索",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "实现全文搜索"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            9,
+            15
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "検索",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "新しい検索機能"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            9,
+            15
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "検索",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "新しい検索機能"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            12,
+            21
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "ไทย",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "ภาษาไทย"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            12,
+            21
+          ]
+        ],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "ไทย",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "ภาษาไทย"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.7999999999999999,
+        "ranges": [
+          [
+            0,
+            3
+          ]
+        ],
+        "score": 0.9811447328527814,
+        "strong": true
+      },
+      "query": "jul",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Julius’s notes"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.7999999999999999,
+        "ranges": [
+          [
+            0,
+            3
+          ]
+        ],
+        "score": 0.9811447328527814,
+        "strong": true
+      },
+      "query": "jul",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Julius’s notes"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "s",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Julius’s notes"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "s",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Julius’s notes"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": true
+      },
+      "query": "flotilla/cmdk",
+      "thread": {
+        "activity": 1790121600000,
+        "branch": "flotilla/cmdk-search-v2",
+        "title": "Cmd+K search"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "score": 0.7358585496395861,
+        "strong": true
+      },
+      "query": "flotilla/cmdk",
+      "thread": {
+        "activity": 1790121600000,
+        "branch": "flotilla/cmdk-search-v2",
+        "title": "Cmd+K search"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": {
+          "label": "Branch",
+          "ranges": [
+            [
+              0,
+              7
+            ]
+          ],
+          "text": "cleanup-payloads"
+        },
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [],
+        "score": 0.7358585496395861,
+        "strong": true
+      },
+      "query": "cleanup",
+      "thread": {
+        "activity": 1790121600000,
+        "branch": "flotilla/cleanup-payloads",
+        "prs": [
+          {
+            "number": 22889,
+            "references": [],
+            "title": "Smaller MCP payloads"
+          }
+        ],
+        "title": "Trim model lists"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": {
+          "label": "Branch",
+          "ranges": [
+            [
+              0,
+              7
+            ]
+          ],
+          "text": "cleanup-payloads"
+        },
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [],
+        "score": 0.7358585496395861,
+        "strong": true
+      },
+      "query": "cleanup",
+      "thread": {
+        "activity": 1790121600000,
+        "branch": "flotilla/cleanup-payloads",
+        "prs": [
+          {
+            "number": 22889,
+            "references": [],
+            "title": "Smaller MCP payloads"
+          }
+        ],
+        "title": "Trim model lists"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": {
+          "label": "PR",
+          "ranges": [
+            [
+              1,
+              6
+            ]
+          ],
+          "text": "#22889 Smaller MCP payloads"
+        },
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "pull request #22889",
+      "thread": {
+        "activity": 1790121600000,
+        "branch": "flotilla/cleanup-payloads",
+        "prs": [
+          {
+            "number": 22889,
+            "references": [],
+            "title": "Smaller MCP payloads"
+          }
+        ],
+        "title": "Trim model lists"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": {
+          "label": "PR",
+          "ranges": [
+            [
+              1,
+              6
+            ]
+          ],
+          "text": "#22889 Smaller MCP payloads"
+        },
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "pull request #22889",
+      "thread": {
+        "activity": 1790121600000,
+        "branch": "flotilla/cleanup-payloads",
+        "prs": [
+          {
+            "number": 22889,
+            "references": [],
+            "title": "Smaller MCP payloads"
+          }
+        ],
+        "title": "Trim model lists"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": {
+          "label": "PR",
+          "ranges": [
+            [
+              1,
+              6
+            ]
+          ],
+          "text": "#22889 Smaller MCP payloads"
+        },
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "pr22889",
+      "thread": {
+        "activity": 1790121600000,
+        "prs": [
+          {
+            "number": 22889,
+            "references": [],
+            "title": "Smaller MCP payloads"
+          }
+        ],
+        "title": "Trim model lists"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": {
+          "label": "PR",
+          "ranges": [
+            [
+              1,
+              6
+            ]
+          ],
+          "text": "#22889 Smaller MCP payloads"
+        },
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [],
+        "score": 1.2264309160659768,
+        "strong": true
+      },
+      "query": "pr22889",
+      "thread": {
+        "activity": 1790121600000,
+        "prs": [
+          {
+            "number": 22889,
+            "references": [],
+            "title": "Smaller MCP payloads"
+          }
+        ],
+        "title": "Trim model lists"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": {
+          "label": "PR",
+          "ranges": [
+            [
+              19,
+              27
+            ]
+          ],
+          "text": "#22889 Smaller MCP payloads"
+        },
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.375,
+        "ranges": [],
+        "score": 0.4599115935247413,
+        "strong": false
+      },
+      "query": "payloads t3code",
+      "thread": {
+        "activity": 1790121600000,
+        "project": "acme/t3code",
+        "prs": [
+          {
+            "number": 22889,
+            "references": [],
+            "title": "Smaller MCP payloads"
+          }
+        ],
+        "title": "Trim model lists"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": {
+          "label": "PR",
+          "ranges": [
+            [
+              19,
+              27
+            ]
+          ],
+          "text": "#22889 Smaller MCP payloads"
+        },
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.375,
+        "ranges": [],
+        "score": 0.4599115935247413,
+        "strong": false
+      },
+      "query": "payloads t3code",
+      "thread": {
+        "activity": 1790121600000,
+        "project": "acme/t3code",
+        "prs": [
+          {
+            "number": 22889,
+            "references": [],
+            "title": "Smaller MCP payloads"
+          }
+        ],
+        "title": "Trim model lists"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "trim lakebed",
+      "thread": {
+        "activity": 1790121600000,
+        "project": "acme/t3code",
+        "prs": [
+          {
+            "number": 22889,
+            "references": [],
+            "title": "Smaller MCP payloads"
+          }
+        ],
+        "title": "Trim model lists"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "trim lakebed",
+      "thread": {
+        "activity": 1790121600000,
+        "project": "acme/t3code",
+        "prs": [
+          {
+            "number": 22889,
+            "references": [],
+            "title": "Smaller MCP payloads"
+          }
+        ],
+        "title": "Trim model lists"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "22889",
+      "thread": {
+        "activity": 1790121600000,
+        "prs": [
+          {
+            "number": 22189,
+            "references": [],
+            "title": null
+          }
+        ],
+        "title": "Stats"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "22889",
+      "thread": {
+        "activity": 1790121600000,
+        "prs": [
+          {
+            "number": 22189,
+            "references": [],
+            "title": null
+          }
+        ],
+        "title": "Stats"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "fix ci",
+      "thread": {
+        "activity": 1790121600000,
+        "prs": [
+          {
+            "number": 22645,
+            "references": [],
+            "title": "fix model picker"
+          },
+          {
+            "number": 22649,
+            "references": [],
+            "title": "CI speedups"
+          }
+        ],
+        "title": "eMudhra certificate update request"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "fix ci",
+      "thread": {
+        "activity": 1790121600000,
+        "prs": [
+          {
+            "number": 22645,
+            "references": [],
+            "title": "fix model picker"
+          },
+          {
+            "number": 22649,
+            "references": [],
+            "title": "CI speedups"
+          }
+        ],
+        "title": "eMudhra certificate update request"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": {
+          "label": "PR",
+          "ranges": [
+            [
+              5,
+              9
+            ]
+          ],
+          "text": "#243 perf: faster cold starts"
+        },
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.375,
+        "ranges": [],
+        "score": 0.4599115935247413,
+        "strong": false
+      },
+      "query": "lakebed perf",
+      "thread": {
+        "activity": 1790121600000,
+        "project": "lakebed",
+        "prs": [
+          {
+            "number": 243,
+            "references": [],
+            "title": "perf: faster cold starts"
+          }
+        ],
+        "title": "Weekly notes"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": {
+          "label": "PR",
+          "ranges": [
+            [
+              5,
+              9
+            ]
+          ],
+          "text": "#243 perf: faster cold starts"
+        },
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.375,
+        "ranges": [],
+        "score": 0.4599115935247413,
+        "strong": false
+      },
+      "query": "lakebed perf",
+      "thread": {
+        "activity": 1790121600000,
+        "project": "lakebed",
+        "prs": [
+          {
+            "number": 243,
+            "references": [],
+            "title": "perf: faster cold starts"
+          }
+        ],
+        "title": "Weekly notes"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": {
+          "label": "ID or link",
+          "ranges": [],
+          "text": "5fe6f59c"
+        },
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [],
+        "score": 0.7358585496395861,
+        "strong": true
+      },
+      "query": "5fe6f59c",
+      "thread": {
+        "activity": 1790121600000,
+        "id": "thread-5fe6f59c-4976",
+        "title": "Trim model lists"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": {
+          "label": "ID or link",
+          "ranges": [],
+          "text": "5fe6f59c"
+        },
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.6,
+        "ranges": [],
+        "score": 0.7358585496395861,
+        "strong": true
+      },
+      "query": "5fe6f59c",
+      "thread": {
+        "activity": 1790121600000,
+        "id": "thread-5fe6f59c-4976",
+        "title": "Trim model lists"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "github.com/acme/t3code/pull/22889/files",
+      "thread": {
+        "activity": 1790121600000,
+        "prs": [
+          {
+            "number": 22889,
+            "references": [
+              "https://github.com/acme/t3code/pull/22889"
+            ]
+          }
+        ],
+        "title": "Trim"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "github.com/acme/t3code/pull/22889/files",
+      "thread": {
+        "activity": 1790121600000,
+        "prs": [
+          {
+            "number": 22889,
+            "references": [
+              "https://github.com/acme/t3code/pull/22889"
+            ]
+          }
+        ],
+        "title": "Trim"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "github.com/acme/t3code/pull/2288",
+      "thread": {
+        "activity": 1790121600000,
+        "prs": [
+          {
+            "number": 22889,
+            "references": [
+              "https://github.com/acme/t3code/pull/22889"
+            ]
+          }
+        ],
+        "title": "Trim"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "github.com/acme/t3code/pull/2288",
+      "thread": {
+        "activity": 1790121600000,
+        "prs": [
+          {
+            "number": 22889,
+            "references": [
+              "https://github.com/acme/t3code/pull/22889"
+            ]
+          }
+        ],
+        "title": "Trim"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 1792281600000,
+        "picked_exactly": true,
+        "quality": 0.7857142857142857,
+        "ranges": [
+          [
+            0,
+            3
+          ]
+        ],
+        "score": 1.2906589743911863,
+        "strong": true
+      },
+      "query": "rel",
+      "thread": {
+        "activity": 1790121600000,
+        "opens": {
+          "at": 1792281600000,
+          "picks": [
+            {
+              "at": 1792281600000,
+              "query": "rel"
+            }
+          ],
+          "score": 1.0
+        },
+        "title": "Release checklist"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 1792281600000,
+        "picked_exactly": true,
+        "quality": 0.7857142857142857,
+        "ranges": [
+          [
+            0,
+            3
+          ]
+        ],
+        "score": 1.2906589743911863,
+        "strong": true
+      },
+      "query": "rel",
+      "thread": {
+        "activity": 1790121600000,
+        "opens": {
+          "at": 1792281600000,
+          "picks": [
+            {
+              "at": 1792281600000,
+              "query": "rel"
+            }
+          ],
+          "score": 1.0
+        },
+        "title": "Release checklist"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.7857142857142857,
+        "ranges": [
+          [
+            0,
+            3
+          ]
+        ],
+        "score": 0.9701662459999082,
+        "strong": true
+      },
+      "query": "rel",
+      "thread": {
+        "activity": 1790121600000,
+        "opens": {
+          "at": 1784937600000,
+          "picks": [
+            {
+              "at": 1784937600000,
+              "query": "rel"
+            }
+          ],
+          "score": 1.0
+        },
+        "title": "Release checklist"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 0.7857142857142857,
+        "ranges": [
+          [
+            0,
+            3
+          ]
+        ],
+        "score": 0.9701662459999082,
+        "strong": true
+      },
+      "query": "rel",
+      "thread": {
+        "activity": 1790121600000,
+        "opens": {
+          "at": 1784937600000,
+          "picks": [
+            {
+              "at": 1784937600000,
+              "query": "rel"
+            }
+          ],
+          "score": 1.0
+        },
+        "title": "Release checklist"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 1792540800000,
+        "picked_exactly": true,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            3
+          ]
+        ],
+        "score": 2.0189121664265546,
+        "strong": true
+      },
+      "query": "fix",
+      "thread": {
+        "activity": 1790121600000,
+        "opens": {
+          "at": 1792713600000,
+          "picks": [
+            {
+              "at": 1792713600000,
+              "query": "fix browser"
+            },
+            {
+              "at": 1792540800000,
+              "query": "fix"
+            }
+          ],
+          "score": 2.0
+        },
+        "title": "Fix browser"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 1792540800000,
+        "picked_exactly": true,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            3
+          ]
+        ],
+        "score": 2.0189121664265546,
+        "strong": true
+      },
+      "query": "fix",
+      "thread": {
+        "activity": 1790121600000,
+        "opens": {
+          "at": 1792713600000,
+          "picks": [
+            {
+              "at": 1792713600000,
+              "query": "fix browser"
+            },
+            {
+              "at": 1792540800000,
+              "query": "fix"
+            }
+          ],
+          "score": 2.0
+        },
+        "title": "Fix browser"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 1792713600000,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            7
+          ]
+        ],
+        "score": 1.7264309160659768,
+        "strong": true
+      },
+      "query": "lakebed",
+      "thread": {
+        "activity": 1790121600000,
+        "opens": {
+          "at": 1792713600000,
+          "picks": [
+            {
+              "at": 1792713600000,
+              "query": "lakebed perf"
+            }
+          ],
+          "score": 1.0
+        },
+        "title": "Lakebed perf audit"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 1792713600000,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            7
+          ]
+        ],
+        "score": 1.7264309160659768,
+        "strong": true
+      },
+      "query": "lakebed",
+      "thread": {
+        "activity": 1790121600000,
+        "opens": {
+          "at": 1792713600000,
+          "picks": [
+            {
+              "at": 1792713600000,
+              "query": "lakebed perf"
+            }
+          ],
+          "score": 1.0
+        },
+        "title": "Lakebed perf audit"
+      },
+      "typos": true
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            7
+          ]
+        ],
+        "score": 2.5,
+        "strong": true
+      },
+      "query": "goldbug",
+      "thread": {
+        "activity": 1789257600000,
+        "opens": {
+          "at": 1792627200000,
+          "picks": [],
+          "score": 12.0
+        },
+        "title": "Goldbug notes"
+      },
+      "typos": false
+    },
+    {
+      "match": {
+        "hint": null,
+        "picked_at": 0,
+        "picked_exactly": false,
+        "quality": 1.0,
+        "ranges": [
+          [
+            0,
+            7
+          ]
+        ],
+        "score": 2.5,
+        "strong": true
+      },
+      "query": "goldbug",
+      "thread": {
+        "activity": 1789257600000,
+        "opens": {
+          "at": 1792627200000,
+          "picks": [],
+          "score": 12.0
+        },
+        "title": "Goldbug notes"
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "x",
+      "thread": {
+        "activity": 1790121600000,
+        "title": ""
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "x",
+      "thread": {
+        "activity": 1790121600000,
+        "title": ""
+      },
+      "typos": true
+    },
+    {
+      "match": null,
+      "query": "",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Anything"
+      },
+      "typos": false
+    },
+    {
+      "match": null,
+      "query": "",
+      "thread": {
+        "activity": 1790121600000,
+        "title": "Anything"
+      },
+      "typos": true
+    }
+  ],
+  "tokens": [
+    {
+      "long": [
+        "retry”",
+        "the",
+        "fts",
+        "部署"
+      ],
+      "messages": true,
+      "query": "“Retry” the FTS ok 部署 x",
+      "short": [
+        "ok",
+        "x"
+      ],
+      "words": [
+        "retry”",
+        "the",
+        "fts",
+        "ok",
+        "部署",
+        "x"
+      ]
+    },
+    {
+      "long": [],
+      "messages": false,
+      "query": "df -h ls",
+      "short": [
+        "df",
+        "-h",
+        "ls"
+      ],
+      "words": [
+        "df",
+        "-h",
+        "ls"
+      ]
+    },
+    {
+      "long": [
+        "retry"
+      ],
+      "messages": true,
+      "query": "retry",
+      "short": [],
+      "words": [
+        "retry"
+      ]
+    },
+    {
+      "long": [
+        "部署"
+      ],
+      "messages": true,
+      "query": "部署",
+      "short": [],
+      "words": [
+        "部署"
+      ]
+    },
+    {
+      "long": [
+        "don't"
+      ],
+      "messages": true,
+      "query": "don’t",
+      "short": [],
+      "words": [
+        "don't"
+      ]
+    },
+    {
+      "long": [],
+      "messages": false,
+      "query": "a b",
+      "short": [
+        "a",
+        "b"
+      ],
+      "words": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "long": [
+        "검색",
+        "기능"
+      ],
+      "messages": true,
+      "query": "검색 기능",
+      "short": [],
+      "words": [
+        "검색",
+        "기능"
+      ]
+    },
+    {
+      "long": [
+        "sidebar"
+      ],
+      "messages": true,
+      "query": "\"sidebar\"",
+      "short": [],
+      "words": [
+        "sidebar"
+      ]
+    },
+    {
+      "long": [
+        "i̇stanbul"
+      ],
+      "messages": true,
+      "query": "İstanbul",
+      "short": [],
+      "words": [
+        "i̇stanbul"
+      ]
+    },
+    {
+      "long": [
+        "´´´"
+      ],
+      "messages": true,
+      "query": "´´´",
+      "short": [],
+      "words": [
+        "´´´"
+      ]
+    },
+    {
+      "long": [],
+      "messages": false,
+      "query": "  ",
+      "short": [],
+      "words": []
+    }
+  ]
+}

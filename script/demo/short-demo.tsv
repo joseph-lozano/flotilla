@@ -1,0 +1,11 @@
+# Narration for the 60-second demo: <caption><TAB><line>. Captions match short-demo.sh's segments.
+fleet	Meet Flotilla: your coding agents, side by side, each alone in its own isolated cloud VM.
+new	Start a thread in your repo and say what you want.
+start	It starts in seconds, in a fresh VM of its own, with your repo already set up.
+services	Its dev servers start too, so you can open the app it's building.
+conflict	When the pull request conflicts, Resolve writes the prompt for the agent.
+merge	When the checks go green, hold to merge.
+setup	If a commit breaks setup, fix it in a new thread, error and log included.
+agents	Four files in dot agents tell Flotilla how to set up, wake, clean up and serve your repo.
+daynight	Day or night, it feels at home on your Mac.
+close	Flotilla. A fleet of coding agents, each in its own boat.

@@ -1,0 +1,2964 @@
+{
+  "providers": [
+    {
+      "aliases": [
+        "codex"
+      ],
+      "cli_name": "codex",
+      "default_model": "gpt-5.6-terra",
+      "key": "codex",
+      "models": [
+        {
+          "effort": {
+            "default": "low",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": true,
+          "id": "gpt-6.1-sol",
+          "label": "GPT-6.1 Sol",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "low",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": true,
+          "id": "gpt-6-astra",
+          "label": "GPT-6 Astra",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "low",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": true,
+          "id": "gpt-6-luna",
+          "label": "GPT-6 Luna",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": true,
+          "id": "gpt-6-sol",
+          "label": "GPT-6 Sol",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "none",
+            "supported": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": true,
+          "id": "gpt-5.6-sol",
+          "label": "GPT-5.6 Sol",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "none",
+            "supported": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": true,
+          "id": "gpt-5.6-terra",
+          "label": "GPT-5.6 Terra",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "none",
+            "supported": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": true,
+          "id": "gpt-5.6-luna",
+          "label": "GPT-5.6 Luna",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "none",
+            "supported": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": true,
+          "id": "gpt-5.5",
+          "label": "GPT-5.5",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "none",
+            "supported": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-5.4",
+          "label": "GPT-5.4",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "none",
+            "supported": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-5.4-mini",
+          "label": "GPT-5.4 Mini",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-5.3-codex",
+          "label": "GPT-5.3 Codex",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "none",
+            "supported": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openai.gpt-5.6-terra",
+          "label": "GPT-5.6 Terra (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "none",
+            "supported": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openai.gpt-5.5",
+          "label": "GPT-5.5 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "none",
+            "supported": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openai.gpt-5.4",
+          "label": "GPT-5.4 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "none",
+            "supported": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openai.gpt-5.6-sol",
+          "label": "GPT-5.6 Sol (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "none",
+            "supported": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openai.gpt-5.6-luna",
+          "label": "GPT-5.6 Luna (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "none",
+            "supported": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openai.gpt-5.5-2026-04-23",
+          "label": "GPT-5.5 2026-04-23 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "none",
+            "supported": [
+              "none",
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openai.gpt-5.4-2026-03-05",
+          "label": "GPT-5.4 2026-03-05 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "deepseek-flash",
+          "label": "DeepSeek V4.1 Flash",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "deepseek-v4-pro",
+          "label": "DeepSeek V4 Pro",
+          "sdk_id": null
+        }
+      ],
+      "order": 1
+    },
+    {
+      "aliases": [
+        "claude",
+        "claude-code"
+      ],
+      "cli_name": "claude",
+      "default_model": "sonnet",
+      "key": "claude-code",
+      "models": [
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-fable-5-1",
+          "label": "Claude Fable 5.1",
+          "sdk_id": "claude-fable-5-1"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-fable-5",
+          "label": "Claude Fable 5",
+          "sdk_id": "claude-fable-5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": true,
+          "id": "opus-5-5",
+          "label": "Opus 5.5",
+          "sdk_id": "claude-opus-5-5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": true,
+          "id": "opus-5",
+          "label": "Opus 5",
+          "sdk_id": "claude-opus-5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": true,
+          "id": "opus",
+          "label": "Opus 4.8",
+          "sdk_id": "claude-opus-4-8"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-sonnet-5-5",
+          "label": "Sonnet 5.5",
+          "sdk_id": "claude-sonnet-5-5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "sonnet",
+          "label": "Sonnet",
+          "sdk_id": "claude-sonnet-5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-haiku-5-5",
+          "label": "Haiku 5.5",
+          "sdk_id": "claude-haiku-5-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "haiku",
+          "label": "Haiku",
+          "sdk_id": "claude-haiku-4-5-20251001"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "opusplan",
+          "label": "Opus plans, Sonnet executes",
+          "sdk_id": "opusplan"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "us.anthropic.claude-sonnet-4-6",
+          "label": "Sonnet 4.6 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "us.anthropic.claude-opus-4-6-v1",
+          "label": "Opus 4.6 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+          "label": "Sonnet 4.5 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "us.anthropic.claude-opus-4-5-20251101-v1:0",
+          "label": "Opus 4.5 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+          "label": "Haiku 4.5 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "us.anthropic.claude-sonnet-5",
+          "label": "Sonnet 5 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "us.anthropic.claude-opus-5",
+          "label": "Opus 5 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "us.anthropic.claude-fable-5-1",
+          "label": "Claude Fable 5.1 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "us.anthropic.claude-fable-5",
+          "label": "Claude Fable 5 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "us.anthropic.claude-opus-4-8",
+          "label": "Opus 4.8 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "us.anthropic.claude-opus-4-7",
+          "label": "Opus 4.7 (Bedrock)",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "deepseek-flash",
+          "label": "DeepSeek V4.1 Flash",
+          "sdk_id": null
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "deepseek-v4-pro",
+          "label": "DeepSeek V4 Pro",
+          "sdk_id": null
+        }
+      ],
+      "order": 2
+    },
+    {
+      "aliases": [
+        "pi"
+      ],
+      "cli_name": "pi",
+      "default_model": "claude-sonnet-5",
+      "key": "pi",
+      "models": [
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-fable-5-1",
+          "label": "Claude Fable 5.1",
+          "sdk_id": "claude-fable-5-1"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-fable-5",
+          "label": "Claude Fable 5",
+          "sdk_id": "claude-fable-5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-opus-5-5",
+          "label": "Opus 5.5",
+          "sdk_id": "claude-opus-5-5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-opus-5",
+          "label": "Opus 5",
+          "sdk_id": "claude-opus-5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-sonnet-5-5",
+          "label": "Sonnet 5.5",
+          "sdk_id": "claude-sonnet-5-5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-sonnet-5",
+          "label": "Sonnet",
+          "sdk_id": "claude-sonnet-5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-haiku-5-5",
+          "label": "Haiku 5.5",
+          "sdk_id": "claude-haiku-5-5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-haiku-4-5",
+          "label": "Haiku",
+          "sdk_id": "claude-haiku-4-5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-6.1-sol",
+          "label": "GPT-6.1 Sol",
+          "sdk_id": "gpt-6.1-sol"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-6-sol",
+          "label": "GPT-6 Sol",
+          "sdk_id": "gpt-6-sol"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-6-luna",
+          "label": "GPT-6 Luna",
+          "sdk_id": "gpt-6-luna"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-5.6-terra",
+          "label": "GPT-5.6 Terra",
+          "sdk_id": "gpt-5.6-terra"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-5.5",
+          "label": "GPT-5.5",
+          "sdk_id": "gpt-5.5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-5.4-mini",
+          "label": "GPT-5.4 Mini",
+          "sdk_id": "gpt-5.4-mini"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:anthropic/claude-sonnet-5.5",
+          "label": "Sonnet 5.5 (OpenRouter)",
+          "sdk_id": "anthropic/claude-sonnet-5.5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:anthropic/claude-opus-5.5",
+          "label": "Opus 5.5 (OpenRouter)",
+          "sdk_id": "anthropic/claude-opus-5.5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:anthropic/claude-haiku-5.5",
+          "label": "Haiku 5.5 (OpenRouter)",
+          "sdk_id": "anthropic/claude-haiku-5.5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:openai/gpt-6.1-sol",
+          "label": "GPT-6.1 Sol (OpenRouter)",
+          "sdk_id": "openai/gpt-6.1-sol"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:openai/gpt-6-luna",
+          "label": "GPT-6 Luna (OpenRouter)",
+          "sdk_id": "openai/gpt-6-luna"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-4-argon",
+          "label": "Gemini 4 Argon (OpenRouter)",
+          "sdk_id": "google/gemini-4-argon"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:x-ai/grok-4.7",
+          "label": "Grok 4.7 (OpenRouter)",
+          "sdk_id": "x-ai/grok-4.7"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-3.8-flash",
+          "label": "Gemini 3.8 Flash (OpenRouter)",
+          "sdk_id": "google/gemini-3.8-flash"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-3.7-flash",
+          "label": "Gemini 3.7 Flash (OpenRouter)",
+          "sdk_id": "google/gemini-3.7-flash"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-3.6-flash",
+          "label": "Gemini 3.6 Flash (OpenRouter)",
+          "sdk_id": "google/gemini-3.6-flash"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-3.5-flash-lite",
+          "label": "Gemini 3.5 Flash Lite (OpenRouter)",
+          "sdk_id": "google/gemini-3.5-flash-lite"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:z-ai/glm-5.3",
+          "label": "GLM 5.3 (OpenRouter)",
+          "sdk_id": "z-ai/glm-5.3"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:z-ai/glm-5.3-flash",
+          "label": "GLM 5.3 Flash (OpenRouter)",
+          "sdk_id": "z-ai/glm-5.3-flash"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:moonshotai/kimi-k3",
+          "label": "Kimi K3 (OpenRouter)",
+          "sdk_id": "moonshotai/kimi-k3"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:minimax/minimax-m3",
+          "label": "MiniMax M3 (OpenRouter)",
+          "sdk_id": "minimax/minimax-m3"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:xiaomi/mimo-v2.6-pro",
+          "label": "MiMo V2.6 Pro (OpenRouter)",
+          "sdk_id": "xiaomi/mimo-v2.6-pro"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:xiaomi/mimo-v2.6-flash",
+          "label": "MiMo V2.6 Flash (OpenRouter)",
+          "sdk_id": "xiaomi/mimo-v2.6-flash"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:qwen/qwen3.8-max-0902",
+          "label": "Qwen3.8 Max (OpenRouter)",
+          "sdk_id": "qwen/qwen3.8-max-0902"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:deepseek/deepseek-v4.1-flash",
+          "label": "DeepSeek V4.1 Flash (OpenRouter)",
+          "sdk_id": "deepseek/deepseek-v4.1-flash"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:deepseek/deepseek-v4-flash-0731",
+          "label": "DeepSeek V4 Flash 0731 (OpenRouter)",
+          "sdk_id": "deepseek/deepseek-v4-flash-0731"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:deepseek/deepseek-v4-pro-0813",
+          "label": "DeepSeek V4 Pro 0813 (OpenRouter)",
+          "sdk_id": "deepseek/deepseek-v4-pro-0813"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:gemini-3.8-flash",
+          "label": "Gemini 3.8 Flash (LLM Gateway)",
+          "sdk_id": "gemini-3.8-flash"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:gemini-3.7-flash",
+          "label": "Gemini 3.7 Flash (LLM Gateway)",
+          "sdk_id": "gemini-3.7-flash"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:gemini-3.5-flash-lite",
+          "label": "Gemini 3.5 Flash Lite (LLM Gateway)",
+          "sdk_id": "gemini-3.5-flash-lite"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:glm-5.3",
+          "label": "GLM 5.3 (LLM Gateway)",
+          "sdk_id": "glm-5.3"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:glm-5.3-flash",
+          "label": "GLM 5.3 Flash (LLM Gateway)",
+          "sdk_id": "glm-5.3-flash"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:kimi-k3",
+          "label": "Kimi K3 (LLM Gateway)",
+          "sdk_id": "kimi-k3"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:claude-sonnet-5",
+          "label": "Sonnet 5 (LLM Gateway)",
+          "sdk_id": "claude-sonnet-5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:gpt-5.2",
+          "label": "GPT-5.2 (LLM Gateway)",
+          "sdk_id": "gpt-5.2"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "mistral-large-4",
+          "label": "Mistral Large 4",
+          "sdk_id": "mistral-large-4"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "mistral-medium-3.5",
+          "label": "Mistral Medium 3.5",
+          "sdk_id": "mistral-medium-3.5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "mistral-small-4",
+          "label": "Mistral Small 4",
+          "sdk_id": "mistral-small-2603"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "mistral-large-3",
+          "label": "Mistral Large 3",
+          "sdk_id": "mistral-large-2512"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:mistralai/mistral-large-4-0",
+          "label": "Mistral Large 4 (OpenRouter)",
+          "sdk_id": "mistralai/mistral-large-4-0"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:mistralai/mistral-medium-3-5",
+          "label": "Mistral Medium 3.5 (OpenRouter)",
+          "sdk_id": "mistralai/mistral-medium-3-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:mistralai/mistral-small-2603",
+          "label": "Mistral Small 4 (OpenRouter)",
+          "sdk_id": "mistralai/mistral-small-2603"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:mistralai/mistral-large-2512",
+          "label": "Mistral Large 3 (OpenRouter)",
+          "sdk_id": "mistralai/mistral-large-2512"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:mistral-large-4",
+          "label": "Mistral Large 4 (LLM Gateway)",
+          "sdk_id": "mistral-large-4"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:mistral-medium-3-5",
+          "label": "Mistral Medium 3.5 (LLM Gateway)",
+          "sdk_id": "mistral-medium-3-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:mistral-small-2603",
+          "label": "Mistral Small 4 (LLM Gateway)",
+          "sdk_id": "mistral-small-2603"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:mistral-large-2512",
+          "label": "Mistral Large 3 (LLM Gateway)",
+          "sdk_id": "mistral-large-2512"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "grok-4.7",
+          "label": "Grok 4.7",
+          "sdk_id": "grok-4.7"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "grok-4.6",
+          "label": "Grok 4.6",
+          "sdk_id": "grok-4.6"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "grok-build-0.1",
+          "label": "Grok Build 0.1",
+          "sdk_id": "grok-build-0.1"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:kimi-k3",
+          "label": "Kimi K3 (OpenCode Go)",
+          "sdk_id": "kimi-k3"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:glm-5.3",
+          "label": "GLM-5.3 (OpenCode Go)",
+          "sdk_id": "glm-5.3"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:qwen3.8-max",
+          "label": "Qwen3.8 Max (OpenCode Go)",
+          "sdk_id": "qwen3.8-max"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:deepseek-v4-pro",
+          "label": "DeepSeek V4 Pro (OpenCode Go)",
+          "sdk_id": "deepseek-v4-pro"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:minimax-m3",
+          "label": "MiniMax M3 (OpenCode Go)",
+          "sdk_id": "minimax-m3"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:mimo-v2.6-pro",
+          "label": "MiMo V2.6 Pro (OpenCode Go)",
+          "sdk_id": "mimo-v2.6-pro"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:grok-4.7",
+          "label": "Grok 4.7 (OpenCode Go)",
+          "sdk_id": "grok-4.7"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:gpt-6-luna",
+          "label": "GPT-6 Luna (OpenCode Go)",
+          "sdk_id": "gpt-6-luna"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode:claude-opus-5-5",
+          "label": "Opus 5.5 (OpenCode)",
+          "sdk_id": "claude-opus-5-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode:claude-sonnet-5-5",
+          "label": "Sonnet 5.5 (OpenCode)",
+          "sdk_id": "claude-sonnet-5-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode:gpt-6.1-sol",
+          "label": "GPT-6.1 Sol (OpenCode)",
+          "sdk_id": "gpt-6.1-sol"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode:gemini-4-argon",
+          "label": "Gemini 4 Argon (OpenCode)",
+          "sdk_id": "gemini-4-argon"
+        }
+      ],
+      "order": 3
+    },
+    {
+      "aliases": [
+        "opencode"
+      ],
+      "cli_name": "opencode",
+      "default_model": "claude-sonnet-5",
+      "key": "opencode",
+      "models": [
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "claude-fable-5-1",
+          "label": "Claude Fable 5.1",
+          "sdk_id": "claude-fable-5-1"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "claude-fable-5",
+          "label": "Claude Fable 5",
+          "sdk_id": "claude-fable-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "claude-opus-5-5",
+          "label": "Opus 5.5",
+          "sdk_id": "claude-opus-5-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "claude-opus-5",
+          "label": "Opus 5",
+          "sdk_id": "claude-opus-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "claude-sonnet-5-5",
+          "label": "Sonnet 5.5",
+          "sdk_id": "claude-sonnet-5-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "claude-sonnet-5",
+          "label": "Sonnet",
+          "sdk_id": "claude-sonnet-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "claude-haiku-5-5",
+          "label": "Haiku 5.5",
+          "sdk_id": "claude-haiku-5-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "claude-haiku-4-5",
+          "label": "Haiku",
+          "sdk_id": "claude-haiku-4-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "gpt-6.1-sol",
+          "label": "GPT-6.1 Sol",
+          "sdk_id": "gpt-6.1-sol"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "gpt-6-sol",
+          "label": "GPT-6 Sol",
+          "sdk_id": "gpt-6-sol"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "gpt-6-luna",
+          "label": "GPT-6 Luna",
+          "sdk_id": "gpt-6-luna"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "gpt-5.6-terra",
+          "label": "GPT-5.6 Terra",
+          "sdk_id": "gpt-5.6-terra"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "gpt-5.5",
+          "label": "GPT-5.5",
+          "sdk_id": "gpt-5.5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "gpt-5.4",
+          "label": "GPT-5.4",
+          "sdk_id": "gpt-5.4"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "gpt-5.4-mini",
+          "label": "GPT-5.4 Mini",
+          "sdk_id": "gpt-5.4-mini"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:anthropic/claude-sonnet-5.5",
+          "label": "Sonnet 5.5 (OpenRouter)",
+          "sdk_id": "anthropic/claude-sonnet-5.5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:anthropic/claude-opus-5.5",
+          "label": "Opus 5.5 (OpenRouter)",
+          "sdk_id": "anthropic/claude-opus-5.5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:anthropic/claude-haiku-5.5",
+          "label": "Haiku 5.5 (OpenRouter)",
+          "sdk_id": "anthropic/claude-haiku-5.5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:openai/gpt-6.1-sol",
+          "label": "GPT-6.1 Sol (OpenRouter)",
+          "sdk_id": "openai/gpt-6.1-sol"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:openai/gpt-6-luna",
+          "label": "GPT-6 Luna (OpenRouter)",
+          "sdk_id": "openai/gpt-6-luna"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-4-argon",
+          "label": "Gemini 4 Argon (OpenRouter)",
+          "sdk_id": "google/gemini-4-argon"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:x-ai/grok-4.7",
+          "label": "Grok 4.7 (OpenRouter)",
+          "sdk_id": "x-ai/grok-4.7"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-3.8-flash",
+          "label": "Gemini 3.8 Flash (OpenRouter)",
+          "sdk_id": "google/gemini-3.8-flash"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-3.7-flash",
+          "label": "Gemini 3.7 Flash (OpenRouter)",
+          "sdk_id": "google/gemini-3.7-flash"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-3.6-flash",
+          "label": "Gemini 3.6 Flash (OpenRouter)",
+          "sdk_id": "google/gemini-3.6-flash"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-3.5-flash-lite",
+          "label": "Gemini 3.5 Flash Lite (OpenRouter)",
+          "sdk_id": "google/gemini-3.5-flash-lite"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:z-ai/glm-5.3",
+          "label": "GLM 5.3 (OpenRouter)",
+          "sdk_id": "z-ai/glm-5.3"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:z-ai/glm-5.3-flash",
+          "label": "GLM 5.3 Flash (OpenRouter)",
+          "sdk_id": "z-ai/glm-5.3-flash"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:moonshotai/kimi-k3",
+          "label": "Kimi K3 (OpenRouter)",
+          "sdk_id": "moonshotai/kimi-k3"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:minimax/minimax-m3",
+          "label": "MiniMax M3 (OpenRouter)",
+          "sdk_id": "minimax/minimax-m3"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:xiaomi/mimo-v2.6-pro",
+          "label": "MiMo V2.6 Pro (OpenRouter)",
+          "sdk_id": "xiaomi/mimo-v2.6-pro"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:xiaomi/mimo-v2.6-flash",
+          "label": "MiMo V2.6 Flash (OpenRouter)",
+          "sdk_id": "xiaomi/mimo-v2.6-flash"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:qwen/qwen3.8-max-0902",
+          "label": "Qwen3.8 Max (OpenRouter)",
+          "sdk_id": "qwen/qwen3.8-max-0902"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:deepseek/deepseek-v4.1-flash",
+          "label": "DeepSeek V4.1 Flash (OpenRouter)",
+          "sdk_id": "deepseek/deepseek-v4.1-flash"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:deepseek/deepseek-v4-flash-0731",
+          "label": "DeepSeek V4 Flash 0731 (OpenRouter)",
+          "sdk_id": "deepseek/deepseek-v4-flash-0731"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:deepseek/deepseek-v4-pro-0813",
+          "label": "DeepSeek V4 Pro 0813 (OpenRouter)",
+          "sdk_id": "deepseek/deepseek-v4-pro-0813"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:gemini-3.8-flash",
+          "label": "Gemini 3.8 Flash (LLM Gateway)",
+          "sdk_id": "gemini-3.8-flash"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:gemini-3.7-flash",
+          "label": "Gemini 3.7 Flash (LLM Gateway)",
+          "sdk_id": "gemini-3.7-flash"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:gemini-3.5-flash-lite",
+          "label": "Gemini 3.5 Flash Lite (LLM Gateway)",
+          "sdk_id": "gemini-3.5-flash-lite"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:glm-5.3",
+          "label": "GLM 5.3 (LLM Gateway)",
+          "sdk_id": "glm-5.3"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:glm-5.3-flash",
+          "label": "GLM 5.3 Flash (LLM Gateway)",
+          "sdk_id": "glm-5.3-flash"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:kimi-k3",
+          "label": "Kimi K3 (LLM Gateway)",
+          "sdk_id": "kimi-k3"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:claude-sonnet-5",
+          "label": "Sonnet 5 (LLM Gateway)",
+          "sdk_id": "claude-sonnet-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:gpt-5.2",
+          "label": "GPT-5.2 (LLM Gateway)",
+          "sdk_id": "gpt-5.2"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "mistral-large-4",
+          "label": "Mistral Large 4",
+          "sdk_id": "mistral-large-4"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "mistral-medium-3.5",
+          "label": "Mistral Medium 3.5",
+          "sdk_id": "mistral-medium-2604"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "mistral-small-4",
+          "label": "Mistral Small 4",
+          "sdk_id": "mistral-small-2603"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "mistral-large-3",
+          "label": "Mistral Large 3",
+          "sdk_id": "mistral-large-2512"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:mistralai/mistral-large-4-0",
+          "label": "Mistral Large 4 (OpenRouter)",
+          "sdk_id": "mistralai/mistral-large-4-0"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:mistralai/mistral-medium-3-5",
+          "label": "Mistral Medium 3.5 (OpenRouter)",
+          "sdk_id": "mistralai/mistral-medium-3-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:mistralai/mistral-small-2603",
+          "label": "Mistral Small 4 (OpenRouter)",
+          "sdk_id": "mistralai/mistral-small-2603"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:mistralai/mistral-large-2512",
+          "label": "Mistral Large 3 (OpenRouter)",
+          "sdk_id": "mistralai/mistral-large-2512"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:mistral-large-4",
+          "label": "Mistral Large 4 (LLM Gateway)",
+          "sdk_id": "mistral-large-4"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:mistral-medium-3-5",
+          "label": "Mistral Medium 3.5 (LLM Gateway)",
+          "sdk_id": "mistral-medium-3-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:mistral-small-2603",
+          "label": "Mistral Small 4 (LLM Gateway)",
+          "sdk_id": "mistral-small-2603"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:mistral-large-2512",
+          "label": "Mistral Large 3 (LLM Gateway)",
+          "sdk_id": "mistral-large-2512"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "grok-4.7",
+          "label": "Grok 4.7",
+          "sdk_id": "grok-4.7"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "grok-4.6",
+          "label": "Grok 4.6",
+          "sdk_id": "grok-4.6"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "grok-build-0.1",
+          "label": "Grok Build 0.1",
+          "sdk_id": "grok-build-0.1"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:kimi-k3",
+          "label": "Kimi K3 (OpenCode Go)",
+          "sdk_id": "kimi-k3"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:glm-5.3",
+          "label": "GLM-5.3 (OpenCode Go)",
+          "sdk_id": "glm-5.3"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:qwen3.8-max",
+          "label": "Qwen3.8 Max (OpenCode Go)",
+          "sdk_id": "qwen3.8-max"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:deepseek-v4-pro",
+          "label": "DeepSeek V4 Pro (OpenCode Go)",
+          "sdk_id": "deepseek-v4-pro"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:minimax-m3",
+          "label": "MiniMax M3 (OpenCode Go)",
+          "sdk_id": "minimax-m3"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:mimo-v2.6-pro",
+          "label": "MiMo V2.6 Pro (OpenCode Go)",
+          "sdk_id": "mimo-v2.6-pro"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:grok-4.7",
+          "label": "Grok 4.7 (OpenCode Go)",
+          "sdk_id": "grok-4.7"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode-go:gpt-6-luna",
+          "label": "GPT-6 Luna (OpenCode Go)",
+          "sdk_id": "gpt-6-luna"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode:claude-opus-5-5",
+          "label": "Opus 5.5 (OpenCode)",
+          "sdk_id": "claude-opus-5-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode:claude-sonnet-5-5",
+          "label": "Sonnet 5.5 (OpenCode)",
+          "sdk_id": "claude-sonnet-5-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode:gpt-6.1-sol",
+          "label": "GPT-6.1 Sol (OpenCode)",
+          "sdk_id": "gpt-6.1-sol"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode:gemini-4-argon",
+          "label": "Gemini 4 Argon (OpenCode)",
+          "sdk_id": "gemini-4-argon"
+        }
+      ],
+      "order": 4
+    },
+    {
+      "aliases": [
+        "prime",
+        "prime-agent"
+      ],
+      "cli_name": "prime",
+      "default_model": "claude-sonnet-5",
+      "key": "prime-agent",
+      "models": [
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-fable-5-1",
+          "label": "Claude Fable 5.1",
+          "sdk_id": "claude-fable-5-1"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-fable-5",
+          "label": "Claude Fable 5",
+          "sdk_id": "claude-fable-5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-opus-5-5",
+          "label": "Opus 5.5",
+          "sdk_id": "claude-opus-5-5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-opus-5",
+          "label": "Opus 5",
+          "sdk_id": "claude-opus-5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-sonnet-5-5",
+          "label": "Sonnet 5.5",
+          "sdk_id": "claude-sonnet-5-5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-sonnet-5",
+          "label": "Sonnet",
+          "sdk_id": "claude-sonnet-5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-haiku-5-5",
+          "label": "Haiku 5.5",
+          "sdk_id": "claude-haiku-5-5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "claude-haiku-4-5",
+          "label": "Haiku",
+          "sdk_id": "claude-haiku-4-5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-6.1-sol",
+          "label": "GPT-6.1 Sol",
+          "sdk_id": "gpt-6.1-sol"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-6-sol",
+          "label": "GPT-6 Sol",
+          "sdk_id": "gpt-6-sol"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-6-luna",
+          "label": "GPT-6 Luna",
+          "sdk_id": "gpt-6-luna"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-5.6-terra",
+          "label": "GPT-5.6 Terra",
+          "sdk_id": "gpt-5.6-terra"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-5.5",
+          "label": "GPT-5.5",
+          "sdk_id": "gpt-5.5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "gpt-5.4-mini",
+          "label": "GPT-5.4 Mini",
+          "sdk_id": "gpt-5.4-mini"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:anthropic/claude-sonnet-5.5",
+          "label": "Sonnet 5.5 (OpenRouter)",
+          "sdk_id": "anthropic/claude-sonnet-5.5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:anthropic/claude-opus-5.5",
+          "label": "Opus 5.5 (OpenRouter)",
+          "sdk_id": "anthropic/claude-opus-5.5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:anthropic/claude-haiku-5.5",
+          "label": "Haiku 5.5 (OpenRouter)",
+          "sdk_id": "anthropic/claude-haiku-5.5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:openai/gpt-6.1-sol",
+          "label": "GPT-6.1 Sol (OpenRouter)",
+          "sdk_id": "openai/gpt-6.1-sol"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:openai/gpt-6-luna",
+          "label": "GPT-6 Luna (OpenRouter)",
+          "sdk_id": "openai/gpt-6-luna"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-4-argon",
+          "label": "Gemini 4 Argon (OpenRouter)",
+          "sdk_id": "google/gemini-4-argon"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:x-ai/grok-4.7",
+          "label": "Grok 4.7 (OpenRouter)",
+          "sdk_id": "x-ai/grok-4.7"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-3.8-flash",
+          "label": "Gemini 3.8 Flash (OpenRouter)",
+          "sdk_id": "google/gemini-3.8-flash"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-3.7-flash",
+          "label": "Gemini 3.7 Flash (OpenRouter)",
+          "sdk_id": "google/gemini-3.7-flash"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-3.6-flash",
+          "label": "Gemini 3.6 Flash (OpenRouter)",
+          "sdk_id": "google/gemini-3.6-flash"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:google/gemini-3.5-flash-lite",
+          "label": "Gemini 3.5 Flash Lite (OpenRouter)",
+          "sdk_id": "google/gemini-3.5-flash-lite"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:z-ai/glm-5.3",
+          "label": "GLM 5.3 (OpenRouter)",
+          "sdk_id": "z-ai/glm-5.3"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:z-ai/glm-5.3-flash",
+          "label": "GLM 5.3 Flash (OpenRouter)",
+          "sdk_id": "z-ai/glm-5.3-flash"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:moonshotai/kimi-k3",
+          "label": "Kimi K3 (OpenRouter)",
+          "sdk_id": "moonshotai/kimi-k3"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:minimax/minimax-m3",
+          "label": "MiniMax M3 (OpenRouter)",
+          "sdk_id": "minimax/minimax-m3"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:xiaomi/mimo-v2.6-pro",
+          "label": "MiMo V2.6 Pro (OpenRouter)",
+          "sdk_id": "xiaomi/mimo-v2.6-pro"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:xiaomi/mimo-v2.6-flash",
+          "label": "MiMo V2.6 Flash (OpenRouter)",
+          "sdk_id": "xiaomi/mimo-v2.6-flash"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:qwen/qwen3.8-max-0902",
+          "label": "Qwen3.8 Max (OpenRouter)",
+          "sdk_id": "qwen/qwen3.8-max-0902"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:deepseek/deepseek-v4.1-flash",
+          "label": "DeepSeek V4.1 Flash (OpenRouter)",
+          "sdk_id": "deepseek/deepseek-v4.1-flash"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:deepseek/deepseek-v4-flash-0731",
+          "label": "DeepSeek V4 Flash 0731 (OpenRouter)",
+          "sdk_id": "deepseek/deepseek-v4-flash-0731"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "openrouter:deepseek/deepseek-v4-pro-0813",
+          "label": "DeepSeek V4 Pro 0813 (OpenRouter)",
+          "sdk_id": "deepseek/deepseek-v4-pro-0813"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:gemini-3.8-flash",
+          "label": "Gemini 3.8 Flash (LLM Gateway)",
+          "sdk_id": "gemini-3.8-flash"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:gemini-3.7-flash",
+          "label": "Gemini 3.7 Flash (LLM Gateway)",
+          "sdk_id": "gemini-3.7-flash"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:gemini-3.5-flash-lite",
+          "label": "Gemini 3.5 Flash Lite (LLM Gateway)",
+          "sdk_id": "gemini-3.5-flash-lite"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:glm-5.3",
+          "label": "GLM 5.3 (LLM Gateway)",
+          "sdk_id": "glm-5.3"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:glm-5.3-flash",
+          "label": "GLM 5.3 Flash (LLM Gateway)",
+          "sdk_id": "glm-5.3-flash"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:kimi-k3",
+          "label": "Kimi K3 (LLM Gateway)",
+          "sdk_id": "kimi-k3"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:claude-sonnet-5",
+          "label": "Sonnet 5 (LLM Gateway)",
+          "sdk_id": "claude-sonnet-5"
+        },
+        {
+          "effort": {
+            "default": "medium",
+            "supported": [
+              "low",
+              "medium",
+              "high",
+              "xhigh"
+            ]
+          },
+          "fast_mode": false,
+          "id": "llmgateway:gpt-5.2",
+          "label": "GPT-5.2 (LLM Gateway)",
+          "sdk_id": "gpt-5.2"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "mistral-large-4",
+          "label": "Mistral Large 4",
+          "sdk_id": "mistral-large-4"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "mistral-medium-3.5",
+          "label": "Mistral Medium 3.5",
+          "sdk_id": "mistral-medium-3.5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "mistral-small-4",
+          "label": "Mistral Small 4",
+          "sdk_id": "mistral-small-2603"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "mistral-large-3",
+          "label": "Mistral Large 3",
+          "sdk_id": "mistral-large-2512"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:mistralai/mistral-large-4-0",
+          "label": "Mistral Large 4 (OpenRouter)",
+          "sdk_id": "mistralai/mistral-large-4-0"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:mistralai/mistral-medium-3-5",
+          "label": "Mistral Medium 3.5 (OpenRouter)",
+          "sdk_id": "mistralai/mistral-medium-3-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:mistralai/mistral-small-2603",
+          "label": "Mistral Small 4 (OpenRouter)",
+          "sdk_id": "mistralai/mistral-small-2603"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "openrouter:mistralai/mistral-large-2512",
+          "label": "Mistral Large 3 (OpenRouter)",
+          "sdk_id": "mistralai/mistral-large-2512"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:mistral-large-4",
+          "label": "Mistral Large 4 (LLM Gateway)",
+          "sdk_id": "mistral-large-4"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:mistral-medium-3-5",
+          "label": "Mistral Medium 3.5 (LLM Gateway)",
+          "sdk_id": "mistral-medium-3-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:mistral-small-2603",
+          "label": "Mistral Small 4 (LLM Gateway)",
+          "sdk_id": "mistral-small-2603"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "llmgateway:mistral-large-2512",
+          "label": "Mistral Large 3 (LLM Gateway)",
+          "sdk_id": "mistral-large-2512"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "grok-4.7",
+          "label": "Grok 4.7",
+          "sdk_id": "grok-4.7"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "grok-4.6",
+          "label": "Grok 4.6",
+          "sdk_id": "grok-4.6"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "grok-build-0.1",
+          "label": "Grok Build 0.1",
+          "sdk_id": "grok-build-0.1"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode:claude-opus-5-5",
+          "label": "Opus 5.5 (OpenCode)",
+          "sdk_id": "claude-opus-5-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode:claude-sonnet-5-5",
+          "label": "Sonnet 5.5 (OpenCode)",
+          "sdk_id": "claude-sonnet-5-5"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode:gpt-6.1-sol",
+          "label": "GPT-6.1 Sol (OpenCode)",
+          "sdk_id": "gpt-6.1-sol"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "opencode:gemini-4-argon",
+          "label": "Gemini 4 Argon (OpenCode)",
+          "sdk_id": "gemini-4-argon"
+        }
+      ],
+      "order": 5
+    },
+    {
+      "aliases": [
+        "kimi",
+        "kimi-code"
+      ],
+      "cli_name": "kimi",
+      "default_model": "k3",
+      "key": "kimi",
+      "models": [
+        {
+          "effort": {
+            "default": "max",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "k3",
+          "label": "Kimi K3",
+          "sdk_id": "k3"
+        },
+        {
+          "effort": {
+            "default": "max",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "k3-256k",
+          "label": "Kimi K3-256k",
+          "sdk_id": "k3-256k"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "kimi-for-coding",
+          "label": "Kimi K2.7 Coding",
+          "sdk_id": "kimi-for-coding"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "kimi-for-coding-highspeed",
+          "label": "Kimi K2.7 Coding Highspeed",
+          "sdk_id": "kimi-for-coding-highspeed"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "low",
+              "high",
+              "max"
+            ]
+          },
+          "fast_mode": false,
+          "id": "moonshot:kimi-k3",
+          "label": "Kimi K3 (Moonshot API)",
+          "sdk_id": "kimi-k3"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "moonshot:kimi-k2.7-code",
+          "label": "Kimi K2.7 Code (Moonshot API)",
+          "sdk_id": "kimi-k2.7-code"
+        },
+        {
+          "effort": null,
+          "fast_mode": false,
+          "id": "moonshot:kimi-k2.7-code-highspeed",
+          "label": "Kimi K2.7 Code high speed (Moonshot API)",
+          "sdk_id": "kimi-k2.7-code-highspeed"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "none",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "moonshot:kimi-k2.6",
+          "label": "Kimi K2.6 (Moonshot API)",
+          "sdk_id": "kimi-k2.6"
+        }
+      ],
+      "order": 6
+    },
+    {
+      "aliases": [
+        "mistral"
+      ],
+      "cli_name": "mistral",
+      "default_model": "mistral-large-4",
+      "key": "mistral",
+      "models": [
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "none",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "mistral-large-4",
+          "label": "Mistral Large 4",
+          "sdk_id": "mistral-large-4"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "none",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "mistral-medium-3.5",
+          "label": "Mistral Medium 3.5",
+          "sdk_id": "mistral-medium-3-5"
+        },
+        {
+          "effort": {
+            "default": "high",
+            "supported": [
+              "none",
+              "high"
+            ]
+          },
+          "fast_mode": false,
+          "id": "mistral-small-4",
+          "label": "Mistral Small 4",
+          "sdk_id": "mistral-small-2603"
+        }
+      ],
+      "order": 7
+    }
+  ]
+}

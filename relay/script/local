@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# The relay on this machine, for trying it out with no Apple key: the Worker under
+# `wrangler dev` (its D1 in a scratch folder) sending to the fake APNs (test/fake-apns.mjs),
+# which signs nothing and delivers nothing, but checks each request and, with FAKE_APNS_OUT,
+# writes each notification's body there for `xcrun simctl push`.
+#
+#   script/local                 # relay on http://127.0.0.1:8796, fake APNs on :8797
+#   RELAY_PORT=… APNS_PORT=… RELAY_STATE=… FAKE_APNS_OUT=… script/local
+#
+# A server sends through it with FLOTILLA_PUSH_RELAY=http://127.0.0.1:8796 (or
+# `flotilla setup --push-relay http://127.0.0.1:8796`); a debug build of the iPhone app
+# registers with it when launched with `-FlotillaPushRelay http://127.0.0.1:8796`.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+RELAY_PORT=${RELAY_PORT:-8796}
+APNS_PORT=${APNS_PORT:-8797}
+STATE=${RELAY_STATE:-$(mktemp -d /tmp/flotilla-relay.XXXXXX)}
+[ -d node_modules ] || npm ci
+
+# The test key (key id ABC123DEFG, team DEF123GHIJ), which the fake APNs checks against.
+KEY=$(node -e 'import("./test/fake-apns.mjs").then(m => console.log(m.TEST_P8.split("\n").filter(l => l && !l.startsWith("-----")).join("")))')
+cat > "$STATE/env" <<VARS
+APNS_KEY=$KEY
+APNS_KEY_ID=ABC123DEFG
+APNS_TEAM_ID=DEF123GHIJ
+APNS_ORIGIN_SANDBOX=http://127.0.0.1:$APNS_PORT/sandbox
+APNS_ORIGIN_PRODUCTION=http://127.0.0.1:$APNS_PORT/production
+SELFTEST_TOKEN=local
+VARS
+
+node test/fake-apns.mjs "$APNS_PORT" &
+FAKE=$!
+trap 'kill $FAKE 2>/dev/null || true' EXIT
+npx wrangler d1 migrations apply DB --local --persist-to "$STATE" >/dev/null
+echo "relay on http://127.0.0.1:$RELAY_PORT (state in $STATE)"
+npx wrangler dev --local --ip 127.0.0.1 --port "$RELAY_PORT" --persist-to "$STATE" \
+  --env-file "$STATE/env" --show-interactive-dev-session=false --log-level warn

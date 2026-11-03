@@ -1,0 +1,40 @@
+# FlotillaKit, the iPhone app's protocol client: `swift test` on a Mac. It runs only when the
+# package, or the fixtures its conformance tests share with the Rust side, change.
+name: FlotillaKit
+
+on:
+  push:
+    branches: [main]
+    paths: &kit-paths
+      - "ios/FlotillaKit/**"
+      - "mobile/fixtures/**"
+      # The push relay's encryption vectors, which the tests read.
+      - "relay/test/vectors.json"
+      - ".github/workflows/flotillakit.yml"
+  pull_request:
+    branches: [main]
+    paths: *kit-paths
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  swift-test:
+    name: swift test
+    # The package needs macOS 26 to run its tests.
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: swift test
+        working-directory: ios/FlotillaKit
+        run: |
+          swift --version
+          swift test

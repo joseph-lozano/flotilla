@@ -1,0 +1,28 @@
+{
+  "forced": false,
+  "id": "bx_q7m2k9tz",
+  "operation": {
+    "endedAt": null,
+    "error": null,
+    "forced": false,
+    "id": "stop_5963d70e699722c6",
+    "lastAttemptAt": null,
+    "requestedAt": "2026-10-29T15:20:28.887Z",
+    "status": "pending"
+  },
+  "sandbox": {
+    "id": "bx_q7m2k9tz",
+    "state": "stopping",
+    "archiveAfter": "2026-10-29T15:40:51.136Z",
+    "stop": {
+      "endedAt": null,
+      "error": null,
+      "forced": false,
+      "id": "stop_5963d70e699722c6",
+      "lastAttemptAt": null,
+      "requestedAt": "2026-10-29T15:20:28.887Z",
+      "status": "pending"
+    }
+  },
+  "status": "stopping"
+}

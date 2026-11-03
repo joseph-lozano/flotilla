@@ -1,0 +1,378 @@
+# Build the downloads and publish them as a GitHub Release, when a v* tag is pushed
+# (script/release makes one). Run it by hand (workflow_dispatch) for a dry run: everything is
+# built and kept as this run's artifact, and no release is made. RELEASING.md has the details.
+#
+# Nothing here names the repo: the same file works in any fork or copy.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: build everything but make no release (only a v* tag can make one)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  plan:
+    name: Version
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.plan.outputs.version }}
+      tag: ${{ steps.plan.outputs.tag }}
+      publish: ${{ steps.plan.outputs.publish }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: plan
+        env:
+          EVENT: ${{ github.event_name }}
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          version=$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -1)
+          [[ -n $version ]] || { echo "::error::no version in Cargo.toml"; exit 1; }
+          publish=false
+          if [[ $REF_TYPE == tag ]]; then
+            if [[ $REF_NAME != "v$version" ]]; then
+              echo "::error::The tag $REF_NAME doesn't match Cargo.toml's version, $version"
+              exit 1
+            fi
+            if [[ $EVENT == push || $DRY_RUN == false ]]; then publish=true; fi
+          elif [[ $DRY_RUN == false ]]; then
+            echo "::error::Only a v* tag makes a release: run this on a tag, or as a dry run"
+            exit 1
+          fi
+          {
+            echo "version=$version"
+            echo "tag=v$version"
+            echo "publish=$publish"
+          } >> "$GITHUB_OUTPUT"
+          echo "Flotilla $version: $([[ $publish == true ]] && echo release || echo dry run)" >> "$GITHUB_STEP_SUMMARY"
+
+  macos:
+    name: macOS (app and CLI)
+    needs: plan
+    runs-on: macos-26
+    timeout-minutes: 90
+    outputs:
+      signed: ${{ steps.keychain.outputs.signed }}
+    env:
+      VERSION: ${{ needs.plan.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Rust
+        run: |
+          rustup toolchain install stable --profile minimal --target aarch64-apple-darwin,x86_64-apple-darwin --no-self-update
+          rustup default stable
+          rustc --version
+      - name: Metal compiler
+        run: script/ci/metal-toolchain
+      - name: Dependencies
+        run: cargo fetch --locked
+      - name: Build Flotilla.app (Apple silicon and Intel)
+        run: script/bundle-macos --universal
+      # Signing and notarizing need all five secrets (RELEASING.md); with none, the app ships
+      # signed ad hoc. Some but not all is a mistake, so it stops here.
+      - name: Signing keychain
+        id: keychain
+        env:
+          MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}
+          MACOS_CERT_PASSWORD: ${{ secrets.MACOS_CERT_PASSWORD }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          missing=() present=0
+          for name in MACOS_CERT_P12 MACOS_CERT_PASSWORD ASC_KEY_P8 ASC_KEY_ID ASC_ISSUER_ID; do
+            if [[ -n ${!name} ]]; then present=$((present + 1)); else missing+=("$name"); fi
+          done
+          if (( present == 0 )); then
+            echo "::warning::No signing secrets: the Mac app is signed ad hoc, not notarized (RELEASING.md)"
+            echo "signed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if (( ${#missing[@]} )); then
+            echo "::error::Signing needs every secret; missing: ${missing[*]}"
+            exit 1
+          fi
+          keychain=$RUNNER_TEMP/signing.keychain-db
+          password=$(openssl rand -hex 24)
+          security create-keychain -p "$password" "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security unlock-keychain -p "$password" "$keychain"
+          printf '%s' "$MACOS_CERT_P12" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+          security import "$RUNNER_TEMP/cert.p12" -k "$keychain" -P "$MACOS_CERT_PASSWORD" -T /usr/bin/codesign
+          rm -f "$RUNNER_TEMP/cert.p12"
+          # Apple's Developer ID intermediates, so codesign can build the chain whichever issued it.
+          for ca in DeveloperIDG2CA DeveloperIDCA; do
+            curl -fsSL -o "$RUNNER_TEMP/$ca.cer" "https://www.apple.com/certificateauthority/$ca.cer"
+            security import "$RUNNER_TEMP/$ca.cer" -k "$keychain" || true
+          done
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$password" "$keychain" > /dev/null
+          read -ra keychains < <(security list-keychains -d user | tr -d '"' | xargs)
+          security list-keychains -d user -s "$keychain" "${keychains[@]}"
+          identity=$(security find-identity -v -p codesigning "$keychain" |
+            sed -n 's/^ *[0-9]*) \([0-9A-F]\{40\}\) "Developer ID Application: .*/\1/p' | head -1)
+          if [[ -z $identity ]]; then
+            echo "::error::MACOS_CERT_P12 holds no Developer ID Application identity"
+            exit 1
+          fi
+          printf '%s' "$ASC_KEY_P8" > "$RUNNER_TEMP/asc-key.p8"
+          {
+            echo "signed=true"
+            echo "identity=$identity"
+            echo "keychain=$keychain"
+          } >> "$GITHUB_OUTPUT"
+      - name: Package (the DMG, and the flotilla command for Apple silicon and Intel)
+        env:
+          MACOS_SIGN_IDENTITY: ${{ steps.keychain.outputs.identity }}
+          MACOS_SIGN_KEYCHAIN: ${{ steps.keychain.outputs.keychain }}
+          ASC_KEY_PATH: ${{ steps.keychain.outputs.signed == 'true' && format('{0}/asc-key.p8', runner.temp) || '' }}
+          ASC_KEY_ID: ${{ steps.keychain.outputs.signed == 'true' && secrets.ASC_KEY_ID || '' }}
+          ASC_ISSUER_ID: ${{ steps.keychain.outputs.signed == 'true' && secrets.ASC_ISSUER_ID || '' }}
+        run: |
+          script/package-macos dmg dist/Flotilla.dmg
+          script/package-macos cli dist/flotilla-cli-macos-universal.tar.gz
+      - name: Check
+        env:
+          SIGNED: ${{ steps.keychain.outputs.signed }}
+        run: |
+          dmg=dist/Flotilla.dmg
+          hdiutil verify -quiet "$dmg"
+          mnt=$RUNNER_TEMP/mnt
+          mkdir -p "$mnt"
+          hdiutil attach -nobrowse -noautoopen -readonly -mountpoint "$mnt" "$dmg" -quiet
+          trap 'hdiutil detach "$mnt" -quiet' EXIT
+          app=$mnt/Flotilla.app
+          codesign --verify --strict --verbose=2 "$app"
+          codesign -dv "$app"
+          [[ $(lipo -archs "$app/Contents/MacOS/flotilla-app") == "x86_64 arm64" ]]
+          [[ $(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$app/Contents/Info.plist") == "$VERSION" ]]
+
+          cli=$RUNNER_TEMP/cli
+          mkdir -p "$cli"
+          tar -xzf dist/flotilla-cli-macos-universal.tar.gz -C "$cli"
+          bin=$cli/flotilla-cli-macos-universal/flotilla
+          lipo -info "$bin"
+          [[ $(lipo -archs "$bin") == "x86_64 arm64" ]]
+          codesign --verify --strict --verbose=2 "$bin"
+          codesign -dv "$bin"
+          [[ $("$bin" --version) == "flotilla $VERSION" ]]
+          # The Intel half too, where Rosetta is installed.
+          if arch -x86_64 /usr/bin/true 2>/dev/null; then
+            [[ $(arch -x86_64 "$bin" --version) == "flotilla $VERSION" ]]
+          fi
+
+          # Signed: Gatekeeper accepts the app as it would on a Mac that downloaded it.
+          if [[ $SIGNED == true ]]; then
+            spctl --assess --type execute --verbose=2 "$app"
+            xcrun stapler validate "$dmg"
+          fi
+          ls -l dist
+      # Whatever happened above, so nothing of a half-finished setup stays on the machine.
+      - name: Remove the signing keychain
+        if: ${{ always() }}
+        run: |
+          keychain=$RUNNER_TEMP/signing.keychain-db
+          if [[ -e $keychain ]]; then security delete-keychain "$keychain" || true; fi
+          rm -f "$RUNNER_TEMP/cert.p12" "$RUNNER_TEMP/asc-key.p8"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: build-macos
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 1
+
+  linux-app:
+    name: Linux app (${{ matrix.arch }})
+    needs: plan
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # The oldest Ubuntu runner, so the package installs on older systems too.
+          - { runner: ubuntu-22.04, arch: x86_64, deb: amd64 }
+          - { runner: ubuntu-22.04-arm, arch: aarch64, deb: arm64 }
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    env:
+      VERSION: ${{ needs.plan.outputs.version }}
+      ARCH: ${{ matrix.arch }}
+      DEB_ARCH: ${{ matrix.deb }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Rust
+        run: |
+          rustup toolchain install stable --profile minimal --no-self-update
+          rustup default stable
+          rustc --version
+      - name: Build packages
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential cmake pkg-config libfontconfig-dev libxkbcommon-x11-dev dpkg-dev imagemagick desktop-file-utils patchelf squashfs-tools fuse3
+      - name: Dependencies
+        run: cargo fetch --locked
+      - name: Build the .deb and the AppImage
+        run: |
+          script/bundle-linux --appimage
+          mkdir -p dist
+          cp "target/release/flotilla_${VERSION}_$DEB_ARCH.deb" "dist/Flotilla-$DEB_ARCH.deb"
+          cp "target/release/Flotilla-$ARCH.AppImage" dist/
+      - name: Check
+        run: |
+          deb=dist/Flotilla-$DEB_ARCH.deb
+          dpkg-deb --info "$deb"
+          dpkg-deb --contents "$deb"
+          # The AppImage mounts (with FUSE) and starts.
+          [[ $("dist/Flotilla-$ARCH.AppImage" --version) == "Flotilla $VERSION" ]]
+          # Its dependencies resolve, and it installs.
+          sudo apt-get install -y "./$deb"
+          [[ $(/usr/bin/flotilla-app --version) == "Flotilla $VERSION" ]]
+          ls -l dist
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: build-linux-app-${{ matrix.arch }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 1
+
+  linux-cli:
+    name: flotilla CLI (Linux ${{ matrix.arch }})
+    needs: plan
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { runner: ubuntu-24.04, arch: x86_64 }
+          - { runner: ubuntu-24.04-arm, arch: aarch64 }
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    env:
+      VERSION: ${{ needs.plan.outputs.version }}
+      ARCH: ${{ matrix.arch }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # On Alpine, as the Dockerfile builds it: musl, linked statically, so it runs on any
+      # Linux.
+      - name: Build (static, musl)
+        run: |
+          docker run --rm -v "$PWD:/src" -w /src rust:1-alpine sh -euc '
+            apk add --no-cache musl-dev build-base cmake perl
+            rustc --version
+            cargo build --release --locked -p flotilla-cli
+            strip target/release/flotilla
+            chown -R "$0" target
+          ' "$(id -u):$(id -g)"
+      - name: Check
+        run: |
+          bin=target/release/flotilla
+          file "$bin"
+          file "$bin" | grep -Eq '(statically|static-pie) linked'
+          [[ $("$bin" --version) == "flotilla $VERSION" ]]
+      - name: Package
+        run: |
+          mkdir -p dist
+          dir=flotilla-cli-linux-$ARCH
+          mkdir -p "$RUNNER_TEMP/$dir"
+          cp target/release/flotilla LICENSE "$RUNNER_TEMP/$dir/"
+          tar -C "$RUNNER_TEMP" -czf "dist/$dir.tar.gz" --owner=0 --group=0 "$dir"
+          ls -l dist
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: build-linux-cli-${{ matrix.arch }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 1
+
+  release:
+    name: Publish (or keep the dry run)
+    needs: [plan, macos, linux-app, linux-cli]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    env:
+      VERSION: ${{ needs.plan.outputs.version }}
+      TAG: ${{ needs.plan.outputs.tag }}
+      PUBLISH: ${{ needs.plan.outputs.publish }}
+      SIGNED: ${{ needs.macos.outputs.signed }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      # All the history and tags, for the commits since the last release.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      # Checking out a tag can leave it lightweight here; the notes need its message.
+      - name: The tag's message
+        if: ${{ github.ref_type == 'tag' }}
+        run: |
+          git fetch --force --no-tags origin "+refs/tags/$TAG:refs/tags/$TAG"
+          git cat-file -t "refs/tags/$TAG"
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: build-*
+          path: dist
+          merge-multiple: true
+      - name: Checksums and notes
+        run: |
+          (cd dist && sha256sum -- * > "$RUNNER_TEMP/SHA256SUMS" && mv "$RUNNER_TEMP/SHA256SUMS" .)
+          (cd dist && sha256sum -c SHA256SUMS)
+          flags=()
+          [[ $SIGNED == true ]] || flags+=(--unsigned)
+          [[ $PUBLISH == true ]] || flags+=(--dry-run)
+          script/release-notes "${flags[@]}" "$TAG" > "$RUNNER_TEMP/notes.md"
+          {
+            echo "## Files"
+            echo
+            echo '```'
+            cat dist/SHA256SUMS
+            echo '```'
+            echo
+            echo "## Notes"
+            echo
+            cat "$RUNNER_TEMP/notes.md"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Publish the release
+        if: ${{ needs.plan.outputs.publish == 'true' }}
+        run: |
+          flags=()
+          [[ $VERSION == *-* ]] && flags+=(--prerelease)
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            # A run again after a failure: bring the release's files and notes up to date.
+            gh release upload "$TAG" dist/* --clobber
+            gh release edit "$TAG" --notes-file "$RUNNER_TEMP/notes.md"
+          else
+            gh release create "$TAG" dist/* --verify-tag --title "$TAG" --notes-file "$RUNNER_TEMP/notes.md" "${flags[@]}"
+          fi
+      - name: Keep the dry run's files
+        if: ${{ needs.plan.outputs.publish != 'true' }}
+        run: cp "$RUNNER_TEMP/notes.md" dist/release-notes.md
+      - if: ${{ needs.plan.outputs.publish != 'true' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: flotilla-${{ needs.plan.outputs.version }}-dry-run
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 7

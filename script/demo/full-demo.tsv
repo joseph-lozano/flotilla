@@ -1,0 +1,95 @@
+# The complete Flotilla demo: <caption><TAB><what Kit says>. Captions must match full-demo.sh's caption: steps (unique, no semicolons).
+# 0. Cold open
+Flotilla	Coding agents, each alone in its own isolated cloud VM. All in one window on your Mac. This is Flotilla.
+Hold to merge, at a glance	And when the work is done, you hold to merge.
+# 1. The window
+The sidebar	Every thread is a conversation with a coding agent, running in its own boat dot dev VM. The sidebar sorts them by what needs you. Unread replies come first, then idle threads. Working and archived wait at the bottom.
+A row	A row is the title, the agent's last reply in a line or two, and the agent and model underneath. Nothing about the VM, unless it needs you.
+Make room	Drag the edge to make the sidebar wider, or hide it to a slim rail, and bring it back the same way.
+A new thread	With nothing open, the main area is a new thread, ready for a prompt.
+# 2. A first thread
+Any agent, any model	Pick any agent and model that boat offers. Claude Code, Codex, Open Code, Kimi, and more, each with its own effort levels.
+A blank VM	With no project, the thread gets a blank VM. I'll ask Haiku, a small and quick model, for a little script.
+It opens at once	The thread opens straight away. The VM takes a few seconds to start, then the agent's words and tool calls stream in as it works.
+A title from a model	A small model on this Mac writes the title from the first prompt.
+Time left	Up top, the VM's time left before it stops itself. The model sits by the message box.
+# 3. Steer and stop
+Steer	While a turn runs, the message box steers it. What you send joins the turn already under way, without starting over.
+It changes course	The agent picks the steer up and changes course.
+Stop	Stop interrupts a turn. Nothing is lost, and you can send again whenever you like.
+# 4. Many at once
+A second agent	Threads run side by side, with any mix of agents. This one is Codex, on a small model.
+Working	Working threads gather at the bottom, each with its timer.
+Finished	When one finishes, a toast says so, and its row gets an unread mark and a one line summary of the reply, written by the same small model.
+The hover card	Hover a row for the rest: the agent and model, the VM, and when it will stop.
+Jump around	Command one to nine jump straight to a thread.
+# 5. Reading and replying
+Copy and cite	Hover a reply to copy it. Right click to cite it, and the quote lands in the message box, ready for your answer.
+Code blocks	Code blocks have their own copy button.
+Recall	Long prompts fold away, and the up arrow brings back the last one you sent.
+# 6. VMs that sleep
+Idle stop	Idle VMs stop on their own after five, ten or thirty minutes, so a thread costs nothing while you're away.
+Stopped	A stopped VM keeps its disk. Send to it, and it wakes up and carries on where it left off.
+Keep running	The cup keeps a VM running, for when something long is going on in it.
+Preview	And preview opens any port in the VM, in your browser.
+# 7. Keeping it tidy
+Rename	Double click a title to rename it, or let the model suggest one.
+Archive	Archive stops the VM and keeps the history. Changed your mind? Undo.
+Unarchive	Sending to an archived thread brings it back.
+Delete	Delete removes the VM and the thread for good, after asking first.
+# 8. Projects: add a repo
+Projects	Projects are GitHub repos. Flotilla talks to GitHub through the G H command line tool you're already signed in with.
+Add a project	Add project lists your repos. This one is a small retry library, with a web page that draws its backoff.
+Setup lives in the repo	The repo has a dot agents setup script, so Flotilla runs it to prepare the project's VM. Scripts you add here run just before it.
+The first setup	The first setup clones the repo and runs the script. Every new thread will start from a copy of this VM.
+Ready	Ready. Flotilla checks main every minute, and prepares each new commit in the background.
+# 9. A project thread
+A VM per thread	Each project thread gets a VM of its own, with the repo set up from the latest main. It can also start on any branch or open pull request.
+Named by a model	A small model names the branch from the prompt.
+From a copy	The thread copies the prepared VM, switches to its branch, and reruns setup, which takes seconds when nothing changed.
+Services	The repo's services file starts its web app in the background, and Preview lists it, ready to open.
+The visualizer	Here's what the agent is working on: a retry visualizer.
+# 10. The pull request
+The PR bar	The agent opened a draft pull request. Its bar sits on the message box, with the checks, the changes, and what to do next.
+Main moved on	Meanwhile, a teammate changed the same line on main. The header says the branch is one behind, and the conflict shows in red.
+Resolve	Resolve writes a prompt for the agent and puts it in the message box. Nothing is sent until I press send.
+Green again	The agent rebased and pushed, and the checks are green.
+Hold to merge	Ready for review, then hold to merge. The button fills as you hold. Let go early and nothing happens.
+Setup follows main	Merged. Flotilla sees it, and prepares the new main straight away.
+# 11. When things break
+A failing check	When a check fails, Fix writes a prompt with what failed.
+Setup broke on main	And when a commit breaks setup on main, the setup run fails, and new threads keep starting from the last good one.
+Fix in a new thread	Fix in a new thread opens a thread with the commit, the failing script, its exit code, and the end of its log.
+It starts anyway	The thread starts even though setup fails, so the agent can fix it.
+# 12. Start from a branch or PR
+Any branch or PR	Any branch or open pull request can be a starting point. Search, type a number, or paste a link.
+On this branch	And any project thread can hand its branch to a new thread, from its menu.
+# 13. Hooks and services
+Four files	Four files in dot agents tell Flotilla how to set up, wake, clean up, and serve the repo. It's the same convention as Amp's orbs.
+Resume	Resume runs when a stopped VM wakes, for quick work like signing back in. It gets ten seconds.
+Archive cleans up	Archive runs when a thread is archived, to remove what it made outside the VM, like a database branch.
+Services, up close	And services run the dev servers, with their output and a restart a click away.
+# 14. Settings
+Settings	Settings holds the defaults: the agent for new threads, the idle stop, a branch prefix, and the model that writes titles. Your key stays in the keychain, and the history in a database on your Mac.
+# 15. Close
+That's Flotilla	That's Flotilla. A fleet of coding agents, each in its own boat, all in one window.
+# 7b. Find your threads (after chapter 7)
+Find your threads	With a few projects going, the filter narrows the list. Just one project, just the threads with no project, or everything.
+# 13b. See it change (after chapter 13)
+See it change	Services make a change easy to see. Here's the visualizer as it is on main.
+Ask for a change	I'll ask Haiku to retitle the two timelines, so the point lands at a glance.
+Rebuilt and pushed	The agent edits the page, rebuilds it, runs the tests, and opens a draft pull request.
+The change	And here's the page with its new titles, on the agent's branch.
+# 13c. A fleet at work (after 13b)
+A fleet at work	Put it together, and one project can have a fleet going at once. Each agent alone in its own VM. Claude and Codex, side by side.
+Each in its own VM	Hover any of them for its agent and its VM. Each one's pull request lands in its bar when it's ready.
+# 10b. The PR, up close (after chapter 10)
+Checks up close	Click the checks to see each one, with a link to its run on GitHub.
+Its menu	A thread's menu opens its pull request on GitHub, copies its branch name, or links a different pull request.
+# 11b. Setup, your way (after chapter 11)
+Setup history	The project page keeps every setup run: what started it, how long it took, and what failed.
+Your scripts	The scripts you add here run before the repo's own setup. Run setup again, or rebuild from scratch, any time.
+# 11c. The setup log (after 11b)
+The setup log	And View log shows a setup run's whole output, script by script, for when something needs a closer look.
+# 13d. Day and Night (after 13c)
+Day and Night	Flotilla follows your Mac between light and dark, in the plum, coral, amber and lavender of its icon.

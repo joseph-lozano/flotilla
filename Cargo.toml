@@ -1,0 +1,35 @@
+[workspace]
+resolver = "3"
+members = ["crates/flotilla-proto", "crates/flotilla-model", "crates/flotilla-core", "crates/flotilla-engine", "crates/flotilla-server", "crates/flotilla-client", "crates/flotilla-mcp", "crates/flotilla-cli", "crates/flotilla-app"]
+
+[workspace.package]
+edition = "2024"
+version = "0.1.0"
+publish = false
+license = "MIT"
+
+[workspace.dependencies]
+flotilla-proto = { path = "crates/flotilla-proto" }
+flotilla-model = { path = "crates/flotilla-model" }
+flotilla-core = { path = "crates/flotilla-core" }
+flotilla-engine = { path = "crates/flotilla-engine" }
+flotilla-server = { path = "crates/flotilla-server" }
+flotilla-client = { path = "crates/flotilla-client" }
+flotilla-mcp = { path = "crates/flotilla-mcp" }
+reqwest = { version = "0.13.5", default-features = false, features = ["blocking", "json", "rustls", "http2"] }
+rusqlite = { version = "0.41.1", features = ["bundled"] }
+serde = { version = "1.0.229", features = ["derive", "rc"] }
+serde_json = "1.0.154"
+thiserror = "2.0.21"
+uuid = { version = "1.29.0", features = ["v4"] }
+base64 = "0.23.1"
+chrono = { version = "0.4.45", default-features = false, features = ["clock", "std"] }
+# Scheduled prompts' times in their zones (`flotilla_model::schedule`). The zone database is
+# built in, for a server without one (a scratch Docker image).
+jiff = { version = "0.2.38", features = ["tzdb-bundle-always"] }
+clap = { version = "4.6.7", features = ["derive"] }
+dirs = "7.0.0"
+serde-saphyr = "2.0.0"
+tokio = { version = "1.54", features = ["rt-multi-thread", "net", "sync", "time", "macros", "signal", "io-util", "fs"] }
+tokio-tungstenite = "0.29"
+futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }

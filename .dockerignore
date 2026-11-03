@@ -1,0 +1,9 @@
+target
+.git
+.claude
+.impeccable
+m0-samples
+design
+docs/images
+**/*.db
+**/*.db-*

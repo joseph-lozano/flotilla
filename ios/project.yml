@@ -1,0 +1,139 @@
+# Flotilla for iPhone. Generate the Xcode project with `xcodegen` (brew install xcodegen);
+# Flotilla.xcodeproj isn't checked in.
+name: Flotilla
+options:
+  bundleIdPrefix: com.useflotilla
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+packages:
+  FlotillaKit:
+    path: FlotillaKit
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    DEVELOPMENT_TEAM: 64D756D77S
+    CODE_SIGN_STYLE: Automatic
+    SWIFT_APPROACHABLE_CONCURRENCY: YES
+    SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+    SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    TARGETED_DEVICE_FAMILY: "1"
+    # The app and its extension carry the same version, as the App Store wants.
+    MARKETING_VERSION: 0.1.0
+    CURRENT_PROJECT_VERSION: 2
+    # The push relay the app registers with, for servers without the app's APNs key
+    # (relay/README.md). An app with its own bundle id and team needs its own relay.
+    FLOTILLA_PUSH_RELAY: https://push.useflotilla.com
+targets:
+  Flotilla:
+    type: application
+    platform: iOS
+    sources:
+      - Flotilla
+    dependencies:
+      - package: FlotillaKit
+      - target: FlotillaNotify
+    info:
+      path: Flotilla/Info.plist
+      properties:
+        CFBundleDisplayName: Flotilla
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleURLTypes:
+          - CFBundleURLName: com.useflotilla.flotilla.pair
+            CFBundleURLSchemes: [flotilla, flotilla-dev]
+        # A server on this network or this Mac (http://127.0.0.1:7777, a LAN address);
+        # Tailscale's are https.
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+        NSLocalNetworkUsageDescription: Flotilla connects to your Flotilla server on this network.
+        NSCameraUsageDescription: Flotilla reads the pairing code your server shows.
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        # ProMotion: scrolling and animations at up to 120 Hz on a Pro iPhone.
+        CADisableMinimumFrameDurationOnPhone: true
+        ITSAppUsesNonExemptEncryption: false
+        FlotillaPushRelay: $(FLOTILLA_PUSH_RELAY)
+        # Where the relay's state is kept, for the extension to read.
+        FlotillaKeychainGroup: $(AppIdentifierPrefix)com.useflotilla.flotilla.shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.useflotilla.flotilla
+        PRODUCT_NAME: Flotilla
+        # iPhone only. XcodeGen's iOS app preset sets "1,2" on the target, over the project's
+        # setting, and an iPad app must allow every orientation (App Store validation).
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        # Push (aps-environment; the App ID has Push Notifications) and the Keychain group
+        # shared with the extension.
+        CODE_SIGN_ENTITLEMENTS: Flotilla/Flotilla.entitlements
+  # Opens a notification that came through the push relay and puts in its words.
+  FlotillaNotify:
+    type: app-extension
+    platform: iOS
+    sources:
+      - FlotillaNotify
+    dependencies:
+      - package: FlotillaKit
+    info:
+      path: FlotillaNotify/Info.plist
+      properties:
+        CFBundleDisplayName: Flotilla
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        FlotillaKeychainGroup: $(AppIdentifierPrefix)com.useflotilla.flotilla.shared
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.usernotifications.service
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).NotificationService
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.useflotilla.flotilla.notify
+        PRODUCT_NAME: FlotillaNotify
+        TARGETED_DEVICE_FAMILY: "1"
+        # UserNotifications calls it off the main thread.
+        SWIFT_DEFAULT_ACTOR_ISOLATION: nonisolated
+        # The Keychain group it reads the phone's key from.
+        CODE_SIGN_ENTITLEMENTS: FlotillaNotify/FlotillaNotify.entitlements
+  FlotillaTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - FlotillaTests
+      # The extension's own code, run here on a real ciphertext (RelayExtensionTests).
+      - FlotillaNotify/NotificationService.swift
+    dependencies:
+      - target: Flotilla
+      - package: FlotillaKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.useflotilla.flotilla.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Flotilla.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Flotilla
+        BUNDLE_LOADER: $(TEST_HOST)
+  FlotillaUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - FlotillaUITests
+    dependencies:
+      - target: Flotilla
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.useflotilla.flotilla.uitests
+        SWIFT_DEFAULT_ACTOR_ISOLATION: nonisolated
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  Flotilla:
+    build:
+      targets:
+        Flotilla: all
+    test:
+      targets:
+        - FlotillaTests
+        - FlotillaUITests

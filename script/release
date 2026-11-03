@@ -1,0 +1,92 @@
+#!/bin/bash
+# Cut a release: set the version, freeze the docs (script/docs-release), commit, and tag
+# v<version>. It doesn't push: it prints the command that does, and the tag's push starts the
+# release workflow (.github/workflows/release.yml). See RELEASING.md.
+#
+# The tag's message opens the release notes: write it in a file and pass --notes, or it's
+# "Flotilla <version>." alone. The commits since the last tag follow it.
+#
+#   script/release <version> [--notes FILE]
+#   script/release 0.2.0 --notes /tmp/notes.md
+set -euo pipefail
+root=$(cd "$(dirname "$0")/.." && pwd)
+
+usage() {
+  echo "usage: script/release <version> [--notes FILE]" >&2
+  exit 2
+}
+version= notes=
+while (( $# )); do
+  case $1 in
+    --notes) [[ -n ${2:-} ]] || usage; notes=$2; shift 2 ;;
+    -*) usage ;;
+    *) [[ -z $version ]] || usage; version=${1#v}; shift ;;
+  esac
+done
+[[ -n $version ]] || usage
+fail() { echo "script/release: $*" >&2; exit 1; }
+# The notes file is where the caller is, before this moves to the repo.
+if [[ -n $notes ]]; then
+  [[ -s $notes ]] || fail "no notes in $notes"
+  notes=$(cd "$(dirname "$notes")" && pwd)/$(basename "$notes")
+fi
+cd "$root"
+
+[[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] ||
+  fail "$version isn't a version like 1.2.3 or 1.2.3-rc.1"
+tag=v$version
+[[ $(git symbolic-ref --short -q HEAD) == main ]] || fail "not on main"
+[[ -z $(git status --porcelain) ]] || fail "the tree has changes: commit or stash them first"
+if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then fail "$tag already exists"; fi
+# Docs for a version with no tag are from an attempt whose tag was deleted (see RELEASING.md),
+# if www/docs/versions.json lists them: they're made again below, from main's docs as they are
+# now. Anything else in their place is left for you to sort out.
+redo_docs=0
+if [[ -e www/docs/$version ]]; then
+  python3 -I -c 'import json, sys; sys.exit(not any(v.get("path") == sys.argv[2] for v in json.load(open(sys.argv[1]))["versions"]))' \
+    www/docs/versions.json "$version" ||
+    fail "www/docs/$version is there, but www/docs/versions.json doesn't list it: move it, then try again"
+  redo_docs=1
+fi
+
+# The workspace's version (the first `version =`, in [workspace.package]) and the lockfile's
+# entries for its crates. A first release may be at its version already.
+current=$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -1)
+if [[ $current != "$version" ]]; then
+  sed -i.bak "1,/^version = \".*\"/s/^version = \".*\"/version = \"$version\"/" Cargo.toml
+  rm Cargo.toml.bak
+  [[ $(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -1) == "$version" ]] ||
+    fail "couldn't set the version in Cargo.toml"
+  cargo update --workspace --offline --quiet
+  [[ -z $(git status --porcelain -- . ':!Cargo.toml' ':!Cargo.lock') ]] ||
+    fail "setting the version changed more than Cargo.toml and Cargo.lock"
+fi
+
+# The docs for this version, which /docs/ then opens. A pre-release's docs are added but don't
+# become the default.
+trap 'echo "script/release: stopped before committing; git status shows what it changed" >&2' ERR
+if (( redo_docs )); then
+  echo "Making the $version docs again: they're from an earlier attempt at $tag."
+  rm -rf "www/docs/$version"
+fi
+if [[ $version == *-* ]]; then
+  script/docs-release "$version"
+else
+  script/docs-release "$version" --default
+fi
+trap - ERR
+
+if [[ -n $(git status --porcelain) ]]; then
+  git add -A
+  git commit -q -m "Flotilla $version"
+fi
+if [[ -n $notes ]]; then
+  git tag -a "$tag" -F "$notes"
+else
+  git tag -a "$tag" -m "Flotilla $version."
+fi
+
+echo "Tagged $(git rev-parse --short HEAD) as $tag (Flotilla $version); nothing is pushed."
+echo "Push both to start the release:"
+echo
+echo "  git push --atomic origin main $tag"

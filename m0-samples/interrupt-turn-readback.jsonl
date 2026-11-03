@@ -1,0 +1,1 @@
+{"data":{"conversationId":"188a6984-aa6e-4cb7-a6b7-7907f91fb78a","data":{"is_reverted":false,"prompt":"Run 'sleep 60; echo finished-sleeping' with Bash, then reply with one word: DONE.","status":"interrupted"},"id":"af606f74-a1a3-4ac8-8a01-7649bc021d1b","taskId":"27604143-f06b-4691-a797-de5e20554196","timestamp":1793286960423,"type":"prompt"},"event":"chat","final":true}

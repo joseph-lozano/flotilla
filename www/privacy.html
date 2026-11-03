@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy · Flotilla</title>
+<meta name="description" content="Flotilla has no accounts, and currently no trackers or analytics. What its push relay keeps, and when it deletes it.">
+<link rel="canonical" href="https://useflotilla.com/privacy.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FCFAFD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1322" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Flotilla">
+<meta property="og:title" content="Privacy · Flotilla">
+<meta property="og:description" content="Flotilla has no accounts, and currently no trackers or analytics. What its push relay keeps, and when it deletes it.">
+<meta property="og:image" content="https://useflotilla.com/og.png">
+<link rel="stylesheet" href="docs/main/docs.css">
+</head>
+<body>
+<a class="skip" href="#content">Skip to the content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="sail-shape" d="M2 0h1v1h1v1h1v1h1v1h1v1h1v1H2z"/>
+    <path id="hull-shape" d="M0 7h8v2H0z"/>
+    <g id="mark">
+      <g fill="#F37173" transform="translate(0 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#F6BC63" transform="translate(10 0)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#C2A7E2" transform="translate(20 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+    </g>
+  </defs>
+</svg>
+
+<header class="wrap site-header">
+  <a class="brand" href="./" aria-label="Flotilla, home">
+    <svg viewBox="0 0 28 11" width="42" height="17" shape-rendering="crispEdges" aria-hidden="true"><use href="#mark"/></svg>
+    <span class="word">Flotilla</span>
+  </a>
+  <span class="tag">Alpha</span>
+  <nav class="site-nav" aria-label="Main">
+    <a class="nav-text" href="./">Home</a>
+    <a class="nav-text" href="docs/">Docs</a>
+    <a class="nav-github" href="https://github.com/joseph-lozano/flotilla">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span class="label">GitHub</span>
+    </a>
+  </nav>
+</header>
+
+<div class="wrap" style="padding-top: 24px">
+  <main id="content" class="doc">
+    <h1>Privacy</h1>
+    <p class="lede">Flotilla has no accounts, and currently no trackers or analytics. If any are added in the future, they will be opt-in.</p>
+    <p>Your threads, keys and files stay on your devices and your own server.</p>
+    <p>The services you connect, such as boat.dev, GitHub and your model providers, get what you send them, under their own privacy policies.</p>
+    <p>If your server uses Flotilla's push relay, which runs on Cloudflare, the relay keeps your phone's notification token, a random id with a hashed secret, and when it was registered and last used. It can't read your notifications. It deletes them when you unpair, when Apple reports the app gone, or after 90 days unused (Cloudflare can restore deleted data for 30 days).</p>
+    <p>Questions: <a href="mailto:support@useflotilla.com">support@useflotilla.com</a></p>
+    <p>Updated 2 November 2026.</p>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Joseph Lozano</span>
+    <nav aria-label="Footer">
+      <a href="./">Home</a>
+      <a href="docs/">Docs</a>
+      <a href="https://github.com/joseph-lozano/flotilla">GitHub</a>
+      <a href="https://github.com/joseph-lozano/flotilla/blob/main/LICENSE">MIT License</a>
+      <a href="privacy.html" aria-current="page">Privacy</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

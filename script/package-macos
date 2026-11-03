@@ -1,0 +1,120 @@
+#!/bin/zsh
+# The Mac downloads.
+#
+#   script/package-macos dmg [image.dmg]
+#     target/release/Flotilla.app (script/bundle-macos) in a disk image, beside a link to
+#     /Applications. The image is target/release/Flotilla.dmg, or the path given.
+#   script/package-macos cli [archive.tar.gz]
+#     Builds the flotilla command for Apple silicon and Intel as one binary, and packs it with
+#     the licence in target/release/flotilla-cli-macos-universal.tar.gz, or the path given.
+#     It isn't in the app.
+#
+# Both are signed with a Developer ID (with the hardened runtime and a timestamp) and notarized
+# only when these are set; otherwise they're signed ad hoc.
+#   MACOS_SIGN_IDENTITY    a "Developer ID Application" identity codesign can find (its name
+#                          or SHA-1)
+#   MACOS_SIGN_KEYCHAIN    optional: the keychain that holds it
+#   ASC_KEY_PATH           an App Store Connect API key (.p8), its id and its issuer id, for
+#   ASC_KEY_ID             notarytool; needs MACOS_SIGN_IDENTITY too
+#   ASC_ISSUER_ID
+set -euo pipefail
+root=${0:A:h:h}
+what=${1:-}
+[[ $what == dmg || $what == cli ]] || { print -u2 "usage: script/package-macos dmg|cli [output]"; exit 2; }
+
+identity=${MACOS_SIGN_IDENTITY:-}
+notarize=0
+if [[ -n ${ASC_KEY_PATH:-}${ASC_KEY_ID:-}${ASC_ISSUER_ID:-} ]]; then
+  [[ -n ${ASC_KEY_PATH:-} && -n ${ASC_KEY_ID:-} && -n ${ASC_ISSUER_ID:-} ]] ||
+    { print -u2 "notarizing needs ASC_KEY_PATH, ASC_KEY_ID and ASC_ISSUER_ID all set"; exit 1; }
+  [[ -n $identity ]] || { print -u2 "notarizing needs a Developer ID: set MACOS_SIGN_IDENTITY"; exit 1; }
+  notarize=1
+fi
+sign=(codesign --force --timestamp --sign $identity)
+[[ -n ${MACOS_SIGN_KEYCHAIN:-} ]] && sign+=(--keychain $MACOS_SIGN_KEYCHAIN)
+
+tmp=$(mktemp -d)
+trap 'rm -rf $tmp' EXIT
+
+# Send a .dmg or .zip to Apple's notary service, and wait for its verdict.
+notarize() {
+  local file=$1 id notary_status
+  xcrun notarytool submit $file --key $ASC_KEY_PATH --key-id $ASC_KEY_ID --issuer $ASC_ISSUER_ID \
+    --wait --timeout 1h --output-format json > $tmp/notary.json || true
+  id=$(plutil -extract id raw $tmp/notary.json 2>/dev/null || true)
+  notary_status=$(plutil -extract status raw $tmp/notary.json 2>/dev/null || true)
+  if [[ $notary_status != Accepted ]]; then
+    print -u2 "notarizing ${file:t}: ${notary_status:-no answer}"
+    [[ -n $id ]] && xcrun notarytool log $id --key $ASC_KEY_PATH --key-id $ASC_KEY_ID --issuer $ASC_ISSUER_ID >&2
+    exit 1
+  fi
+}
+
+if (( notarize )); then
+  state="signed with a Developer ID and notarized"
+elif [[ -n $identity ]]; then
+  state="signed with a Developer ID, not notarized"
+else
+  state="signed ad hoc"
+fi
+
+if [[ $what == dmg ]]; then
+  app=$root/target/release/Flotilla.app
+  [[ -d $app ]] || { print -u2 "no $app: run script/bundle-macos first"; exit 1; }
+  out=${2:-$root/target/release/Flotilla.dmg}
+  out=${out:A}
+  stage=$tmp/Flotilla
+  mkdir -p $stage
+  ditto $app $stage/Flotilla.app
+  ln -s /Applications $stage/Applications
+  if [[ -n $identity ]]; then
+    # The hardened runtime, which notarizing requires. The app needs no exceptions to it.
+    $sign --options runtime $stage/Flotilla.app
+    codesign --verify --strict --verbose=2 $stage/Flotilla.app
+  fi
+
+  mkdir -p ${out:h}
+  rm -f $out
+  # hdiutil now and then fails with "Resource busy" on a busy machine (CI's often): try again.
+  for attempt in 1 2 3 4 5; do
+    hdiutil create -quiet -volname Flotilla -srcfolder $stage -fs HFS+ -format UDZO -ov $out && break
+    (( attempt < 5 )) || exit 1
+    print -u2 "hdiutil create failed; trying again"
+    sleep $(( attempt * 5 ))
+  done
+
+  [[ -n $identity ]] && $sign $out
+  if (( notarize )); then
+    notarize $out
+    xcrun stapler staple $out
+    xcrun stapler validate $out
+    spctl --assess --type open --context context:primary-signature --verbose=2 $out
+  fi
+else
+  out=${2:-$root/target/release/flotilla-cli-macos-universal.tar.gz}
+  out=${out:A}
+  targets=(aarch64-apple-darwin x86_64-apple-darwin)
+  cargo build --release --locked -p flotilla-cli --manifest-path $root/Cargo.toml ${targets/#/--target=}
+  name=${${out:t}%.tar.gz}
+  mkdir -p $tmp/$name
+  bin=$tmp/$name/flotilla
+  lipo -create -output $bin $root/target/${^targets}/release/flotilla
+  strip -x $bin
+  if [[ -n $identity ]]; then
+    $sign --options runtime --identifier com.useflotilla.flotilla.cli $bin
+  else
+    codesign --force --sign - --identifier com.useflotilla.flotilla.cli $bin
+  fi
+  codesign --verify --strict --verbose=2 $bin
+  # A bare binary can't carry a stapled ticket: Gatekeeper looks it up online.
+  if (( notarize )); then
+    ditto -c -k --keepParent $bin $tmp/flotilla.zip
+    notarize $tmp/flotilla.zip
+  fi
+  cp $root/LICENSE $tmp/$name/
+  mkdir -p ${out:h}
+  # No AppleDouble files or extended attributes, and root as the owner.
+  COPYFILE_DISABLE=1 tar --no-xattrs --uid 0 --gid 0 -C $tmp -czf $out $name
+fi
+
+print "built $out ($state)"

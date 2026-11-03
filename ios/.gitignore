@@ -1,0 +1,5 @@
+Flotilla.xcodeproj/
+Flotilla/Info.plist
+build/
+.build/
+FlotillaNotify/Info.plist

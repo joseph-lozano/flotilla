@@ -1,0 +1,2 @@
+{"harness":"opencode","model":"gpt-6-luna","provider":"openai","auth":"oauth","at":1793539513328,"usage":{"total":20818,"input":200,"output":138,"reasoning":0,"cache":{"write":0,"read":20480}},"window":922000}
+

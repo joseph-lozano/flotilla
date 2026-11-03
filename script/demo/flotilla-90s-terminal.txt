@@ -1,0 +1,13 @@
+$ systemctl --user status flotilla
+● flotilla.service - Flotilla server
+     Loaded: loaded (/home/you/.config/systemd/user/flotilla.service; enabled; preset: enabled)
+     Active: active (running) since Sun 2026-11-01 08:02:11 UTC; 14h ago
+   Main PID: 2265896 (flotilla)
+     Memory: 32.1M (peak: 436.6M)
+
+$ flotilla doctor
+✓ boat API key: Works · from ~/.local/share/Flotilla/secrets/boat-key
+✓ GitHub: Signed in as acme (gh 2.101.0)
+✓ Titles and previews: Work with claude-haiku-5-5 · claude's own sign-in
+✓ Tailscale: Serving https://box.tail1234.ts.net
+✓ Database: Writable · ~/.local/share/Flotilla/flotilla.db

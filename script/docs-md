@@ -1,0 +1,438 @@
+#!/usr/bin/env python3
+# Make the docs' Markdown from their HTML, so the two can't drift:
+#
+#   - www/docs/<version>/<page>.md beside each <page>.html, the same content, its links
+#     pointing at the other .md pages (the llms.txt convention: the same URL with .md);
+#   - www/docs/<version>/prompt-<name>.md, the text of each setup prompt
+#     (<div class="cmd prompt" data-prompt="<name>">);
+#   - www/llms.txt (https://llmstxt.org) and www/llms-full.txt (every page in one file), for
+#     the default version in www/docs/versions.json;
+#   - the setup prompts on the home page (<code id="prompt-<name>">), from the default version.
+#
+#   script/docs-md            # write them
+#   script/docs-md --check    # change nothing; fail if any is missing or stale
+#
+# Only Python's standard library. script/docs-release runs it after freezing a version.
+import html.parser
+import json
+import re
+import sys
+from pathlib import Path
+
+SITE = "https://useflotilla.com"
+ROOT = Path(__file__).resolve().parent.parent
+WWW = ROOT / "www"
+DOCS = WWW / "docs"
+
+# The setup prompts, as llms.txt lists them.
+PROMPTS = {
+    "desktop": ("Install and set up the desktop app",
+                "for a coding agent on a Mac or Linux desktop: check what's needed, get the app, connect boat.dev, start a first thread"),
+    "server": ("Set up a Flotilla server",
+               "for a coding agent on an always-on Linux machine: get the flotilla command, set it up with Tailscale, run it as a service, check it, pair your devices"),
+}
+
+VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
+
+
+class Node:
+    def __init__(self, tag, attrs=None, parent=None):
+        self.tag, self.attrs, self.parent, self.children = tag, dict(attrs or {}), parent, []
+
+    def classes(self):
+        return self.attrs.get("class", "").split()
+
+    def find(self, test):
+        for c in self.children:
+            if isinstance(c, Node):
+                if test(c):
+                    return c
+                found = c.find(test)
+                if found:
+                    return found
+        return None
+
+    def find_all(self, test, out=None):
+        out = [] if out is None else out
+        for c in self.children:
+            if isinstance(c, Node):
+                if test(c):
+                    out.append(c)
+                c.find_all(test, out)
+        return out
+
+    def text(self):
+        return "".join(c if isinstance(c, str) else c.text() for c in self.children)
+
+
+class Parser(html.parser.HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.root = self.at = Node("#root")
+
+    def handle_starttag(self, tag, attrs):
+        node = Node(tag, attrs, self.at)
+        self.at.children.append(node)
+        if tag not in VOID:
+            self.at = node
+
+    def handle_startendtag(self, tag, attrs):
+        self.at.children.append(Node(tag, attrs, self.at))
+
+    def handle_endtag(self, tag):
+        at = self.at
+        while at is not self.root and at.tag != tag:
+            at = at.parent
+        if at is not self.root:
+            self.at = at.parent
+
+    def handle_data(self, data):
+        self.at.children.append(data)
+
+
+def parse(path):
+    p = Parser()
+    p.feed(path.read_text())
+    return p.root
+
+
+def tag(name, cls=None):
+    return lambda n: n.tag == name and (cls is None or cls in n.classes())
+
+
+# The page being made, and each page's heading ids with the anchors Markdown gives them.
+HERE = {"page": "", "anchors": {}}
+
+
+def slug(text, seen):
+    """The anchor a Markdown heading gets, as GitHub makes it."""
+    s = re.sub(r"[^\w\- ]", "", text.strip().lower()).replace(" ", "-")
+    n = seen.get(s, 0)
+    seen[s] = n + 1
+    return s if n == 0 else f"{s}-{n}"
+
+
+def anchors(path):
+    """{heading id: its Markdown anchor} for a page."""
+    seen, out = {}, {}
+    main = parse(path).find(tag("main"))
+    for h in main.find_all(lambda n: re.fullmatch(r"h[1-6]", n.tag)) if main else []:
+        a = slug(re.sub(r"\s+", " ", h.text()), seen)
+        if "id" in h.attrs:
+            out[h.attrs["id"]] = a
+    return out
+
+
+def href_md(href):
+    """A docs link, pointing at the .md pages and their headings."""
+    if re.match(r"^[a-z]+:", href):
+        return href
+    path, _, frag = href.partition("#")
+    if not path:
+        return "#" + HERE["anchors"].get(HERE["page"], {}).get(frag, frag)
+    if path == "./":
+        path = "index.md"
+    elif re.fullmatch(r"[\w.-]+\.html", path):
+        path = path[:-5] + ".md"
+    elif path.startswith("../"):
+        # Outside this version's folder: the site's own page.
+        parts = path.split("/")
+        while parts and parts[0] == "..":
+            parts.pop(0)
+        path = SITE + "/" + "/".join(parts[1:] if parts and parts[0] == "docs" else parts)
+    if frag:
+        frag = HERE["anchors"].get(path, {}).get(frag, frag)
+    return path + ("#" + frag if frag else "")
+
+
+def escape(text):
+    text = re.sub(r"([\\`*])", r"\\\1", text).replace("](", "\\](")
+    text = re.sub(r"(^|\W)_|_(\W|$)", lambda m: m.group(0).replace("_", r"\_"), text)
+    return re.sub(r"<(?=[A-Za-z/!?])", r"\\<", text)
+
+
+def code_span(text):
+    ticks = max((len(t) for t in re.findall(r"`+", text)), default=0)
+    fence = "`" * (ticks + 1)
+    pad = " " if text.startswith("`") or text.endswith("`") else ""
+    return fence + pad + text + pad + fence
+
+
+def fenced(text, info=""):
+    ticks = max((len(t) for t in re.findall(r"`{3,}", text)), default=2)
+    fence = "`" * (ticks + 1)
+    return f"{fence}{info}\n{text.rstrip(chr(10))}\n{fence}"
+
+
+def inline(node):
+    out = []
+    for c in node.children:
+        if isinstance(c, str):
+            out.append(escape(re.sub(r"\s+", " ", c)))
+            continue
+        if c.tag in ("strong", "b", "em", "i"):
+            mark = "**" if c.tag in ("strong", "b") else "*"
+            inner = inline(c)
+            lead, body, trail = re.match(r"^(\s*)(.*?)(\s*)$", inner, re.S).groups()
+            out.append(f"{lead}{mark}{body}{mark}{trail}" if body else inner)
+        elif c.tag == "code":
+            out.append(code_span(re.sub(r"\s+", " ", c.text())))
+        elif c.tag == "kbd":
+            out.append(escape(c.text().strip()))
+        elif c.tag == "a":
+            out.append(f"[{inline(c).strip()}]({href_md(c.attrs.get('href', ''))})")
+        elif c.tag == "br":
+            out.append("\\\n")
+        elif c.tag == "img":
+            out.append(f"![{c.attrs.get('alt', '')}]({c.attrs.get('src', '')})")
+        else:
+            out.append(inline(c))
+    return "".join(out)
+
+
+def flat(node):
+    return re.sub(r"[ \t]+", " ", inline(node)).strip()
+
+
+def para(node):
+    # A paragraph mustn't start like a heading, a quote or a list item.
+    return re.sub(r"^([#>+-]|\d+[.)])(?=\s)", r"\\\1", flat(node))
+
+
+def cell(node):
+    return flat(node).replace("|", r"\|").replace("\n", " ")
+
+
+def indent(text, by):
+    return "\n".join((by + line) if line else line for line in text.split("\n"))
+
+
+def list_items(node, ordered):
+    items = []
+    for n, li in enumerate((c for c in node.children if isinstance(c, Node) and c.tag == "li"), 1):
+        marker = f"{n}. " if ordered else "- "
+        body = "\n\n".join(blocks(li)) or ""
+        items.append(marker + indent(body, " " * len(marker))[len(marker):])
+    loose = any("\n\n" in i for i in items)
+    return ("\n\n" if loose else "\n").join(items)
+
+
+def table(node):
+    head = node.find(tag("thead"))
+    rows = [[cell(td) for td in tr.children if isinstance(td, Node) and td.tag in ("th", "td")]
+            for tr in node.find_all(tag("tr")) if not (head and tr.parent is head)]
+    header = [cell(th) for th in head.find_all(tag("th"))] if head else rows.pop(0)
+    lines = ["| " + " | ".join(header) + " |", "|" + "|".join(" --- " for _ in header) + "|"]
+    lines += ["| " + " | ".join(r) + " |" for r in rows]
+    return "\n".join(lines)
+
+
+def figure(node):
+    out = []
+    for img in node.find_all(tag("img")):
+        out.append(f"![{escape(img.attrs.get('alt', ''))}]({img.attrs.get('src', '')})")
+    cap = node.find(tag("figcaption"))
+    if cap:
+        out.append(para(cap))
+    return "\n\n".join(out)
+
+
+def command(node):
+    pre = node.find(tag("pre"))
+    label = node.find(tag("div", "label"))
+    out = []
+    if label and "prompt" not in node.classes():
+        out.append(code_span(label.text().strip()) + ":")
+    out.append(fenced(pre.text(), "text" if "prompt" in node.classes() else ""))
+    return "\n\n".join(out)
+
+
+def blocks(node):
+    """The Markdown blocks in a node: paragraphs for runs of text, and each block element."""
+    out, run = [], Node("#run")
+
+    def flush():
+        nonlocal run
+        text = para(run)
+        if text:
+            out.append(text)
+        run = Node("#run")
+
+    for c in node.children:
+        if isinstance(c, str) or c.tag not in BLOCK:
+            run.children.append(c)
+            continue
+        flush()
+        cls = c.classes()
+        if c.tag == "p":
+            if "version-note" in cls or "md-link" in cls:
+                continue
+            text = para(c)
+            if text:
+                out.append(text)
+        elif re.fullmatch(r"h[1-6]", c.tag):
+            out.append("#" * int(c.tag[1]) + " " + para(c))
+        elif c.tag == "ul" and "cards" in cls:
+            out.append("\n".join(
+                f"- [{para(a.find(tag('strong')))}]({href_md(a.attrs['href'])}): {para(a.find(tag('span')))}"
+                for a in c.find_all(tag("a"))))
+        elif c.tag in ("ul", "ol"):
+            out.append(list_items(c, c.tag == "ol"))
+        elif c.tag == "div" and "cmd" in cls:
+            out.append(command(c))
+        elif c.tag == "pre":
+            out.append(fenced(c.text()))
+        elif c.tag == "table":
+            out.append(table(c))
+        elif c.tag == "figure":
+            out.append(figure(c))
+        elif c.tag == "dl":
+            items, term = [], None
+            for d in c.children:
+                if isinstance(d, Node) and d.tag == "dt":
+                    term = para(d)
+                elif isinstance(d, Node) and d.tag == "dd":
+                    items.append(f"- **{term}**: {para(d)}")
+            out.append("\n".join(items))
+        elif c.tag == "div" and "note" in cls:
+            out.append(indent("\n\n".join(blocks(c)), "> ").replace("\n\n", "\n>\n"))
+        elif c.tag == "nav" and "pager" in cls:
+            continue
+        else:
+            out.extend(blocks(c))
+    flush()
+    return out
+
+
+BLOCK = {"p", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "div", "pre", "table", "figure",
+         "dl", "nav", "section", "blockquote", "main", "aside", "header", "footer"}
+
+
+def page_md(path):
+    main = parse(path).find(tag("main"))
+    if main is None:
+        raise SystemExit(f"docs-md: {path} has no <main>")
+    return "\n\n".join(blocks(main)) + "\n"
+
+
+def prompts(path):
+    return {n.attrs["data-prompt"]: n.find(tag("pre")).text().rstrip("\n") + "\n"
+            for n in parse(path).find_all(lambda n: "prompt" in n.classes() and "data-prompt" in n.attrs)}
+
+
+def sidebar(index):
+    """The sidebar's groups and pages, in order: [(group, [(title, href)])]."""
+    nav = parse(index).find(lambda n: n.tag == "nav" and n.attrs.get("aria-label") == "Pages")
+    groups = []
+    for c in nav.children:
+        if isinstance(c, Node) and c.tag == "p" and "group" in c.classes():
+            groups.append((c.text().strip(), []))
+        elif isinstance(c, Node) and c.tag == "ul" and "pages" in c.classes():
+            for li in c.children:
+                if isinstance(li, Node) and li.tag == "li":
+                    a = li.find(tag("a"))
+                    groups[-1][1].append((a.text().strip(), a.attrs["href"]))
+    return groups
+
+
+def description(path):
+    meta = parse(path).find(lambda n: n.tag == "meta" and n.attrs.get("name") == "description")
+    return meta.attrs["content"].strip() if meta else ""
+
+
+def absolute(md, base, page=""):
+    """Relative links and images made absolute, for a file that lives elsewhere. A link to a
+    heading on the same page gets the page's address."""
+    def fix(m):
+        url = m.group(2)
+        if re.match(r"^[a-z]+:", url):
+            return m.group(0)
+        return f"{m.group(1)}({base}{page if url.startswith('#') else ''}{url})"
+    return re.sub(r"(!?\[(?:[^\]\\]|\\.)*\])\(([^)\s]+)\)", fix, md)
+
+
+def outputs():
+    """Every file this makes, and what it should hold."""
+    files = {}
+    for version in sorted(p for p in DOCS.iterdir() if p.is_dir()):
+        pages = sorted(version.glob("*.html"))
+        if not pages:
+            continue
+        HERE["anchors"] = {page.stem + ".md": anchors(page) for page in pages}
+        for page in pages:
+            HERE["page"] = page.stem + ".md"
+            files[page.with_suffix(".md")] = page_md(page)
+            for name, text in prompts(page).items():
+                files[version / f"prompt-{name}.md"] = text
+
+    default = json.loads((DOCS / "versions.json").read_text())["default"]
+    here = DOCS / default
+    base = f"{SITE}/docs/{default}/"
+    index = here / "index.html"
+    lede = parse(index).find(tag("p", "lede"))
+    missing = [n for n in PROMPTS if here / f"prompt-{n}.md" not in files]
+    if missing:
+        raise SystemExit(f"docs-md: no prompt {', '.join(missing)} in {here}")
+
+    llms = [
+        "# Flotilla",
+        "",
+        "> " + absolute(para(lede), base),
+        "",
+        f"These are the Flotilla docs ({default}) as Markdown: each link is a page of {SITE}/docs/ "
+        "with .md in place of .html. The setup prompts are for pasting into a coding agent such as "
+        "Claude Code, Codex or OpenCode; they read these pages and leave every secret to you.",
+        "",
+        "## Setup prompts",
+        "",
+    ]
+    llms += [f"- [{title}]({base}prompt-{name}.md): {note}" for name, (title, note) in PROMPTS.items()]
+    full = [f"# Flotilla docs ({default})", "", f"Every page of {base}, as Markdown, in the sidebar's order."]
+    for group, links in sidebar(index):
+        llms += ["", f"## {group}", ""]
+        for title, href in links:
+            page = here / ("index.html" if href in ("", "./") else href)
+            md = href_md(href)
+            llms.append(f"- [{title}]({base}{md}): {description(page)}")
+            full += ["", "---", "", f"<!-- {base}{md} -->", "", absolute(files[page.with_suffix('.md')], base, md).rstrip("\n")]
+    home = WWW / "index.html"
+    text = home.read_text()
+    for name in PROMPTS:
+        code = re.compile(rf'(<code id="prompt-{name}">).*?(</code>)', re.S)
+        if not code.search(text):
+            raise SystemExit(f'docs-md: no <code id="prompt-{name}"> in {home}')
+        prompt = html.escape(files[here / f"prompt-{name}.md"].rstrip("\n"), quote=False)
+        text = code.sub(lambda m: m.group(1) + prompt + m.group(2), text)
+    files[home] = text
+    files[WWW / "llms.txt"] = "\n".join(llms) + "\n"
+    files[WWW / "llms-full.txt"] = "\n".join(full) + "\n"
+    return files
+
+
+def main():
+    check = sys.argv[1:] == ["--check"]
+    if sys.argv[1:] not in ([], ["--check"]):
+        raise SystemExit("usage: script/docs-md [--check]")
+    files = outputs()
+    stale = [p for p, text in files.items() if not p.exists() or p.read_text() != text]
+    # A .md with no page or prompt to make it from.
+    extra = [p for v in DOCS.iterdir() if v.is_dir() for p in v.glob("*.md") if p not in files]
+    if check:
+        for p in stale:
+            print(f"docs-md: {p.relative_to(ROOT)} is {'stale' if p.exists() else 'missing'}", file=sys.stderr)
+        for p in extra:
+            print(f"docs-md: {p.relative_to(ROOT)} has no page to make it from", file=sys.stderr)
+        if stale or extra:
+            print("Run script/docs-md, and commit what it writes.", file=sys.stderr)
+            sys.exit(1)
+        print(f"docs-md: all {len(files)} files are current.")
+        return
+    for p in stale:
+        p.write_text(files[p])
+    for p in extra:
+        p.unlink()
+    print(f"docs-md: wrote {len(stale)} of {len(files)} files" + (f", removed {len(extra)}" if extra else "") + ".")
+
+
+if __name__ == "__main__":
+    main()

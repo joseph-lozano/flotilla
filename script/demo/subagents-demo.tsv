@@ -1,0 +1,9 @@
+# The subagents demo: <caption><TAB><what Marin says>. Captions must match subagents-demo.sh's caption: steps.
+Subagents	When an agent hands work to subagents, Flotilla keeps them in view.
+Pinned while they work	Running subagents stay pinned under the thread's title, however far the conversation scrolls.
+Each one, live	Two at once fold into one line. Open it, and each one shows the call it's on, and how long it's been going.
+A card each	When they finish, each becomes a card in the thread, with how many calls it made, and how long it took.
+Open a card	Open one to see what it was asked, the calls it made, and its report.
+Codex too	Codex subagents get the same cards, and each one's answer stays in its card, not mixed into the reply.
+And OpenCode	OpenCode's too, with the task the agent gave each one.
+Flotilla	Every agent in its own isolated VM, and every subagent in view. This is Flotilla.

@@ -1,0 +1,73 @@
+#!/bin/bash
+# Print a release's notes, in Markdown: the tag's own message (written by hand when the tag
+# was made; see script/release), how to install each download, then the commits since the tag
+# before it. With no earlier tag (the first release), there's no list of commits.
+#
+# --unsigned adds how to open Mac downloads that Apple hasn't notarized. --dry-run writes the
+# notes HEAD would get as <tag>, with a placeholder message, whether or not the tag exists.
+#
+#   script/release-notes [--unsigned] [--dry-run] <tag>
+set -euo pipefail
+unsigned=0 dry_run=0
+while [[ ${1:-} == --* ]]; do
+  case $1 in
+    --unsigned) unsigned=1 ;;
+    --dry-run) dry_run=1 ;;
+    *) echo "usage: script/release-notes [--unsigned] [--dry-run] <tag>" >&2; exit 2 ;;
+  esac
+  shift
+done
+tag=${1:?usage: script/release-notes [--unsigned] [--dry-run] <tag>}
+
+end=HEAD message=
+if (( !dry_run )); then
+  git rev-parse -q --verify "refs/tags/$tag" >/dev/null || { echo "no tag $tag" >&2; exit 1; }
+  end=$tag
+  # A lightweight tag has no message of its own.
+  if [[ $(git cat-file -t "refs/tags/$tag") == tag ]]; then
+    message=$(git tag -l --format='%(contents:subject)%0a%0a%(contents:body)' "$tag")
+  fi
+fi
+printf '%s\n' "${message:-Flotilla ${tag#v}.}"
+
+cat <<'NOTES'
+
+### Install
+
+- **Mac** (Apple silicon or Intel): open `Flotilla.dmg` and drag Flotilla to Applications.
+- **Linux desktop**: on Debian or Ubuntu, `sudo apt install ./Flotilla-amd64.deb` (or `Flotilla-arm64.deb`). On any other distribution, the AppImage: `chmod +x Flotilla-x86_64.AppImage && ./Flotilla-x86_64.AppImage` (or `Flotilla-aarch64.AppImage`).
+- **The `flotilla` command** (a server, or the CLI): unpack it somewhere on your `PATH`.
+
+  ```sh
+  mkdir -p ~/.local/bin
+  # Mac
+  tar -xzf flotilla-cli-macos-universal.tar.gz --strip-components=1 -C ~/.local/bin flotilla-cli-macos-universal/flotilla
+  # Linux, any distribution (x86_64 or aarch64)
+  tar -xzf flotilla-cli-linux-$(uname -m).tar.gz --strip-components=1 -C ~/.local/bin flotilla-cli-linux-$(uname -m)/flotilla
+  ```
+
+`SHA256SUMS` lists every file's checksum: `shasum -a 256 -c --ignore-missing SHA256SUMS`.
+NOTES
+
+if (( unsigned )); then
+  cat <<'NOTES'
+
+### Opening it on a Mac
+
+This build isn't notarized by Apple, so macOS stops it the first time. Drag Flotilla to Applications and open it once, then go to **System Settings → Privacy & Security** and press **Open Anyway** next to the note about Flotilla. Or, in Terminal:
+
+```sh
+xattr -dr com.apple.quarantine /Applications/Flotilla.app
+```
+
+The `flotilla` command, if your browser downloaded it, needs the same once: `xattr -d com.apple.quarantine ~/.local/bin/flotilla`.
+NOTES
+fi
+
+previous=$(git describe --tags --abbrev=0 --match 'v[0-9]*' "$end^" 2>/dev/null || true)
+if [[ -n $previous ]]; then
+  printf '\n### Changes since %s\n\n' "$previous"
+  # Without script/release's own "Flotilla <version>" commits.
+  git log --no-merges -E --invert-grep --grep='^Flotilla [0-9]+\.[0-9]+\.[0-9]+[^ ]*$' \
+    --format='- %s (%h)' "$previous..$end"
+fi

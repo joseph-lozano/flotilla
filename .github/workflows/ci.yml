@@ -1,0 +1,94 @@
+# The Rust checks: rustfmt, clippy (with and without the snapshot feature) and the tests, on
+# Linux. The local gates already run on a Mac, so the Mac only runs clippy where it's free (a
+# public repo) or for a pull request. FlotillaKit's Swift tests are in flotillakit.yml.
+#
+# Nothing here names the repo: the same file works in any fork or copy.
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths: &rust-paths
+      - "crates/**"
+      - "mobile/fixtures/**"
+      # The push relay's encryption vectors, which the tests read.
+      - "relay/test/vectors.json"
+      - "m0-samples/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "rustfmt.toml"
+      - ".github/workflows/ci.yml"
+  pull_request:
+    branches: [main]
+    paths: *rust-paths
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push replaces the run still going for the same branch or pull request.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: "0"
+  # No debug info: smaller caches and faster links. Backtraces still name functions.
+  CARGO_PROFILE_DEV_DEBUG: "0"
+  CARGO_PROFILE_TEST_DEBUG: "0"
+
+jobs:
+  linux:
+    name: Linux (fmt, clippy, tests)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Rust
+        run: |
+          rustup toolchain install stable --profile minimal --component clippy,rustfmt --no-self-update
+          rustup default stable
+          rustc --version
+      - name: GPUI's build packages
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential cmake pkg-config libfontconfig-dev libxkbcommon-x11-dev
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+        with:
+          # Only main saves: branches and pull requests read its cache without crowding it out.
+          save-if: ${{ github.ref == 'refs/heads/main' }}
+      - name: rustfmt
+        run: cargo fmt --all --check
+      - name: clippy
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - name: clippy (snapshot)
+        run: cargo clippy --workspace --all-targets --locked --features flotilla-app/snapshot -- -D warnings
+      - name: Tests
+        run: cargo test --workspace --locked --no-fail-fast
+
+  macos:
+    name: macOS (clippy)
+    # Free in a public repo; in a private one the Mac costs ten times Linux's minutes, and the
+    # local gates already ran on a Mac, so only pull requests check here.
+    if: ${{ !github.event.repository.private || github.event_name == 'pull_request' }}
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Rust
+        run: |
+          rustup toolchain install stable --profile minimal --component clippy --no-self-update
+          rustup default stable
+          rustc --version
+      - name: Metal compiler
+        run: script/ci/metal-toolchain
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+        with:
+          save-if: ${{ github.ref == 'refs/heads/main' }}
+      - name: clippy
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings

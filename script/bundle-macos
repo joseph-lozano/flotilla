@@ -1,0 +1,81 @@
+#!/bin/zsh
+# Build target/release/Flotilla.app: the release binary, an Info.plist (which registers the
+# flotilla:// scheme, for pairing links), and an icon made from a full-bleed 1024×1024 PNG
+# (default design/icons/AppIcon.png). Signed ad hoc.
+#
+# --dev builds target/debug/Flotilla Dev.app from a debug build instead, to run beside the
+# release app: its own database, key, VMs and environments, its own icon
+# (design/icons/AppIcon-dev.png), and flotilla-dev:// links.
+#
+# --universal builds for Apple silicon and Intel Macs both (the rustup targets
+# aarch64-apple-darwin and x86_64-apple-darwin), as one binary. Releases are built this way.
+#
+#   script/bundle-macos [--dev] [--universal] [artwork.png]
+set -euo pipefail
+root=${0:A:h:h}
+dev=0 universal=0
+while [[ ${1:-} == --* ]]; do
+  case $1 in
+    --dev) dev=1 ;;
+    --universal) universal=1 ;;
+    *) print -u2 "unknown option $1"; exit 2 ;;
+  esac
+  shift
+done
+if (( dev )); then
+  name="Flotilla Dev" id=com.useflotilla.flotilla.dev profile=debug scheme=flotilla-dev art=${1:-$root/design/icons/AppIcon-dev.png}
+  build=(cargo build -p flotilla-app --manifest-path $root/Cargo.toml)
+else
+  name=Flotilla id=com.useflotilla.flotilla profile=release scheme=flotilla art=${1:-$root/design/icons/AppIcon.png}
+  build=(cargo build --release -p flotilla-app --manifest-path $root/Cargo.toml)
+fi
+app="$root/target/$profile/$name.app"
+version=$(sed -n 's/^version = "\(.*\)"/\1/p' $root/Cargo.toml | head -1)
+
+[[ -f $art ]] || { print -u2 "no artwork at $art"; exit 1; }
+tmp=$(mktemp -d)
+trap 'rm -rf $tmp' EXIT
+if (( universal )); then
+  targets=(aarch64-apple-darwin x86_64-apple-darwin)
+  for target in $targets; do $build --target $target; done
+  lipo -create -output $tmp/flotilla-app $root/target/${^targets}/$profile/flotilla-app
+  exe=$tmp/flotilla-app
+else
+  $build
+  exe=$root/target/$profile/flotilla-app
+fi
+
+swift $root/script/make-iconset.swift $art $tmp/AppIcon.iconset
+
+rm -rf $app
+mkdir -p $app/Contents/MacOS $app/Contents/Resources
+cp $exe $app/Contents/MacOS/flotilla-app
+iconutil -c icns $tmp/AppIcon.iconset -o $app/Contents/Resources/AppIcon.icns
+cat > $app/Contents/Info.plist <<PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleName</key><string>$name</string>
+  <key>CFBundleDisplayName</key><string>$name</string>
+  <key>CFBundleIdentifier</key><string>$id</string>
+  <key>CFBundleExecutable</key><string>flotilla-app</string>
+  <key>CFBundleIconFile</key><string>AppIcon</string>
+  <key>CFBundlePackageType</key><string>APPL</string>
+  <key>CFBundleShortVersionString</key><string>$version</string>
+  <key>CFBundleVersion</key><string>$version</string>
+  <key>LSMinimumSystemVersion</key><string>13.0</string>
+  <key>LSApplicationCategoryType</key><string>public.app-category.developer-tools</string>
+  <key>NSHighResolutionCapable</key><true/>
+  <key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleURLName</key><string>$id.pair</string>
+      <key>CFBundleURLSchemes</key><array><string>$scheme</string></array>
+    </dict>
+  </array>
+</dict>
+</plist>
+PLIST
+codesign --force --sign - $app
+print "built $app"

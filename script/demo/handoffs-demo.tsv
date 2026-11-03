@@ -1,0 +1,9 @@
+# The hand-offs demo: <caption><TAB><what Marin says>. Captions must match handoffs-demo.sh's caption: steps.
+Agents hand off work	Any agent in Flotilla can hand a task to another agent, and that one starts in an isolated VM of its own.
+A thread of its own	Here, Claude asks a Codex agent to check the kernel. The Codex agent gets its own thread, marked as handed off, that you can open any time.
+Woken with the answer	When Codex finishes, its answer comes straight back, and Claude picks up where it left off.
+Skills and commands	Type a slash, or a dollar sign, for the skills and commands that thread's agent can run.
+Mention a file	An at sign finds any file in the repo, and puts it in the way that agent reads it.
+Attachments	Attached images show as thumbnails, and every other file gets an icon for what it is.
+Yours, in every VM	In Settings, write instructions and pick skills from your Mac. Every agent, in every VM, gets them.
+Flotilla	Every agent in its own isolated VM, and now they work together. This is Flotilla.

@@ -1,0 +1,32 @@
+{
+  "about": "Flotilla's push encryption: ChaCha20-Poly1305, a 32-byte key, a random 12-byte nonce, no associated data. The ciphertext is base64 (standard, padded) of nonce || ciphertext || tag: CryptoKit's ChaChaPoly.SealedBox.combined. The plaintext is the server's APNs payload with flotilla.sent_at (Unix seconds) added. The collapse id is the first 32 hex digits of HMAC-SHA256(key, \"collapse:\" + id). Made by relay/script/make-vectors.mjs.",
+  "key": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=",
+  "other_key": "Hx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQA=",
+  "seals": [
+    {
+      "nonce": "000000000000000000000001",
+      "plaintext": "{\"aps\":{\"alert\":{\"title\":\"Fix flaky retry test\",\"body\":\"Finished. PR #42 is open and its 12 checks pass.\"},\"sound\":\"default\",\"thread-id\":\"t1\"},\"flotilla\":{\"sent_at\":1793664000,\"server\":\"srv_3f5c1a7e92d4\",\"kind\":\"turn_finished\",\"thread\":\"t1\"}}",
+      "ciphertext": "AAAAAAAAAAAAAAABEn4dqUIoggEPEBJKwWA1KGvTSym63ZlXfxjzQVHO+WayRpUqwZ7a8Vhon0HVl4ji55wqF/BJbhciUn4nHH9KHTHyMOjiGb0fXRlW7d73MnioYRbSEP/SusmAil/yXuXJXbIx0iYSOGdBl64r6CI7IXil26lWSiJ1B1GDAzsnhNT2e+PtgRc0LdLtQaaGqjg12a0By4aXRzf7QFbA8tN+qPpUkeQtYhb9VYJASTZSGzQvpf4PvsiRaCYYJGeoilquL1jCGDtKa30MrxJ3+KC12vQJVRG95LwegPNCe1mxMo9lwvceXJH+bb+OMMmuiJJh8tr/zI8NCd8eSaDfZ0OgCquS"
+    },
+    {
+      "nonce": "000000000000000000000002",
+      "plaintext": "{\"aps\":{\"alert\":{\"title\":\"Café ☕ «naïve» 日本語 🚢\",\"body\":\"Asks: Which file name should I create?\"},\"sound\":\"default\",\"thread-id\":\"t2\"},\"flotilla\":{\"sent_at\":1793664000,\"server\":\"srv_3f5c1a7e92d4\",\"kind\":\"asked\",\"thread\":\"t2\"}}",
+      "ciphertext": "AAAAAAAAAAAAAAACNujRh3lfXS/vX9Sov4RrIlzRbqdl6IzPvh2SUhOjFf4K8quzJmzJHnpxyIlfxq+fDzykbtoAofQa3AdNVBgC4Tnk9RYvrJ1IYvz64SKeP89UAoYyl/JObN0LjQuwCSIJBt9MPS8LCgSOR1m7N4H9P4Hr40GuvCypgaKn4LsaUN/ezrOy0yhEPpFCnYaXF6+xxGEeTCsw0lJLQ+f+/mRESWNpCBxTmtq7OWQXRE4D2JbE3vB41Xm6ILwyZyAMbHPgsF1wp/vfB2y/w0d0xXsXPtcAXRoLyQFDfijUixYV4gQaMlqXN4GuOqiIqiAks0k09sR1lZRt2qhqp2TrUnVt"
+    },
+    {
+      "nonce": "000000000000000000000003",
+      "plaintext": "{\"aps\":{\"alert\":{\"title\":\"web\",\"body\":\"Setup failed on main@9f3c2ab.\"},\"sound\":\"default\",\"thread-id\":\"p1\"},\"flotilla\":{\"sent_at\":1793664000,\"server\":\"srv_3f5c1a7e92d4\",\"kind\":\"setup_failed\"}}",
+      "ciphertext": "AAAAAAAAAAAAAAAD+2d9y0FongqqLpBvyZO0eRz+OK60sTplMShxDcOXreAbst9dIVktvOoZhZr9W8mHG2UvJcfZDcowkbySjyGC9gcTlzjKPclR33OO6nktd97kdUu8nYAezLB8w0p8XFWEGvoYoaAi1oZhbtG0TuVSqQvjLoWrQrJBJjq9O5LxNlGrN1uvykkOMJBSkwtBg01xFQs6BEfzOzGAuaA6viFGT7p3tsErvcyNiuvppeYqD6aFLU9xubHZPlnqMV356+C2LX/CgmILSHXA/rQBO8/U"
+    }
+  ],
+  "collapses": [
+    {
+      "id": "turn_finished:t1",
+      "collapse": "e3bd495ecfa9ae80820f843f990174df"
+    },
+    {
+      "id": "setup_failed:p1",
+      "collapse": "94cf5b47786c10bfb0988d3ac77f84eb"
+    }
+  ]
+}

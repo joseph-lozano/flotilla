@@ -1,0 +1,23 @@
+[package]
+name = "flotilla-mcp"
+description = "Flotilla for other agents: an MCP server (`flotilla mcp`) that starts, reads and follows threads through a Flotilla server, as an agent device"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+license.workspace = true
+
+[dependencies]
+flotilla-proto.workspace = true
+flotilla-model.workspace = true
+flotilla-client.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+flotilla-core.workspace = true
+flotilla-engine.workspace = true
+flotilla-server.workspace = true
+tokio.workspace = true
+reqwest = { workspace = true, features = ["form", "query"] }
+sha2 = "0.10"
+base64.workspace = true
