@@ -49,6 +49,7 @@ fn project() -> Project {
         head_sha: Some(s("def")),
         head_etag: None,
         checked_at: None,
+        machine_type: None,
     }
 }
 
@@ -275,6 +276,10 @@ fn requests() -> Vec<Request> {
                 fresh_only: true,
             }],
             run: true,
+        },
+        Request::SetMachineType {
+            project: s("p1"),
+            machine_type: Some(s("large")),
         },
         Request::ProjectMentions(s("p1")),
         Request::RunSetup {
@@ -647,6 +652,7 @@ fn request_variant(r: &Request) -> usize {
         Request::Answer { .. } => 58,
         Request::MakePublic { .. } => 59,
         Request::MakePrivate { .. } => 60,
+        Request::SetMachineType { .. } => 61,
     }
 }
 
@@ -1247,7 +1253,7 @@ fn back<T: serde::Serialize + serde::de::DeserializeOwned + PartialEq + std::fmt
 
 #[test]
 fn every_message_round_trips_through_json() {
-    covers(&requests(), request_variant, 61);
+    covers(&requests(), request_variant, 62);
     covers(&replies(), reply_variant, 12);
     covers(&sample_views(), view_variant, 9);
     covers(&notes(), note_variant, 16);

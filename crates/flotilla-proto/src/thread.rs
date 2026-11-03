@@ -403,7 +403,7 @@ pub struct NewThread {
     pub effort: Option<String>,
     pub fast: bool,
     pub title: Option<String>,
-    /// Machine type, e.g. `small`.
+    /// Machine size, one of [`MACHINE_TYPES`]; `None`: the project's, else boat's default.
     pub machine_type: Option<String>,
     pub prompt: String,
     /// Files sent with the first prompt.
@@ -680,6 +680,10 @@ pub struct Usage {
     /// When boat gave these numbers (ms since the epoch).
     #[serde(default)]
     pub read_ms: Option<i64>,
+    /// The machine sizes the plan doesn't start (boat's name) and why, e.g. `xlarge`, "needs
+    /// the $100/month plan or higher". Left out when there are none.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub sizes_unavailable: Vec<(String, String)>,
 }
 
 /// boat's extra starts: whether they're on, and this billing month's so far.
@@ -692,4 +696,23 @@ pub struct ExtraStarts {
     pub spend_cents: Option<(i64, i64)>,
     /// The cap is reached: no more extra starts this month.
     pub cap_reached: bool,
+}
+
+/// The machine sizes boat starts VMs on: its name for each, what to call it, and what it is.
+/// `default` is boat's own default, what a VM gets when no size is asked for.
+pub const MACHINE_TYPES: &[(&str, &str, &str)] = &[
+    ("small", "Small", "2 vCPU · 4 GB · half rate"),
+    ("default", "Medium", "4 vCPU · 8 GB"),
+    ("large", "Large", "8 vCPU · 16 GB · 2× rate"),
+    ("xlarge", "XL", "16 vCPU · 32 GB · $100+ plan"),
+];
+
+/// What to call machine size `t` (boat's name for it); `None` is boat's default.
+pub fn machine_type_label(t: Option<&str>) -> &str {
+    let t = t.unwrap_or("default");
+    MACHINE_TYPES
+        .iter()
+        .find(|(id, _, _)| *id == t)
+        .map(|(_, label, _)| *label)
+        .unwrap_or(t)
 }

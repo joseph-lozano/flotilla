@@ -1874,6 +1874,25 @@ impl State {
                 }
                 self.answer(&who, wrote(r));
             }
+            Request::SetMachineType {
+                project,
+                machine_type,
+            } => {
+                let r = match machine_type.as_deref() {
+                    Some(t)
+                        if !flotilla_proto::MACHINE_TYPES
+                            .iter()
+                            .any(|(id, _, _)| *id == t) =>
+                    {
+                        Err(flotilla_core::Error::Invalid(format!(
+                            "{t} isn't one of boat's machine sizes"
+                        )))
+                    }
+                    t => store.set_project_machine_type(&project, t),
+                };
+                self.changes.add_project(&project);
+                self.answer(&who, wrote(r));
+            }
             Request::Set(setting) => {
                 let r = match &setting {
                     Setting::Defaults(s) => (|| {
@@ -3682,6 +3701,7 @@ mod tests {
             head_sha: None,
             head_etag: None,
             checked_at: None,
+            machine_type: None,
         }
     }
 

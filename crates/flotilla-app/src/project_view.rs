@@ -26,6 +26,8 @@ pub enum ProjectEvent {
         run: bool,
     },
     Remove,
+    /// The machine size new threads start on unless they pick one (boat's name for it).
+    SetMachineType(String),
     /// Open New thread with a prompt to fix this failed run.
     FixSetup {
         run: String,
@@ -45,6 +47,8 @@ pub struct ProjectView {
     rows: Vec<ScriptRow>,
     github_error: Option<String>,
     show_log: bool,
+    /// The machine sizes the plan won't start, and why (from boat's limits).
+    sizes_unavailable: Vec<(String, String)>,
     /// Asked for a run that hasn't shown up yet.
     requested: bool,
     _tick: Task<()>,
@@ -111,6 +115,7 @@ impl ProjectView {
             rows: Vec::new(),
             github_error,
             show_log: false,
+            sizes_unavailable: Vec::new(),
             requested: false,
             _tick: tick,
         };
@@ -133,6 +138,14 @@ impl ProjectView {
         self.runs = runs;
         self.github_error = github_error;
         cx.notify();
+    }
+
+    /// The sizes boat's limits say the plan won't start changed.
+    pub fn set_sizes_unavailable(&mut self, sizes: Vec<(String, String)>, cx: &mut Context<Self>) {
+        if self.sizes_unavailable != sizes {
+            self.sizes_unavailable = sizes;
+            cx.notify();
+        }
     }
 
     fn set_scripts(
@@ -180,6 +193,16 @@ impl ProjectView {
         self.saved = scripts.clone();
         self.requested |= run;
         cx.emit(ProjectEvent::SaveScripts { scripts, run });
+        cx.notify();
+    }
+
+    /// The size new threads start on, saved at once.
+    fn set_machine_type(&mut self, t: String, cx: &mut Context<Self>) {
+        if self.project.machine_type.as_deref().unwrap_or("default") == t {
+            return;
+        }
+        self.project.machine_type = Some(t.clone());
+        cx.emit(ProjectEvent::SetMachineType(t));
         cx.notify();
     }
 
@@ -602,6 +625,41 @@ impl Render for ProjectView {
                 self.project.default_branch
             )))
             .child(section().pt_0().child(heading("Setup")).child(setup))
+            .child({
+                let weak = cx.weak_entity();
+                section().child(heading("Machine size")).child(
+                    h_flex()
+                        .gap_3()
+                        .child(crate::machine_size::menu(
+                            "p-machine-size",
+                            self.project.machine_type.as_deref(),
+                            &self.sizes_unavailable,
+                            false,
+                            move |t, _, cx| {
+                                let _ = weak.update(cx, |v, cx| v.set_machine_type(t, cx));
+                            },
+                        ))
+                        .child(
+                            div().text_xs().text_color(muted).child(
+                                match crate::machine_size::unavailable(
+                                    &self.sizes_unavailable,
+                                    self.project.machine_type.as_deref(),
+                                ) {
+                                    Some(why) => format!(
+                                        "{} {why}: new threads can't start on it.",
+                                        flotilla_proto::machine_type_label(
+                                            self.project.machine_type.as_deref()
+                                        )
+                                    ),
+                                    None => {
+                                        "New threads start on this size unless they pick another."
+                                            .to_string()
+                                    }
+                                },
+                            ),
+                        ),
+                )
+            })
             .child(
                 section()
                     .child(heading("Setup scripts"))

@@ -40,9 +40,10 @@ pub use schedule::{Fresh, Run, RunOutcome, Schedule, ScheduleSpec, Schedules, Ta
 pub use search::{HitKind, SearchHit};
 pub use spend::{AgentUsage, Speed, TokenTotals, UsageCost, UsageHour};
 pub use thread::{
-    Activity, Attached, Entry, Environment, ExtraStarts, HookRun, Kind, Lineage, Link, Mentions,
-    Message, NewThread, OnBranch, RawEvent, ScriptFailure, Sent, SentPrompt, ServiceRun, Skill,
-    StartStages, Subagent, Thread, ThreadServices, ThreadState, ThreadSummary, Usage, UserSkill,
+    Activity, Attached, Entry, Environment, ExtraStarts, HookRun, Kind, Lineage, Link,
+    MACHINE_TYPES, Mentions, Message, NewThread, OnBranch, RawEvent, ScriptFailure, Sent,
+    SentPrompt, ServiceRun, Skill, StartStages, Subagent, Thread, ThreadServices, ThreadState,
+    ThreadSummary, Usage, UserSkill, machine_type_label,
 };
 pub use views::{
     CheckOf, ChildCard, ChildState, DeviceRow, Devices, Diagnosis, Doctor, EngineState, Health,

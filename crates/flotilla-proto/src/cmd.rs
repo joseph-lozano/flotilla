@@ -128,6 +128,13 @@ pub enum Request {
         scripts: Vec<SetupScript>,
         run: bool,
     },
+    /// The machine size the project's new threads start on unless they pick one (one of
+    /// [`crate::MACHINE_TYPES`]); `None`: boat's default.
+    #[serde(rename = "project.set_machine_type")]
+    SetMachineType {
+        project: String,
+        machine_type: Option<String>,
+    },
     /// The skills and files last read in the project's threads. Answers `Mentions`.
     #[serde(rename = "project.mentions")]
     ProjectMentions(String),
@@ -336,6 +343,7 @@ impl Request {
             Request::AddProject { .. } => "add the project",
             Request::RemoveProject(_) => "remove the project",
             Request::SetScripts { .. } => "save the scripts",
+            Request::SetMachineType { .. } => "save the machine size",
             Request::RunSetup { .. } => "run the setup",
             Request::CancelSetup(_) => "cancel the setup",
             Request::SetupFixPrompt { .. } => "write the fix prompt",

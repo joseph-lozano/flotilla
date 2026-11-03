@@ -275,6 +275,22 @@ impl Limits {
             blocked,
             starts_free: text("/startWindowFull/freesAt"),
             extra_starts,
+            sizes_unavailable: raw
+                .get("machineTypes")
+                .and_then(Value::as_array)
+                .into_iter()
+                .flatten()
+                .filter(|m| m.get("available").and_then(Value::as_bool) == Some(false))
+                .filter_map(|m| {
+                    let t = m.get("type")?.as_str()?.to_string();
+                    let why = m
+                        .get("reason")
+                        .and_then(Value::as_str)
+                        .filter(|r| !r.is_empty())
+                        .unwrap_or("not on this plan");
+                    Some((t, why.to_string()))
+                })
+                .collect(),
             read_ms: None,
         }
     }
@@ -729,11 +745,14 @@ impl BoatClient {
     /// Copy a sandbox from its newest snapshot (fork a stopped one: a running one's newest
     /// snapshot can be ~40 s old). Labels are set here (a fork doesn't inherit them); the
     /// name can't be, so it's renamed after.
+    /// `machine_type`: fork onto another machine size (boat refuses a smaller one the disk
+    /// doesn't fit); `None`: the source's.
     pub fn fork_sandbox(
         &self,
         source: &str,
         labels: &[(String, String)],
         ttl: Ttl,
+        machine_type: Option<&str>,
         idempotency_key: &str,
     ) -> BoatResult<Sandbox> {
         let mut body = Map::new();
@@ -741,6 +760,9 @@ impl BoatClient {
             labels.iter().map(|(k, v)| (k.clone(), json!(v))).collect();
         body.insert("labels".into(), Value::Object(labels));
         ttl.insert_into(&mut body);
+        if let Some(t) = machine_type {
+            body.insert("type".into(), json!(t));
+        }
         let resp = self.send(
             Method::POST,
             &format!("/sandboxes/{}/fork", enc(source)),
@@ -1218,6 +1240,23 @@ mod tests {
         assert_eq!(
             (u.extra_starts, u.starts_free, u.read_ms),
             (None, None, None)
+        );
+        assert!(u.sizes_unavailable.is_empty());
+
+        // The sizes the plan doesn't start, and why.
+        let raw = json!({"machineTypes": [
+            {"available": true, "reason": null, "type": "small"},
+            {"available": true, "reason": null, "type": "large"},
+            {"available": false, "reason": "needs the $100/month plan or higher", "type": "xlarge"},
+        ]});
+        let mut limits: Limits = serde_json::from_value(raw.clone()).unwrap();
+        limits.raw = raw;
+        assert_eq!(
+            limits.usage().sizes_unavailable,
+            [(
+                "xlarge".to_string(),
+                "needs the $100/month plan or higher".to_string()
+            )]
         );
 
         // Unlimited starts aren't counted; a refusal says why.

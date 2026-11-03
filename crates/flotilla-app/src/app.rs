@@ -1953,7 +1953,12 @@ impl FlotillaApp {
                         cap_reached: false,
                     }),
                     read_ms: Some(now - 20_000),
+                    sizes_unavailable: vec![(
+                        "xlarge".into(),
+                        "needs the $100/month plan or higher".into(),
+                    )],
                 });
+                self.push_sizes(cx);
                 cx.notify();
             }
             "usage-open" => {
@@ -2892,7 +2897,28 @@ impl FlotillaApp {
                 p.set_room(room, cx);
             });
         }
+        self.push_sizes(cx);
         self.show_rows(cx);
+    }
+
+    /// The machine sizes boat's limits say the plan won't start, and why.
+    fn sizes_unavailable(&self) -> Vec<(String, String)> {
+        self.usage
+            .as_ref()
+            .map(|u| u.sizes_unavailable.clone())
+            .unwrap_or_default()
+    }
+
+    /// The sizes the plan won't start, to New thread and an open project's settings.
+    fn push_sizes(&self, cx: &mut Context<Self>) {
+        let sizes = self.sizes_unavailable();
+        if let Some(page) = &self.new_thread {
+            let sizes = sizes.clone();
+            page.update(cx, |p, cx| p.set_sizes_unavailable(sizes, cx));
+        }
+        if let Some(view) = self.project_view.as_ref().and_then(|v| v.upgrade()) {
+            view.update(cx, |v, cx| v.set_sizes_unavailable(sizes, cx));
+        }
     }
 
     /// The unread count on the app's icon, when notifications are on.
@@ -4322,6 +4348,10 @@ impl FlotillaApp {
                         Notification::error(e).title("Couldn't save the scripts"),
                         cx,
                     ),
+                    Request::SetMachineType { .. } => window.push_notification(
+                        Notification::error(e).title("Couldn't save the machine size"),
+                        cx,
+                    ),
                     Request::SetBoatKey(_) => window.push_notification(
                         Notification::error(e).title("Couldn't save the key"),
                         cx,
@@ -4856,6 +4886,8 @@ impl FlotillaApp {
             let page = cx.new(|cx| {
                 NewThreadPage::new(catalog, defaults, environments, projects, last, window, cx)
             });
+            let sizes = self.sizes_unavailable();
+            page.update(cx, |p, cx| p.set_sizes_unavailable(sizes, cx));
             // What was written here before a switch to another server.
             if let Some(draft) = self.drafts.take_new_thread() {
                 page.update(cx, |p, cx| p.put_draft(draft, window, cx));
@@ -5600,6 +5632,8 @@ impl FlotillaApp {
         let title = project.repo.clone();
         let view =
             cx.new(|cx| ProjectView::new(project, p.runs, p.scripts, p.github_error, window, cx));
+        let sizes = self.sizes_unavailable();
+        view.update(cx, |v, cx| v.set_sizes_unavailable(sizes, cx));
         self.project_view = Some(view.downgrade());
         let sub = cx.subscribe_in(
             &view,
@@ -5619,6 +5653,12 @@ impl FlotillaApp {
                         project: id.clone(),
                         scripts: scripts.clone(),
                         run: *run,
+                    });
+                }
+                ProjectEvent::SetMachineType(t) => {
+                    this.ask(Request::SetMachineType {
+                        project: id.clone(),
+                        machine_type: Some(t.clone()),
                     });
                 }
                 ProjectEvent::Remove => this.confirm_remove_project(id.clone(), window, cx),

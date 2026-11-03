@@ -286,6 +286,9 @@ pub fn begin_thread(
     if let Some(b) = &req.on_branch {
         store.kv_set(&on_branch_key(&id), &b.base)?;
     }
+    if let Some(t) = &req.machine_type {
+        store.kv_set(&machine_type_key(&id), t)?;
+    }
     let local = format!("local-{}", uuid::Uuid::new_v4());
     store.insert_sent_prompt(&id, &local, "prompt", &req.prompt)?;
     store.set_sent_attachments(&id, &local, &req.attachments)?;
@@ -503,7 +506,9 @@ pub fn retry_request(store: &Store, thread_id: &str) -> Result<(NewThread, Strin
         effort: t.effort.clone(),
         fast: t.fast,
         title: Some(t.title.clone()),
-        machine_type: None,
+        machine_type: store
+            .kv_get(&machine_type_key(thread_id))?
+            .filter(|t| !t.is_empty()),
         prompt: first.text,
         attachments: first.attachments,
         wait_ready: false,
@@ -545,6 +550,11 @@ pub fn after_turn(boat: &BoatClient, store: &Store, thread_id: &str) -> Result<(
 /// branch out instead of making one, and its header counts from this branch).
 fn on_branch_key(thread_id: &str) -> String {
     format!("on_branch:{thread_id}")
+}
+
+/// The machine size a thread asked for, so Try again asks for it too.
+fn machine_type_key(thread_id: &str) -> String {
+    format!("machine_type:{thread_id}")
 }
 
 /// The branch a project thread's work merges into: its pull request's base if it started on
@@ -1016,7 +1026,13 @@ impl Core {
             return Err(self.archived_as_it_started(thread_id));
         }
         let (sb, fresh) = match &project {
-            Some(p) => match self.project_vm(thread_id, &t, p, &labels) {
+            Some(p) => match self.project_vm(
+                thread_id,
+                &t,
+                p,
+                &labels,
+                req.machine_type.as_deref().or(p.machine_type.as_deref()),
+            ) {
                 Ok(x) => x,
                 Err(e) => {
                     let _ = self.store.set_start_stages(thread_id, None);
@@ -1298,13 +1314,17 @@ impl Core {
         t: &Thread,
         p: &Project,
         labels: &[(String, String)],
+        machine_type: Option<&str>,
     ) -> Result<(Sandbox, bool)> {
         let branch = t.branch.clone().unwrap_or_default();
         self.stage(thread_id, &format!("Start a VM on branch {branch}"));
         // Setup's auto-stop until `prepared` is done (in case the VM isn't up for its PATCH).
         let ttl = Ttl::Seconds(crate::setup::RUN_TTL_SECONDS);
         if let Some(template) = &p.template_sandbox_id {
-            match self.boat.fork_sandbox(template, labels, ttl, thread_id) {
+            match self
+                .boat
+                .fork_sandbox(template, labels, ttl, machine_type, thread_id)
+            {
                 Ok(sb) => {
                     // A fork can't be named when it's made.
                     let _ = self.boat.update_sandbox(
@@ -1331,7 +1351,7 @@ impl Core {
             name: &name,
             ttl,
             labels,
-            machine_type: None,
+            machine_type,
         };
         Ok((
             self.boat
@@ -2607,6 +2627,7 @@ mod tests {
             head_sha: None,
             head_etag: None,
             checked_at: None,
+            machine_type: None,
         };
         store.insert_project(&project, &[]).unwrap();
         let req = NewThread {
@@ -2663,6 +2684,23 @@ mod tests {
         let (again, _) = retry_request(&store, &t.id).unwrap();
         assert_eq!(again.on_branch, req.on_branch);
         assert_eq!(again.attachments, req.attachments);
+        assert_eq!(again.machine_type, None);
+        // A size picked for the thread is asked for again too.
+        let (large, _) = begin_thread(
+            &store,
+            &catalog,
+            &NewThread {
+                on_branch: Some(OnBranch {
+                    name: "bigger".into(),
+                    base: "main".into(),
+                }),
+                machine_type: Some("large".into()),
+                ..req.clone()
+            },
+        )
+        .unwrap();
+        let (again, _) = retry_request(&store, &large.id).unwrap();
+        assert_eq!(again.machine_type.as_deref(), Some("large"));
 
         let (fresh, _) = begin_thread(
             &store,
@@ -3001,6 +3039,7 @@ mod tests {
                 head_sha: None,
                 head_etag: None,
                 checked_at: None,
+                machine_type: None,
             };
             store.insert_project(&p, &[]).unwrap();
         }

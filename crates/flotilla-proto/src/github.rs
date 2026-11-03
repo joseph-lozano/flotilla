@@ -29,6 +29,10 @@ pub struct Project {
     pub head_sha: Option<String>,
     pub head_etag: Option<String>,
     pub checked_at: Option<String>,
+    /// The boat machine size its new threads start on unless they pick one
+    /// ([`crate::MACHINE_TYPES`]); `None`: boat's default.
+    #[serde(default)]
+    pub machine_type: Option<String>,
 }
 
 impl Project {

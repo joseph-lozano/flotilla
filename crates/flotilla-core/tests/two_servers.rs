@@ -252,6 +252,7 @@ fn project(id: &str) -> Project {
         head_sha: None,
         head_etag: None,
         checked_at: None,
+        machine_type: None,
     }
 }
 

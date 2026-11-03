@@ -751,6 +751,10 @@ fn usage() -> Usage {
         starts_free: None,
         extra_starts: None,
         read_ms: Some(now_ms()),
+        sizes_unavailable: vec![(
+            "xlarge".into(),
+            "needs the $100/month plan or higher".into(),
+        )],
     }
 }
 

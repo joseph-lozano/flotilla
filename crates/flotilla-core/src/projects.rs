@@ -143,6 +143,7 @@ pub fn add_project(
         head_sha: None,
         head_etag: None,
         checked_at: None,
+        machine_type: None,
     };
     if let Err(e) = store
         .upsert_environment(&env)

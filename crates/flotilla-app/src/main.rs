@@ -20,6 +20,7 @@ mod graphemes;
 #[cfg(target_os = "linux")]
 mod instance;
 mod listing;
+mod machine_size;
 mod mention_menu;
 mod meter;
 mod new_thread;
