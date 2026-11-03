@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The iPhone app · Flotilla docs</title>
+<meta name="description" content="Use Flotilla on your iPhone: pair with your server, follow threads live, start new ones, answer agents&#x27; questions, preview, and hold to merge.">
+<link rel="canonical" href="https://useflotilla.com/docs/0.1.0/iphone.html">
+<link rel="alternate" type="text/markdown" href="iphone.md">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FCFAFD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1322" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Flotilla">
+<meta property="og:title" content="The iPhone app · Flotilla docs">
+<meta property="og:description" content="Use Flotilla on your iPhone: pair with your server, follow threads live, start new ones, answer agents&#x27; questions, preview, and hold to merge.">
+<meta property="og:image" content="https://useflotilla.com/og.png">
+<link rel="stylesheet" href="docs.css">
+<script src="docs.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="sail-shape" d="M2 0h1v1h1v1h1v1h1v1h1v1h1v1H2z"/>
+    <path id="hull-shape" d="M0 7h8v2H0z"/>
+    <g id="mark">
+      <g fill="#F37173" transform="translate(0 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#F6BC63" transform="translate(10 0)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#C2A7E2" transform="translate(20 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+    </g>
+  </defs>
+</svg>
+
+<header class="wrap site-header">
+  <a class="brand" href="../../" aria-label="Flotilla, home">
+    <svg viewBox="0 0 28 11" width="42" height="17" shape-rendering="crispEdges" aria-hidden="true"><use href="#mark"/></svg>
+    <span class="word">Flotilla</span>
+  </a>
+  <a class="crumb" href="./">Docs</a>
+  <label class="version">
+    <span class="visually-hidden">Docs version</span>
+    <select id="version" data-current="0.1.0"><option value="0.1.0" selected>0.1.0</option></select>
+  </label>
+  <a class="md-link" href="iphone.md" title="This page as Markdown">Markdown</a>
+  <span class="tag">Alpha</span>
+  <nav class="site-nav" aria-label="Main">
+    <a class="nav-text" href="../../">Home</a>
+    <a class="nav-github" href="https://github.com/joseph-lozano/flotilla">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span class="label">GitHub</span>
+    </a>
+  </nav>
+</header>
+
+<div class="wrap docs">
+  <aside class="sidebar" aria-label="Docs">
+    <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc">Contents<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
+    <div class="toc" id="toc">
+      <div class="search" role="search">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.75"/><path d="M10.5 10.5L14 14"/></svg>
+        <label class="visually-hidden" for="docs-search">Search the docs</label>
+        <input id="docs-search" type="search" placeholder="Search the docs" autocomplete="off" spellcheck="false">
+        <ul class="results" id="search-results" aria-live="polite"></ul>
+      </div>
+      <nav aria-label="Pages">
+      <p class="group">Start here</p>
+      <ul class="pages">
+        <li><a href="./">Overview</a></li>
+        <li><a href="getting-started.html">Getting started</a></li>
+      </ul>
+      <p class="group">Guides</p>
+      <ul class="pages">
+        <li><a href="threads.html">Threads</a></li>
+        <li><a href="projects.html">Projects and pull requests</a></li>
+        <li><a href="previews.html">Previews and services</a></li>
+        <li><a href="agents.html">Agents working together</a></li>
+        <li><a href="questions.html">Questions from agents</a></li>
+        <li><a href="schedules.html">Scheduled prompts</a></li>
+        <li><a href="server.html">Run a server</a></li>
+        <li><a href="iphone.html" aria-current="page">The iPhone app</a>
+          <ul class="sections">
+            <li><a href="#pair">Pair with your server</a></li>
+            <li><a href="#threads">Threads</a></li>
+            <li><a href="#thread">A thread</a></li>
+            <li><a href="#new-thread">New thread</a></li>
+            <li><a href="#push">Notifications</a></li>
+            <li><a href="#settings">Settings</a></li>
+          </ul>
+        </li>
+        <li><a href="agent-api.html">The agent API</a></li>
+      </ul>
+      <p class="group">Reference</p>
+      <ul class="pages">
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="shortcuts.html">Keyboard shortcuts</a></li>
+        <li><a href="cli.html">The CLI</a></li>
+      </ul>
+      <p class="group">Help</p>
+      <ul class="pages">
+        <li><a href="faq.html">FAQ and troubleshooting</a></li>
+      </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="content" class="doc">
+    <p class="version-note" hidden></p>
+    <h1>The iPhone app</h1>
+    <p class="lede">The iPhone app shows the same threads as your Mac, live. Start a thread with a photo attached, answer an agent's question, open a preview, and hold to merge with your thumb.</p>
+
+    <div class="note"><strong>Alpha.</strong> The iPhone app isn't on the App Store or TestFlight yet. It needs iOS 26 or later. To try it now, build it from the <code>ios</code> folder of the repo with Xcode; its <a href="https://github.com/joseph-lozano/flotilla/blob/main/ios/README.md">README</a> has the steps.</div>
+
+    <div class="phones">
+      <figure>
+        <picture>
+          <source srcset="img/iphone-threads-night.webp" media="(prefers-color-scheme: dark)">
+          <img src="img/iphone-threads-day.webp" width="603" height="1311" loading="lazy" decoding="async" alt="The iPhone app's Threads screen: two unread threads, Pick a file name and Median function with subtle bug with pull request #42, then four idle ones, each with a summary of its latest reply and its model or project. The bottom bar shows 3/100 VMs and 62% of an agent account's week, beside New thread and the search box.">
+        </picture>
+        <figcaption>Threads, grouped by what needs you.</figcaption>
+      </figure>
+      <figure>
+        <picture>
+          <source srcset="img/iphone-merge-night.webp" media="(prefers-color-scheme: dark)">
+          <img src="img/iphone-merge-day.webp" width="603" height="1311" loading="lazy" decoding="async" alt="A thread on the iPhone: two reviewer cards, the agent's summary of what they found, and pull request #42 with 12 checks passing and Hold to merge above the message box.">
+        </picture>
+        <figcaption>A thread, with its pull request ready to merge.</figcaption>
+      </figure>
+      <figure>
+        <picture>
+          <source srcset="img/iphone-new-thread-night.webp" media="(prefers-color-scheme: dark)">
+          <img src="img/iphone-new-thread-day.webp" width="603" height="1311" loading="lazy" decoding="async" alt="New thread on the iPhone: a prompt, Opus 5.5 on High with Fast, the project flotilla-playground on a new branch, and Start.">
+        </picture>
+        <figcaption>New thread, in a project on a new branch.</figcaption>
+      </figure>
+    </div>
+
+    <h2 id="pair">Pair with your server</h2>
+    <p>The iPhone app connects to a Flotilla server: one you <a href="server.html">run on a machine that stays on</a>, or <a href="server.html#this-mac">your Mac</a> while Flotilla is open there. Your phone needs to reach it, for example over Tailscale.</p>
+    <ol>
+      <li>On the server, run <code>flotilla pair</code>, or on a paired Mac open <strong>Settings → Devices → Add device</strong>.</li>
+      <li>Open the app. <strong>Connect to a server</strong> shows the camera: point it at the QR code. The form fills in.</li>
+      <li>Check the <strong>Device name</strong>; it's how Settings on your other devices lists this phone.</li>
+      <li>Tap <strong>Connect</strong>.</li>
+    </ol>
+    <p>No camera, or the code is on another screen? Tap <strong>Use a photo of the code</strong>, or fill in <strong>Server</strong> and <strong>Code</strong> yourself. Pasting a whole pairing link into <strong>Server</strong> fills in both. Opening a pairing link on the phone fills in the form too; you still tap <strong>Connect</strong>.</p>
+    <p>The phone pairs with one server at a time. <strong>Pair with a different server</strong> in Settings replaces the first, which forgets the phone.</p>
+
+    <h2 id="threads">Threads</h2>
+    <p><strong>Threads</strong> groups threads under <strong>Unread</strong>, <strong>Working</strong> and <strong>Idle</strong>, in that order, with <strong>Archived</strong> folded at the bottom. Each row shows the title, a summary of the latest reply, the agent and model or the project, the pull request's number, and the VM's state, such as <em>stopped</em> or <em>2d left</em>.</p>
+    <ul>
+      <li>Swipe left to <strong>Archive</strong> or <strong>Unarchive</strong>; swipe right to mark it read or unread. <strong>Undo</strong> shows for 5 seconds after an archive.</li>
+      <li>Touch and hold a row for <strong>Rename…</strong>, <strong>Open the pull request</strong> and <strong>Delete…</strong>, as well as read and archive.</li>
+      <li>Search finds threads by title, pull request, branch or project as you type, then <strong>In messages</strong>, what was said in them. Tap a message to open its thread at that message.</li>
+      <li>The bar at the bottom shows boat.dev's VM count and the agents' weekly use; tap either for <strong>Usage</strong>. <strong>New thread</strong> is beside them.</li>
+    </ul>
+
+    <h2 id="thread">A thread</h2>
+    <p>Replies, tool calls and the cards of agents the thread handed work to stream in live. Tap a tool call to see its output, and touch and hold a message to copy it. <strong>Jump to latest</strong> appears when you scroll up.</p>
+    <ul>
+      <li>The message box says <strong>Ask a follow-up…</strong>, or <strong>Steer…</strong> while a turn runs. The send button follows the same rules as on the Mac: <strong>Send</strong>, <strong>Steer</strong>, or <strong>Resume and send</strong> when the VM is stopped. <strong>Stop the turn</strong> interrupts it.</li>
+      <li>The paperclip attaches photos or files: up to 12, each up to 25 MB, 64 MB in all.</li>
+      <li>The model, effort and context ring sit under the message box; tap the ring for the context window.</li>
+      <li>The clock is <strong>Send later</strong>. See <a href="schedules.html">Scheduled prompts</a>.</li>
+      <li><strong>⋯</strong> has the thread's menu, and the globe opens <strong>Preview</strong>.</li>
+    </ul>
+
+    <h3 id="questions">Questions and pull requests</h3>
+    <p>An agent's question shows as a card: pick an option or tap <strong>Other</strong>, then <strong>Send</strong>. See <a href="questions.html">Questions from agents</a>.</p>
+    <p>A thread's pull request shows above the message box with its checks. <strong>Fix</strong>, <strong>Resolve</strong> and <strong>Address review</strong> write a prompt for you to check and send. <strong>Hold to merge</strong> fills under your thumb and merges when full. <strong>Ready for review</strong> is on the desktop app only.</p>
+
+    <h3 id="preview">Preview</h3>
+    <p>The globe in a thread's toolbar opens <strong>Preview</strong>. With no services, it asks for a port and opens it. With services, it lists each with <strong>Open</strong>, <strong>Output</strong>, <strong>Restart</strong> or <strong>Start</strong>, <strong>Stop</strong> and <strong>Make public…</strong>, and has <strong>Another port…</strong>. Pages open in Safari inside the app. Public links work as on the Mac; see <a href="previews.html#public">Share a public link</a>.</p>
+
+    <div class="phones two">
+      <figure>
+        <picture>
+          <source srcset="img/iphone-ask-night.webp" media="(prefers-color-scheme: dark)">
+          <img src="img/iphone-ask-day.webp" width="603" height="1311" loading="lazy" decoding="async" alt="A question card in a thread on the iPhone, marked waiting: Which file name should I create? with alpha.txt (recommended), beta.txt, Other and Send.">
+        </picture>
+        <figcaption>A question waiting for you.</figcaption>
+      </figure>
+      <figure>
+        <picture>
+          <source srcset="img/iphone-preview-night.webp" media="(prefers-color-scheme: dark)">
+          <img src="img/iphone-preview-day.webp" width="603" height="1311" loading="lazy" decoding="async" alt="The Preview sheet on the iPhone: the web service ready on port 4100 and public for under an hour more, the worker stopped, the api exited, port 5173 public until you stop it, and Another port.">
+        </picture>
+        <figcaption>Preview: services, ports and public links.</figcaption>
+      </figure>
+    </div>
+
+    <h2 id="new-thread">New thread</h2>
+    <p>Tap <strong>New thread</strong>, type what the agent should do, and tap <strong>Start</strong>.</p>
+    <ul>
+      <li>The model button lists every model by agent. Tap <strong>Select</strong> to pick several and start the prompt on each.</li>
+      <li>Effort and <strong>Fast</strong> sit beside it, for models that have them.</li>
+      <li>Pick a project, or <strong>No project</strong>, and a branch: <strong>New branch</strong>, or an existing branch or pull request. Type <code>#12</code> or paste a link to find one.</li>
+      <li>The clock sends it later, as a new thread each run.</li>
+    </ul>
+
+    <h2 id="push">Notifications</h2>
+    <p>The app asks to send notifications the first time it connects. With notifications on, your phone hears when:</p>
+    <ul>
+      <li>a turn finishes;</li>
+      <li>an agent asks you a question;</li>
+      <li>the agents a thread handed work to answer;</li>
+      <li>a thread couldn't start;</li>
+      <li>a pull request merges;</li>
+      <li>a scheduled prompt didn't run;</li>
+      <li>a project's setup fails.</li>
+    </ul>
+    <p>Tap one to open its thread. While the app is open, it doesn't notify you about the thread you're reading.</p>
+
+    <h3 id="push-relay">How they reach your phone</h3>
+    <p>Only Flotilla's makers can send notifications to the Flotilla app, so a server without their push key sends them through Flotilla's push relay, <code>push.useflotilla.com</code>, which runs on Cloudflare. There's nothing to sign up for: when your server says it uses the relay, your phone registers with it.</p>
+    <ul>
+      <li><strong>The relay can't read your notifications.</strong> Your phone makes a key that only it and your server have. The server encrypts each notification with it, and the phone opens it. The relay only passes on a sealed note.</li>
+      <li><strong>What the relay keeps:</strong> your phone's notification token, a random id with a hashed secret, and when it was registered and last used.</li>
+      <li><strong>It deletes them</strong> when you unpair, when Apple reports the app gone, or after 90 days unused (Cloudflare can restore deleted data for 30 days).</li>
+    </ul>
+    <p>To turn the relay off, run this on the server. Your phone then gets no notifications, and leaves the relay:</p>
+    <div class="cmd"><pre><code>flotilla setup --no-push-relay
+flotilla service restart</code></pre></div>
+    <p>If you build the app yourself under your own Apple developer team, give your server that team's push key instead, and it sends to Apple directly without the relay:</p>
+    <div class="cmd"><pre><code>flotilla setup --apns-key AuthKey_&lt;KEY ID&gt;.p8 --apns-team-id &lt;TEAM ID&gt;
+flotilla service restart</code></pre></div>
+    <p>The <strong>Push</strong> check in <strong>Server setup</strong> says which it is: through the relay, your own key, or off. See also the <a href="../../privacy.html">privacy policy</a>.</p>
+
+    <h2 id="settings">Settings</h2>
+    <p>The gear on Threads opens <strong>Settings</strong>:</p>
+    <ul>
+      <li><strong>Server</strong>: the server you're paired with, <strong>Pair with a different server</strong>, and <strong>Forget</strong>.</li>
+      <li><strong>Server setup</strong>: the server's checks, each with the commands that fix it, and <strong>Check again</strong>.</li>
+      <li><strong>Archiving</strong>: archive a thread when its pull request merges, and archive threads idle for a number of days. These are the server's settings, shared with your other devices.</li>
+      <li><strong>Devices</strong>: every paired device, with <strong>Rename…</strong> and <strong>Revoke…</strong>; rename this phone here. <strong>Add device</strong> shows a QR code, the code, and <strong>Copy link</strong> and <strong>Share</strong>.</li>
+      <li><strong>Appearance</strong>: <strong>Phone</strong> (follow the phone), <strong>Day</strong> or <strong>Night</strong>.</li>
+    </ul>
+    <p>Keep running, adding projects, and the other settings are in the desktop app.</p>
+
+    <nav class="pager" aria-label="Previous and next">
+    <a class="prev" href="server.html"><span>Previous</span>Run a server</a>
+    <a class="next" href="agent-api.html"><span>Next</span>The agent API</a>
+    </nav>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Joseph Lozano</span>
+    <nav aria-label="Footer">
+      <a href="../../">Home</a>
+      <a href="./">Docs</a>
+      <a href="https://github.com/joseph-lozano/flotilla">GitHub</a>
+      <a href="https://github.com/joseph-lozano/flotilla/blob/main/LICENSE">MIT License</a>
+      <a href="../../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

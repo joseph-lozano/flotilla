@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Threads · Flotilla docs</title>
+<meta name="description" content="Start threads, pick the agent and model, follow up, steer or stop a turn, attach files, search, archive, and keep an eye on VMs, usage and context.">
+<link rel="canonical" href="https://useflotilla.com/docs/0.1.0/threads.html">
+<link rel="alternate" type="text/markdown" href="threads.md">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FCFAFD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1322" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Flotilla">
+<meta property="og:title" content="Threads · Flotilla docs">
+<meta property="og:description" content="Start threads, pick the agent and model, follow up, steer or stop a turn, attach files, search, archive, and keep an eye on VMs, usage and context.">
+<meta property="og:image" content="https://useflotilla.com/og.png">
+<link rel="stylesheet" href="docs.css">
+<script src="docs.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="sail-shape" d="M2 0h1v1h1v1h1v1h1v1h1v1h1v1H2z"/>
+    <path id="hull-shape" d="M0 7h8v2H0z"/>
+    <g id="mark">
+      <g fill="#F37173" transform="translate(0 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#F6BC63" transform="translate(10 0)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#C2A7E2" transform="translate(20 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+    </g>
+  </defs>
+</svg>
+
+<header class="wrap site-header">
+  <a class="brand" href="../../" aria-label="Flotilla, home">
+    <svg viewBox="0 0 28 11" width="42" height="17" shape-rendering="crispEdges" aria-hidden="true"><use href="#mark"/></svg>
+    <span class="word">Flotilla</span>
+  </a>
+  <a class="crumb" href="./">Docs</a>
+  <label class="version">
+    <span class="visually-hidden">Docs version</span>
+    <select id="version" data-current="0.1.0"><option value="0.1.0" selected>0.1.0</option></select>
+  </label>
+  <a class="md-link" href="threads.md" title="This page as Markdown">Markdown</a>
+  <span class="tag">Alpha</span>
+  <nav class="site-nav" aria-label="Main">
+    <a class="nav-text" href="../../">Home</a>
+    <a class="nav-github" href="https://github.com/joseph-lozano/flotilla">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span class="label">GitHub</span>
+    </a>
+  </nav>
+</header>
+
+<div class="wrap docs">
+  <aside class="sidebar" aria-label="Docs">
+    <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc">Contents<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
+    <div class="toc" id="toc">
+      <div class="search" role="search">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.75"/><path d="M10.5 10.5L14 14"/></svg>
+        <label class="visually-hidden" for="docs-search">Search the docs</label>
+        <input id="docs-search" type="search" placeholder="Search the docs" autocomplete="off" spellcheck="false">
+        <ul class="results" id="search-results" aria-live="polite"></ul>
+      </div>
+      <nav aria-label="Pages">
+      <p class="group">Start here</p>
+      <ul class="pages">
+        <li><a href="./">Overview</a></li>
+        <li><a href="getting-started.html">Getting started</a></li>
+      </ul>
+      <p class="group">Guides</p>
+      <ul class="pages">
+        <li><a href="threads.html" aria-current="page">Threads</a>
+          <ul class="sections">
+            <li><a href="#start">Start a thread</a></li>
+            <li><a href="#model">Pick the agent and model</a></li>
+            <li><a href="#follow-up">Follow up, steer or stop</a></li>
+            <li><a href="#attachments">Attach files</a></li>
+            <li><a href="#mentions">Slash commands, skills and @-mentions</a></li>
+            <li><a href="#search">Search</a></li>
+            <li><a href="#sidebar">The sidebar</a></li>
+            <li><a href="#archive">Archive, unarchive and delete</a></li>
+            <li><a href="#idle">Idle VMs: stop, wake and keep running</a></li>
+            <li><a href="#usage">Usage and limits</a></li>
+            <li><a href="#context">The context meter</a></li>
+            <li><a href="#notifications">Notifications</a></li>
+          </ul>
+        </li>
+        <li><a href="projects.html">Projects and pull requests</a></li>
+        <li><a href="previews.html">Previews and services</a></li>
+        <li><a href="agents.html">Agents working together</a></li>
+        <li><a href="questions.html">Questions from agents</a></li>
+        <li><a href="schedules.html">Scheduled prompts</a></li>
+        <li><a href="server.html">Run a server</a></li>
+        <li><a href="iphone.html">The iPhone app</a></li>
+        <li><a href="agent-api.html">The agent API</a></li>
+      </ul>
+      <p class="group">Reference</p>
+      <ul class="pages">
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="shortcuts.html">Keyboard shortcuts</a></li>
+        <li><a href="cli.html">The CLI</a></li>
+      </ul>
+      <p class="group">Help</p>
+      <ul class="pages">
+        <li><a href="faq.html">FAQ and troubleshooting</a></li>
+      </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="content" class="doc">
+    <p class="version-note" hidden></p>
+    <h1>Threads</h1>
+    <p class="lede">A thread is one conversation with one agent, in a VM of its own. This page covers starting one, working in it, finding it again and putting it away.</p>
+
+    <h2 id="start">Start a thread</h2>
+    <p>Open <strong>New thread</strong> with <kbd>⌘</kbd><kbd>N</kbd> or the <strong>New</strong> button at the top of the sidebar, type what the agent should do, and press <kbd>Enter</kbd>.</p>
+    <ul>
+      <li><kbd>Enter</kbd> starts the thread and opens it. <kbd>⌘</kbd><kbd>Enter</kbd> starts it and leaves you on New thread, with the project, branch and models kept, ready for the next one.</li>
+      <li>The project menu under the prompt picks a GitHub repo, or <strong>No project</strong> for a blank VM. See <a href="projects.html">Projects and pull requests</a>.</li>
+      <li>The clock by the start button sends the prompt later instead. See <a href="schedules.html">Scheduled prompts</a>.</li>
+    </ul>
+
+    <h2 id="model">Pick the agent and model</h2>
+    <p>The model button under the prompt opens one searchable list, grouped by agent: <strong>Claude Code</strong>, <strong>Codex</strong> and <strong>OpenCode</strong>. The models are the ones boat.dev offers for each agent, so new ones show up on their own. New threads start on the default you set in <strong>Settings</strong> under <strong>New threads</strong>.</p>
+    <ul>
+      <li><strong>Effort</strong> (the gauge) sets the reasoning effort. It shows only for models that have effort levels, and lists that model's levels.</li>
+      <li><strong>Fast</strong> turns on fast mode. It shows only for models that have it.</li>
+      <li>A thread keeps its model. To try another, start a new thread.</li>
+    </ul>
+
+    <h3 id="several-models">One prompt on several models</h3>
+    <p>To compare models, start the same prompt on several at once. In the model list, <kbd>⇧</kbd>-click more models, or press the <strong>+</strong> that appears beside a model when you point at it. The button then reads, for example, <em>Opus 5.5 + GPT-6.1 Sol</em>, and one thread starts for each model.</p>
+    <ul>
+      <li>In a project, each model needs a branch of its own, so pick <strong>New branch</strong>. Each branch name ends in its model's name.</li>
+      <li>Each thread is a VM start, so boat.dev's start limits apply. If boat.dev won't start that many now, Flotilla says how many it can start.</li>
+    </ul>
+
+    <h2 id="follow-up">Follow up, steer or stop</h2>
+    <p>Type in the message box at the bottom of a thread. <kbd>Enter</kbd> sends, and <kbd>⇧</kbd><kbd>Enter</kbd> starts a new line. The send button changes with the thread's state:</p>
+    <div class="table"><table>
+      <thead><tr><th>Button</th><th>When</th><th>What happens</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Send</strong></td><td>The agent is idle.</td><td class="wrap-ok">Your message starts a new turn.</td></tr>
+        <tr><td><strong>Steer</strong></td><td>A turn is running.</td><td class="wrap-ok">Your message goes into the running turn without stopping it, and shows as <em>You steered</em>. Files wait for the next prompt.</td></tr>
+        <tr><td><strong>Resume &amp; send</strong></td><td>The VM is stopped.</td><td class="wrap-ok">The VM wakes, then your message starts a turn.</td></tr>
+      </tbody>
+    </table></div>
+    <p>While a turn runs, <strong>Stop</strong> interrupts it. A message that couldn't be sent stays in the thread with <strong>Send again</strong> and <strong>Discard</strong>.</p>
+    <ul>
+      <li>Press <kbd>↑</kbd> in an empty message box to bring back an earlier prompt, and <kbd>↓</kbd> to go forward again.</li>
+      <li>Right-click a message for <strong>Copy</strong>, <strong>Copy message</strong>, and <strong>Cite message</strong> or <strong>Cite selection</strong>, which quotes it into the message box.</li>
+      <li>Code blocks have their own copy button.</li>
+    </ul>
+
+    <h2 id="attachments">Attach files</h2>
+    <p>Press the paperclip, or drop files on the message box. Images show as thumbnails; <strong>×</strong> removes a file before you send. A prompt can carry up to 12 files, each up to 25 MB, and 64 MB in all.</p>
+
+    <h2 id="mentions">Slash commands, skills and @-mentions</h2>
+    <p>Three characters open a menu of things the agent in the VM can use. The menus read the VM, so they show once it's running.</p>
+    <div class="table"><table>
+      <thead><tr><th>Type</th><th>Lists</th></tr></thead>
+      <tbody>
+        <tr><td><code>/</code></td><td class="wrap-ok">The agent's skills and commands found in the VM, with their descriptions. For Claude Code and OpenCode, the one you pick moves to the start of the prompt, where those agents look for it.</td></tr>
+        <tr><td><code>$</code></td><td class="wrap-ok">Codex's skills, on Codex threads. Elsewhere, <code>$</code> is a dollar sign.</td></tr>
+        <tr><td><code>@</code></td><td class="wrap-ok">Files and folders in the thread's repo. Picking a folder opens it.</td></tr>
+      </tbody>
+    </table></div>
+    <p>Move with <kbd>↑</kbd> and <kbd>↓</kbd>, pick with <kbd>Enter</kbd> or <kbd>Tab</kbd>, and close with <kbd>Esc</kbd>. To give every agent your own skills or standing instructions, use <strong>Skills for every agent</strong> and <strong>Instructions for every agent</strong> in <a href="settings.html#agents">Settings</a>.</p>
+
+    <h2 id="search">Search</h2>
+    <p>Press <kbd>⌘</kbd><kbd>K</kbd> to search threads, messages and commands.</p>
+    <ul>
+      <li>With nothing typed, it lists the open thread's commands, the app's commands, and your latest threads.</li>
+      <li>Type to find threads by title, pull request (number, title or link), branch or project.</li>
+      <li><strong>In messages</strong> finds what was said in threads. It looks up words of three letters or more, in any case. Pick a result to open its thread at that message.</li>
+      <li>Start with <code>&gt;</code> to see only commands.</li>
+    </ul>
+    <figure>
+      <picture>
+        <source srcset="img/palette-night.webp" media="(prefers-color-scheme: dark)">
+        <img src="img/palette-day.webp" width="1000" height="243" loading="lazy" decoding="async" alt="The search box with fractional typed, showing one result under In messages: the thread Median function with subtle bug, a snippet with the word highlighted, and 2 matches.">
+      </picture>
+      <figcaption>A word found in a thread's messages. Picking it opens the thread at that message.</figcaption>
+    </figure>
+
+    <h2 id="sidebar">The sidebar</h2>
+    <p>The sidebar sorts threads by what they need from you:</p>
+    <ul>
+      <li><strong>Unread</strong>: a turn ended, and you haven't looked yet.</li>
+      <li><strong>Idle</strong>: read, and waiting for you.</li>
+      <li><strong>Working</strong>: a turn is running, or the thread waits on a hand-off.</li>
+      <li><strong>Archived</strong>: put away. It starts folded; click its heading to open it.</li>
+    </ul>
+    <p>Each row shows the title, how long ago it was active (or how long the turn has run), a summary of the latest reply, the agent and model or the project, and the pull request's number. Point at a row for a card with its agent, VM, project, branch and pull request. Double-click a row to rename the thread, and right-click it for the thread's menu.</p>
+    <p>Once you have projects, <strong>All threads</strong> at the top filters the sidebar by project. You can drag the sidebar's edge to resize it, and hide it with <kbd>⌃</kbd><kbd>⌘</kbd><kbd>S</kbd> (<kbd>F9</kbd> on Linux).</p>
+
+    <h2 id="archive">Archive, unarchive and delete</h2>
+    <p>Archive a thread when you're done with it. Its VM stops, and if the repo has an <code>.agents/archive</code> script, it runs first.</p>
+    <ul>
+      <li>Point at a sidebar row and press the archive button that takes the place of its time, or pick <strong>Archive</strong> from the thread's menu.</li>
+      <li><strong>Archive and open next</strong> (<kbd>⇧</kbd><kbd>⌘</kbd><kbd>S</kbd>) archives the open thread and opens the next one, unread threads first.</li>
+      <li>For 5 seconds after, <strong>Undo</strong> (<kbd>⌘</kbd><kbd>Z</kbd>) brings it back.</li>
+      <li><strong>Unarchive</strong>, in the thread's header or menu, brings it back later. Its VM wakes on your next message.</li>
+    </ul>
+    <p>Flotilla can archive for you, when a thread's pull request merges or after it's been idle a while: see <a href="settings.html#archiving">Archiving</a> in Settings.</p>
+    <p><strong>Delete…</strong> deletes the thread's VM and its history. It can't be undone.</p>
+
+    <h3 id="thread-menu">The thread menu</h3>
+    <p>The same menu opens from <strong>⋯</strong> in the thread's header, from a right-click on its sidebar row, and from search:</p>
+    <ul>
+      <li><strong>Mark as unread</strong> or <strong>Mark as read</strong></li>
+      <li><strong>Archive</strong> or <strong>Unarchive</strong></li>
+      <li><strong>Stop VM</strong> or <strong>Resume VM</strong></li>
+      <li><strong>Rename…</strong></li>
+      <li>On a project thread: <strong>Open PR on GitHub</strong>, <strong>Copy branch name</strong>, <strong>New thread on this branch</strong> and <strong>Link a PR…</strong></li>
+      <li><strong>Copy thread ID</strong>, <strong>Copy VM ID</strong></li>
+      <li><strong>Delete…</strong></li>
+    </ul>
+
+    <h2 id="idle">Idle VMs: stop, wake and keep running</h2>
+    <p>A VM that's idle stops on its own, so you pay for work, not waiting. Choose how long it waits in <strong>Settings</strong> under <strong>Stop idle VMs after</strong>: 5, 10 (the default) or 30 minutes. A change applies from each thread's next turn. boat.dev stops the VM when its time is up, so it stops even with Flotilla closed.</p>
+    <ul>
+      <li>Point at the dot by the thread's title for when it stops, or at its sidebar row for the minutes left.</li>
+      <li>Send to a stopped thread and its VM wakes, with your files where they were. If the repo has an <code>.agents/resume</code> script, it runs first.</li>
+      <li><strong>Stop VM</strong> and <strong>Resume VM</strong> in the thread menu do it by hand.</li>
+      <li><strong>Keep running</strong>, the cup in the thread's header, keeps the VM up while it's idle, for long jobs or a dev server you're using. Press it again to let it stop.</li>
+    </ul>
+    <p>boat.dev keeps a stopped VM for 14 days. In its last three days, its sidebar row shows the days left. After that the thread is <strong>Expired</strong>: its history stays, under Archived, but the VM is gone. To carry on a project thread's work, use <strong>New thread on this branch</strong>.</p>
+
+    <h2 id="usage">Usage and limits</h2>
+    <p>The bottom of the sidebar shows boat.dev's counts, such as <em>7/60 starts/h</em>, and, once the agents have reported it, how much of each agent account's weekly limit is used. Click either for <strong>Usage</strong>:</p>
+    <ul>
+      <li><strong>VMs</strong>: VMs running, starts in the last minute, hour and 24 hours, VM hours used this plan period, and extra starts, each against its limit. When boat.dev won't start VMs, it says why and when they can start again. <strong>Billing on boat.dev</strong> opens your plan.</li>
+      <li><strong>Agents</strong>: each agent account's weekly limit, how much is used and when it resets, then the last 30 days: what the agents' tokens would cost at API prices, what the cache saved, by day and by model.</li>
+    </ul>
+    <figure class="narrow">
+      <picture>
+        <source srcset="img/usage-night.webp" media="(prefers-color-scheme: dark)">
+        <img src="img/usage-day.webp" width="540" height="518" loading="lazy" decoding="async" alt="The Usage popover on its VMs tab: VMs running 3 of 100, starts in the last minute 0 of 12, last hour 7 of 60, last 24 hours 120 of 200, VM hours used 7 of 556 renewing Nov 29, extra starts off, and Refresh and Billing on boat.dev.">
+      </picture>
+      <figcaption>Usage, on the VMs tab.</figcaption>
+    </figure>
+    <p>When an agent account runs out, the message box says so, for example <em>Claude limit reached · resets</em> and when.</p>
+
+    <h2 id="context">The context meter</h2>
+    <p>Beside the send button, a ring shows how full the agent's context window is, once the agent reports it. It turns amber at 80% and red at 90%. Point at it for the tokens used and the window's size.</p>
+
+    <h2 id="notifications">Notifications</h2>
+    <p>When Flotilla's window isn't in front, a notification tells you when a thread needs you: a turn finished, an agent asks a question, the agents a thread handed work to answered, a thread couldn't start, a pull request merged, a scheduled prompt didn't run, or a project's setup failed. Click it to open the thread. Threads that agents started don't notify; their answers come back to the thread that asked.</p>
+    <p>The Dock icon (on Linux, the launcher) shows how many threads are unread. In the window, a thread you're not looking at shows <strong>Thread finished</strong> or <strong>Thread asks</strong>, with <strong>Open</strong>. Turn banners and the count off in <a href="settings.html#notifications">Settings</a>.</p>
+
+    <nav class="pager" aria-label="Previous and next">
+    <a class="prev" href="getting-started.html"><span>Previous</span>Getting started</a>
+    <a class="next" href="projects.html"><span>Next</span>Projects and pull requests</a>
+    </nav>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Joseph Lozano</span>
+    <nav aria-label="Footer">
+      <a href="../../">Home</a>
+      <a href="./">Docs</a>
+      <a href="https://github.com/joseph-lozano/flotilla">GitHub</a>
+      <a href="https://github.com/joseph-lozano/flotilla/blob/main/LICENSE">MIT License</a>
+      <a href="../../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

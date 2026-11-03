@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The CLI · Flotilla docs</title>
+<meta name="description" content="The flotilla command: run and set up a server, pair devices, and start, follow and manage threads from a terminal.">
+<link rel="canonical" href="https://useflotilla.com/docs/0.1.0/cli.html">
+<link rel="alternate" type="text/markdown" href="cli.md">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FCFAFD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1322" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Flotilla">
+<meta property="og:title" content="The CLI · Flotilla docs">
+<meta property="og:description" content="The flotilla command: run and set up a server, pair devices, and start, follow and manage threads from a terminal.">
+<meta property="og:image" content="https://useflotilla.com/og.png">
+<link rel="stylesheet" href="docs.css">
+<script src="docs.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="sail-shape" d="M2 0h1v1h1v1h1v1h1v1h1v1h1v1H2z"/>
+    <path id="hull-shape" d="M0 7h8v2H0z"/>
+    <g id="mark">
+      <g fill="#F37173" transform="translate(0 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#F6BC63" transform="translate(10 0)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#C2A7E2" transform="translate(20 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+    </g>
+  </defs>
+</svg>
+
+<header class="wrap site-header">
+  <a class="brand" href="../../" aria-label="Flotilla, home">
+    <svg viewBox="0 0 28 11" width="42" height="17" shape-rendering="crispEdges" aria-hidden="true"><use href="#mark"/></svg>
+    <span class="word">Flotilla</span>
+  </a>
+  <a class="crumb" href="./">Docs</a>
+  <label class="version">
+    <span class="visually-hidden">Docs version</span>
+    <select id="version" data-current="0.1.0"><option value="0.1.0" selected>0.1.0</option></select>
+  </label>
+  <a class="md-link" href="cli.md" title="This page as Markdown">Markdown</a>
+  <span class="tag">Alpha</span>
+  <nav class="site-nav" aria-label="Main">
+    <a class="nav-text" href="../../">Home</a>
+    <a class="nav-github" href="https://github.com/joseph-lozano/flotilla">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span class="label">GitHub</span>
+    </a>
+  </nav>
+</header>
+
+<div class="wrap docs">
+  <aside class="sidebar" aria-label="Docs">
+    <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc">Contents<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
+    <div class="toc" id="toc">
+      <div class="search" role="search">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.75"/><path d="M10.5 10.5L14 14"/></svg>
+        <label class="visually-hidden" for="docs-search">Search the docs</label>
+        <input id="docs-search" type="search" placeholder="Search the docs" autocomplete="off" spellcheck="false">
+        <ul class="results" id="search-results" aria-live="polite"></ul>
+      </div>
+      <nav aria-label="Pages">
+      <p class="group">Start here</p>
+      <ul class="pages">
+        <li><a href="./">Overview</a></li>
+        <li><a href="getting-started.html">Getting started</a></li>
+      </ul>
+      <p class="group">Guides</p>
+      <ul class="pages">
+        <li><a href="threads.html">Threads</a></li>
+        <li><a href="projects.html">Projects and pull requests</a></li>
+        <li><a href="previews.html">Previews and services</a></li>
+        <li><a href="agents.html">Agents working together</a></li>
+        <li><a href="questions.html">Questions from agents</a></li>
+        <li><a href="schedules.html">Scheduled prompts</a></li>
+        <li><a href="server.html">Run a server</a></li>
+        <li><a href="iphone.html">The iPhone app</a></li>
+        <li><a href="agent-api.html">The agent API</a></li>
+      </ul>
+      <p class="group">Reference</p>
+      <ul class="pages">
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="shortcuts.html">Keyboard shortcuts</a></li>
+        <li><a href="cli.html" aria-current="page">The CLI</a>
+          <ul class="sections">
+            <li><a href="#install">Get it</a></li>
+            <li><a href="#server">Server</a></li>
+            <li><a href="#threads">Threads</a></li>
+            <li><a href="#schedules">Scheduled prompts</a></li>
+            <li><a href="#assistants">Assistants</a></li>
+            <li><a href="#boat">boat.dev</a></li>
+            <li><a href="#options">Options for every command</a></li>
+          </ul>
+        </li>
+      </ul>
+      <p class="group">Help</p>
+      <ul class="pages">
+        <li><a href="faq.html">FAQ and troubleshooting</a></li>
+      </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="content" class="doc">
+    <p class="version-note" hidden></p>
+    <h1>The CLI</h1>
+    <p class="lede">The <code>flotilla</code> command runs the server, sets it up and pairs devices. It also starts, follows and manages threads from a terminal. This page lists the common commands; <code>flotilla --help</code> and <code>flotilla &lt;command&gt; --help</code> have every option.</p>
+
+    <h2 id="install">Get it</h2>
+    <p>Build it from the repo, and put it on your <code>PATH</code>:</p>
+    <div class="cmd"><pre><code>cargo build --release -p flotilla-cli
+cp target/release/flotilla ~/.local/bin/</code></pre></div>
+    <p>It works with the Flotilla on the same machine: through the server or the app when one is running, or on its own when neither is. With <code>--server &lt;address&gt;</code>, the thread commands go to another server instead, as an <a href="agent-api.html">agent device</a>.</p>
+
+    <h2 id="server">Server</h2>
+    <p>Run these on the machine that serves Flotilla.</p>
+    <div class="table"><table>
+      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>flotilla serve</code></td><td class="wrap-ok">Run the server. <code>--tailscale-serve</code> reaches it over your tailnet; <code>--url</code> gives its address behind a proxy.</td></tr>
+        <tr><td><code>flotilla setup</code></td><td class="wrap-ok">Set up this machine: the boat.dev key, GitHub, titles and summaries, Tailscale, remote MCP, iPhone notifications. Then print a pairing link.</td></tr>
+        <tr><td><code>flotilla doctor</code></td><td class="wrap-ok">What isn't set up, and what to run to fix it.</td></tr>
+        <tr><td><code>flotilla service install</code></td><td class="wrap-ok">Run the server as a systemd user service on Linux. Also <code>status</code>, <code>start</code>, <code>stop</code>, <code>restart</code>, <code>uninstall</code>.</td></tr>
+        <tr><td><code>flotilla pair</code></td><td class="wrap-ok">Make a one-time pairing code, with a link and a QR code. <code>--agent</code> for an assistant, <code>--ttl</code> for longer than 5 minutes, <code>--list</code>, <code>--revoke</code>.</td></tr>
+        <tr><td><code>flotilla devices</code></td><td class="wrap-ok">List paired devices. <code>flotilla devices revoke &lt;id&gt;</code> signs one out.</td></tr>
+        <tr><td><code>flotilla import &lt;path&gt;</code></td><td class="wrap-ok">Bring a Mac's threads to this server. See <a href="server.html#import">Move your Mac's threads</a>.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="threads">Threads</h2>
+    <p>Commands that take a thread take its id, or the first few characters of it.</p>
+    <div class="table"><table>
+      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>flotilla threads</code></td><td class="wrap-ok">List threads.</td></tr>
+        <tr><td><code>flotilla search &lt;words&gt;</code></td><td class="wrap-ok">Find threads by title, and messages by what was said.</td></tr>
+        <tr><td><code>flotilla new --provider &lt;agent&gt; --model &lt;id&gt; "&lt;prompt&gt;"</code></td><td class="wrap-ok">Start a thread and follow it. <code>--effort</code> and <code>--fast</code> as in the app; <code>--no-follow</code> to return at once.</td></tr>
+        <tr><td><code>flotilla send &lt;thread&gt; "&lt;text&gt;"</code></td><td class="wrap-ok">Send a follow-up, waking the VM if it's stopped, or steer a running turn. Then follow.</td></tr>
+        <tr><td><code>flotilla follow &lt;thread&gt;</code></td><td class="wrap-ok">Print messages as they arrive, until the turn ends.</td></tr>
+        <tr><td><code>flotilla show &lt;thread&gt;</code></td><td class="wrap-ok">Print the thread's messages.</td></tr>
+        <tr><td><code>flotilla steer</code>, <code>interrupt</code></td><td class="wrap-ok">Steer or stop the running turn.</td></tr>
+        <tr><td><code>flotilla stop</code>, <code>resume</code></td><td class="wrap-ok">Stop or wake the thread's VM.</td></tr>
+        <tr><td><code>flotilla keep-running &lt;thread&gt; on|off</code></td><td class="wrap-ok">Keep the VM up while it's idle, or not.</td></tr>
+        <tr><td><code>flotilla rename</code>, <code>archive</code>, <code>unarchive</code>, <code>delete</code></td><td class="wrap-ok">As in the thread menu.</td></tr>
+        <tr><td><code>flotilla preview &lt;thread&gt; &lt;port&gt;</code></td><td class="wrap-ok">Print a private link to a port in the VM.</td></tr>
+        <tr><td><code>flotilla services &lt;thread&gt;</code></td><td class="wrap-ok">Show the thread's services. <code>ensure</code>, <code>restart &lt;name&gt;</code>, <code>stop &lt;name&gt;</code> manage them.</td></tr>
+      </tbody>
+    </table></div>
+    <p><code>--provider</code> is <code>claude-code</code>, <code>codex</code> or <code>opencode</code>. <code>flotilla models</code> lists the models boat.dev offers for each.</p>
+
+    <h2 id="schedules">Scheduled prompts</h2>
+    <p><code>flotilla schedule add</code>, <code>list</code>, <code>pause</code>, <code>resume</code>, <code>run</code> and <code>rm</code>. See <a href="schedules.html#cli">Scheduled prompts</a>.</p>
+
+    <h2 id="assistants">Assistants</h2>
+    <p>For assistants that use Flotilla over MCP.</p>
+    <div class="table"><table>
+      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>flotilla mcp</code></td><td class="wrap-ok">Serve Flotilla's tools to an assistant over MCP, on standard input and output.</td></tr>
+        <tr><td><code>flotilla connect &lt;address&gt;</code></td><td class="wrap-ok">Pair this machine with a server as an agent device.</td></tr>
+        <tr><td><code>flotilla disconnect &lt;address&gt;</code></td><td class="wrap-ok">Sign that agent device out, and forget its token.</td></tr>
+      </tbody>
+    </table></div>
+    <p>See <a href="agent-api.html">The agent API</a>.</p>
+
+    <h2 id="boat">boat.dev</h2>
+    <p>These read from boat.dev, or rebuild from it.</p>
+    <div class="table"><table>
+      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>flotilla models</code></td><td class="wrap-ok">The models, by agent.</td></tr>
+        <tr><td><code>flotilla envs</code></td><td class="wrap-ok">Your boat.dev environments.</td></tr>
+        <tr><td><code>flotilla limits</code></td><td class="wrap-ok">Your plan's limits.</td></tr>
+        <tr><td><code>flotilla sync</code></td><td class="wrap-ok">Bring everything up to date from boat.dev.</td></tr>
+        <tr><td><code>flotilla rebuild</code></td><td class="wrap-ok">Rebuild the database from boat.dev, keeping the old one as a backup.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="options">Options for every command</h2>
+    <p>These work with any command.</p>
+    <div class="table"><table>
+      <thead><tr><th>Option</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>--data-dir &lt;dir&gt;</code></td><td class="wrap-ok">Use Flotilla's data in this folder, not the default.</td></tr>
+        <tr><td><code>--boat-key-file &lt;file&gt;</code></td><td class="wrap-ok">Read the boat.dev key from this file, which only you may read. <code>BOAT_API_KEY</code> works too.</td></tr>
+        <tr><td><code>--secrets-dir &lt;dir&gt;</code></td><td class="wrap-ok">Keep keys in files here, not in the Keychain (on a Mac) or the data folder (elsewhere).</td></tr>
+        <tr><td><code>--server &lt;address&gt;</code></td><td class="wrap-ok">Work with the server at this address, as the agent device <code>flotilla connect</code> paired.</td></tr>
+      </tbody>
+    </table></div>
+
+    <nav class="pager" aria-label="Previous and next">
+    <a class="prev" href="shortcuts.html"><span>Previous</span>Keyboard shortcuts</a>
+    <a class="next" href="faq.html"><span>Next</span>FAQ and troubleshooting</a>
+    </nav>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Joseph Lozano</span>
+    <nav aria-label="Footer">
+      <a href="../../">Home</a>
+      <a href="./">Docs</a>
+      <a href="https://github.com/joseph-lozano/flotilla">GitHub</a>
+      <a href="https://github.com/joseph-lozano/flotilla/blob/main/LICENSE">MIT License</a>
+      <a href="../../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

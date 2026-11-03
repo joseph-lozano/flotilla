@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAQ and troubleshooting · Flotilla docs</title>
+<meta name="description" content="Answers about what Flotilla costs, where your data lives, and what to do about common messages such as Hand-off limit reached or a failing setup check.">
+<link rel="canonical" href="https://useflotilla.com/docs/0.1.0/faq.html">
+<link rel="alternate" type="text/markdown" href="faq.md">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FCFAFD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1322" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Flotilla">
+<meta property="og:title" content="FAQ and troubleshooting · Flotilla docs">
+<meta property="og:description" content="Answers about what Flotilla costs, where your data lives, and what to do about common messages such as Hand-off limit reached or a failing setup check.">
+<meta property="og:image" content="https://useflotilla.com/og.png">
+<link rel="stylesheet" href="docs.css">
+<script src="docs.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="sail-shape" d="M2 0h1v1h1v1h1v1h1v1h1v1h1v1H2z"/>
+    <path id="hull-shape" d="M0 7h8v2H0z"/>
+    <g id="mark">
+      <g fill="#F37173" transform="translate(0 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#F6BC63" transform="translate(10 0)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#C2A7E2" transform="translate(20 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+    </g>
+  </defs>
+</svg>
+
+<header class="wrap site-header">
+  <a class="brand" href="../../" aria-label="Flotilla, home">
+    <svg viewBox="0 0 28 11" width="42" height="17" shape-rendering="crispEdges" aria-hidden="true"><use href="#mark"/></svg>
+    <span class="word">Flotilla</span>
+  </a>
+  <a class="crumb" href="./">Docs</a>
+  <label class="version">
+    <span class="visually-hidden">Docs version</span>
+    <select id="version" data-current="0.1.0"><option value="0.1.0" selected>0.1.0</option></select>
+  </label>
+  <a class="md-link" href="faq.md" title="This page as Markdown">Markdown</a>
+  <span class="tag">Alpha</span>
+  <nav class="site-nav" aria-label="Main">
+    <a class="nav-text" href="../../">Home</a>
+    <a class="nav-github" href="https://github.com/joseph-lozano/flotilla">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span class="label">GitHub</span>
+    </a>
+  </nav>
+</header>
+
+<div class="wrap docs">
+  <aside class="sidebar" aria-label="Docs">
+    <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc">Contents<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
+    <div class="toc" id="toc">
+      <div class="search" role="search">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.75"/><path d="M10.5 10.5L14 14"/></svg>
+        <label class="visually-hidden" for="docs-search">Search the docs</label>
+        <input id="docs-search" type="search" placeholder="Search the docs" autocomplete="off" spellcheck="false">
+        <ul class="results" id="search-results" aria-live="polite"></ul>
+      </div>
+      <nav aria-label="Pages">
+      <p class="group">Start here</p>
+      <ul class="pages">
+        <li><a href="./">Overview</a></li>
+        <li><a href="getting-started.html">Getting started</a></li>
+      </ul>
+      <p class="group">Guides</p>
+      <ul class="pages">
+        <li><a href="threads.html">Threads</a></li>
+        <li><a href="projects.html">Projects and pull requests</a></li>
+        <li><a href="previews.html">Previews and services</a></li>
+        <li><a href="agents.html">Agents working together</a></li>
+        <li><a href="questions.html">Questions from agents</a></li>
+        <li><a href="schedules.html">Scheduled prompts</a></li>
+        <li><a href="server.html">Run a server</a></li>
+        <li><a href="iphone.html">The iPhone app</a></li>
+        <li><a href="agent-api.html">The agent API</a></li>
+      </ul>
+      <p class="group">Reference</p>
+      <ul class="pages">
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="shortcuts.html">Keyboard shortcuts</a></li>
+        <li><a href="cli.html">The CLI</a></li>
+      </ul>
+      <p class="group">Help</p>
+      <ul class="pages">
+        <li><a href="faq.html" aria-current="page">FAQ and troubleshooting</a>
+          <ul class="sections">
+            <li><a href="#cost">What does it cost?</a></li>
+            <li><a href="#data">Where does my data live?</a></li>
+            <li><a href="#agents">Which agents can I use?</a></li>
+            <li><a href="#laptop-shut">What happens when I shut my laptop?</a></li>
+            <li><a href="#more-than-one-mac">Can I use more than one computer?</a></li>
+            <li><a href="#messages">Messages you might see</a></li>
+            <li><a href="#doctor">What do the setup checks mean?</a></li>
+            <li><a href="#linux">Linux notes</a></li>
+            <li><a href="#help">Still stuck?</a></li>
+          </ul>
+        </li>
+      </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="content" class="doc">
+    <p class="version-note" hidden></p>
+    <h1>FAQ and troubleshooting</h1>
+    <p class="lede">Short answers to common questions, and what to do about the messages you're most likely to see.</p>
+
+    <h2 id="cost">What does it cost?</h2>
+    <p>Flotilla itself is free and open source, under the MIT License. You pay for what runs:</p>
+    <ul>
+      <li><strong>boat.dev</strong> bills VM time, on a paid plan. Each thread is a VM, and so is each delegate an agent starts. Your plan includes a number of VM starts (waking a stopped VM is one); starts beyond them are <em>extra starts</em>, if you've turned those on in boat.dev.</li>
+      <li><strong>Your model providers</strong> bill the agents' tokens, as they would anyway. The <strong>Agents</strong> tab in <a href="threads.html#usage">Usage</a> shows what the last 30 days would cost at API prices.</li>
+    </ul>
+    <p>Idle VMs stop on their own, so a quiet thread uses no VM time. <strong>Keep running</strong> keeps a VM up, and billing, until you turn it off.</p>
+
+    <h2 id="data">Where does my data live?</h2>
+    <p>With the server you use. On <strong>This Mac</strong>, that's your Mac: threads in <code>~/Library/Application Support/Flotilla</code>, and your boat.dev key in the Keychain. On Linux, threads are in <code>~/.local/share/Flotilla</code> and the key is in a file there only you can read. On a server, both live on the server, with the files you attach and the skills you add. Each device keeps only its own sign-in token.</p>
+    <p>Your code lives in each thread's VM on boat.dev, and on GitHub once an agent pushes it.</p>
+
+    <h2 id="agents">Which agents can I use?</h2>
+    <p>Claude Code, Codex and OpenCode, with the models boat.dev offers for them. New models show up on their own.</p>
+
+    <h2 id="laptop-shut">What happens when I shut my laptop?</h2>
+    <p>Running turns carry on in their VMs, and idle VMs still stop on time. Without a server, the rest of Flotilla is in the app, so it stops until you open the app again:</p>
+    <ul>
+      <li>answers from agents that were handed work wait, and arrive when the app opens;</li>
+      <li>setup waits;</li>
+      <li>a repeating scheduled prompt whose time passes is skipped, and a one-off runs late;</li>
+      <li>your iPhone can't connect.</li>
+    </ul>
+    <p>With a <a href="server.html">server</a>, all of it keeps going.</p>
+
+    <h2 id="more-than-one-mac">Can I use more than one computer?</h2>
+    <p>Yes. Run a <a href="server.html">server</a> and pair each Mac and Linux desktop with it; they all see the same threads. Or, as a preview, let other devices connect to the Mac that has your threads: see <a href="server.html#this-mac">Use your Mac as the server</a>.</p>
+
+    <h2 id="messages">Messages you might see</h2>
+    <p>What these messages mean, and what to do.</p>
+    <dl>
+      <dt>Hand-off limit reached (20 since your last message). Send a message to continue.</dt>
+      <dd>Agents in this thread, and the threads it handed work to, have handed off 20 tasks since you last wrote. Read what they did, then send a message, even <em>carry on</em>, to let them go on. See <a href="agents.html#limits">Limits</a>.</dd>
+      <dt>Can't start VMs</dt>
+      <dd>boat.dev won't start another VM now, usually because a start limit is used up. <a href="threads.html#usage">Usage</a> shows which limit and when VMs can start again.</dd>
+      <dt>boat can't see <em>owner/repo</em> yet</dt>
+      <dd>Give boat.dev access to the repo in boat's dashboard, under <strong>Environment → GitHub repositories</strong>, then add the project again.</dd>
+      <dt>gh isn't signed in to github.com, or gh is too old</dt>
+      <dd>Run <code>gh auth login --hostname github.com</code>, or update the GitHub CLI to 2.81 or newer, then press <strong>Check again</strong> in Settings.</dd>
+      <dt>Setup failed at a step</dt>
+      <dd>A project's setup scripts or <code>.agents/setup</code> failed. Press <strong>Fix in a new thread</strong> to have an agent fix it, or open the project's settings for the log. See <a href="projects.html#setup-fails">When setup fails</a>.</dd>
+      <dt>Hold to merge isn't there</dt>
+      <dd>It shows only when the pull request is open, not a draft, mergeable, with no failing or pending checks, and no review needed. The bar says what's in the way, such as <em>Conflicts with main</em> or <em>Changes requested</em>, with the button that helps.</dd>
+      <dt>Flotilla can't show banners: they're off in System Settings.</dt>
+      <dd>Press <strong>Open System Settings</strong> and allow notifications for Flotilla.</dd>
+      <dt>Flotilla is already running on this Mac as a server.</dt>
+      <dd>On Linux, <em>this computer</em>. Only one Flotilla can use a database at a time, and a server on the same machine is using it. Press <strong>Connect to it</strong>: no pairing needed.</dd>
+      <dt>Another Flotilla is already running on this database</dt>
+      <dd>From the CLI: most commands go through the server or the app when one is running, but this one can't. Quit the app, or stop the server with <code>flotilla service stop</code>, and run it again.</dd>
+    </dl>
+
+    <h2 id="doctor">What do the setup checks mean?</h2>
+    <p><code>flotilla doctor</code>, and <strong>Setup</strong> in Settings, check what Flotilla needs and give the command that fixes each problem. The checks are listed in <a href="server.html#doctor">Check it</a>. A check that's <em>Off</em>, such as Push or Remote MCP when you haven't set them up, isn't counted. If the boat API key or the database check fails, the app shows the checks in place of New thread until it's fixed.</p>
+
+    <h2 id="linux">Linux notes</h2>
+    <p>A few things work differently on a Linux desktop.</p>
+    <ul>
+      <li>File pickers, and following the desktop's light or dark style, come through the desktop portal (<code>xdg-desktop-portal</code>), which GNOME and KDE run. Without it, pick Light or Dark in Settings.</li>
+      <li>Opening Flotilla again brings its window forward, and a pairing link opened while it runs goes to that window.</li>
+      <li>A thread's notifications need a notification service, which most desktops have.</li>
+    </ul>
+
+    <h2 id="help">Still stuck?</h2>
+    <p>Open an issue on <a href="https://github.com/joseph-lozano/flotilla/issues">GitHub</a>, with what you did, what you expected, and what <code>flotilla doctor</code> or <strong>Setup</strong> in Settings says.</p>
+
+    <nav class="pager" aria-label="Previous and next">
+    <a class="prev" href="cli.html"><span>Previous</span>The CLI</a>
+    </nav>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Joseph Lozano</span>
+    <nav aria-label="Footer">
+      <a href="../../">Home</a>
+      <a href="./">Docs</a>
+      <a href="https://github.com/joseph-lozano/flotilla">GitHub</a>
+      <a href="https://github.com/joseph-lozano/flotilla/blob/main/LICENSE">MIT License</a>
+      <a href="../../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

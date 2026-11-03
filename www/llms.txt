@@ -2,36 +2,36 @@
 
 > Flotilla runs coding agents in the cloud. Each agent works alone in its own VM on [boat.dev](https://boat.dev), and you run the whole fleet from your Mac, your Linux desktop or your iPhone.
 
-These are the Flotilla docs (main) as Markdown: each link is a page of https://useflotilla.com/docs/ with .md in place of .html. The setup prompts are for pasting into a coding agent such as Claude Code, Codex or OpenCode; they read these pages and leave every secret to you.
+These are the Flotilla docs (0.1.0) as Markdown: each link is a page of https://useflotilla.com/docs/ with .md in place of .html. The setup prompts are for pasting into a coding agent such as Claude Code, Codex or OpenCode; they read these pages and leave every secret to you.
 
 ## Setup prompts
 
-- [Install and set up the desktop app](https://useflotilla.com/docs/main/prompt-desktop.md): for a coding agent on a Mac or Linux desktop: check what's needed, get the app, connect boat.dev, start a first thread
-- [Set up a Flotilla server](https://useflotilla.com/docs/main/prompt-server.md): for a coding agent on an always-on Linux machine: get the flotilla command, set it up with Tailscale, run it as a service, check it, pair your devices
+- [Install and set up the desktop app](https://useflotilla.com/docs/0.1.0/prompt-desktop.md): for a coding agent on a Mac or Linux desktop: check what's needed, get the app, connect boat.dev, start a first thread
+- [Set up a Flotilla server](https://useflotilla.com/docs/0.1.0/prompt-server.md): for a coding agent on an always-on Linux machine: get the flotilla command, set it up with Tailscale, run it as a service, check it, pair your devices
 
 ## Start here
 
-- [Overview](https://useflotilla.com/docs/main/index.md): How to use Flotilla: run Claude Code, Codex and OpenCode side by side, each alone in its own cloud VM, from your Mac, Linux desktop or iPhone.
-- [Getting started](https://useflotilla.com/docs/main/getting-started.md): Install Flotilla on a Mac or Linux desktop, connect your boat.dev account and start your first thread.
+- [Overview](https://useflotilla.com/docs/0.1.0/index.md): How to use Flotilla: run Claude Code, Codex and OpenCode side by side, each alone in its own cloud VM, from your Mac, Linux desktop or iPhone.
+- [Getting started](https://useflotilla.com/docs/0.1.0/getting-started.md): Install Flotilla on a Mac or Linux desktop, connect your boat.dev account and start your first thread.
 
 ## Guides
 
-- [Threads](https://useflotilla.com/docs/main/threads.md): Start threads, pick the agent and model, follow up, steer or stop a turn, attach files, search, archive, and keep an eye on VMs, usage and context.
-- [Projects and pull requests](https://useflotilla.com/docs/main/projects.md): Add a GitHub repo as a project, set it up with scripts and the .agents folder, start threads on branches and pull requests, and fix, review and merge from the thread.
-- [Previews and services](https://useflotilla.com/docs/main/previews.md): Open any port in a thread's VM in your browser, run dev servers with .agents/services.yml, and share a public link for an hour, a day, a week or until you stop it.
-- [Agents working together](https://useflotilla.com/docs/main/agents.md): Have an agent hand work to other agents: a second agent in the same VM for a review, or a thread of its own in a new VM, and the limits that keep hand-offs in check.
-- [Questions from agents](https://useflotilla.com/docs/main/questions.md): When an agent needs you to choose or confirm something, it asks with a card of options you answer from the Mac, Linux or your iPhone.
-- [Scheduled prompts](https://useflotilla.com/docs/main/schedules.md): Send a prompt later, once or at most once a day: daily, on weekdays, weekly or on a cron expression, to a thread or a new thread each run.
-- [Run a server](https://useflotilla.com/docs/main/server.md): Run Flotilla's server on a Linux machine that stays on, reach it over Tailscale, pair your Mac, Linux desktop and iPhone, and manage devices.
-- [The iPhone app](https://useflotilla.com/docs/main/iphone.md): Use Flotilla on your iPhone: pair with your server, follow threads live, start new ones, answer agents' questions, preview, and hold to merge.
-- [The agent API](https://useflotilla.com/docs/main/agent-api.md): Let Claude Code, OpenClaw, Hermes Agent, Grok and Muse start and follow Flotilla threads over MCP, as an agent device that can't delete, merge or change settings.
+- [Threads](https://useflotilla.com/docs/0.1.0/threads.md): Start threads, pick the agent and model, follow up, steer or stop a turn, attach files, search, archive, and keep an eye on VMs, usage and context.
+- [Projects and pull requests](https://useflotilla.com/docs/0.1.0/projects.md): Add a GitHub repo as a project, set it up with scripts and the .agents folder, start threads on branches and pull requests, and fix, review and merge from the thread.
+- [Previews and services](https://useflotilla.com/docs/0.1.0/previews.md): Open any port in a thread's VM in your browser, run dev servers with .agents/services.yml, and share a public link for an hour, a day, a week or until you stop it.
+- [Agents working together](https://useflotilla.com/docs/0.1.0/agents.md): Have an agent hand work to other agents: a second agent in the same VM for a review, or a thread of its own in a new VM, and the limits that keep hand-offs in check.
+- [Questions from agents](https://useflotilla.com/docs/0.1.0/questions.md): When an agent needs you to choose or confirm something, it asks with a card of options you answer from the Mac, Linux or your iPhone.
+- [Scheduled prompts](https://useflotilla.com/docs/0.1.0/schedules.md): Send a prompt later, once or at most once a day: daily, on weekdays, weekly or on a cron expression, to a thread or a new thread each run.
+- [Run a server](https://useflotilla.com/docs/0.1.0/server.md): Run Flotilla's server on a Linux machine that stays on, reach it over Tailscale, pair your Mac, Linux desktop and iPhone, and manage devices.
+- [The iPhone app](https://useflotilla.com/docs/0.1.0/iphone.md): Use Flotilla on your iPhone: pair with your server, follow threads live, start new ones, answer agents' questions, preview, and hold to merge.
+- [The agent API](https://useflotilla.com/docs/0.1.0/agent-api.md): Let Claude Code, OpenClaw, Hermes Agent, Grok and Muse start and follow Flotilla threads over MCP, as an agent device that can't delete, merge or change settings.
 
 ## Reference
 
-- [Settings](https://useflotilla.com/docs/main/settings.md): Every section of Flotilla's Settings on the Mac and Linux, from the server and devices to idle VMs, archiving, titles and data.
-- [Keyboard shortcuts](https://useflotilla.com/docs/main/shortcuts.md): Flotilla's keyboard shortcuts on the Mac and Linux.
-- [The CLI](https://useflotilla.com/docs/main/cli.md): The flotilla command: run and set up a server, pair devices, and start, follow and manage threads from a terminal.
+- [Settings](https://useflotilla.com/docs/0.1.0/settings.md): Every section of Flotilla's Settings on the Mac and Linux, from the server and devices to idle VMs, archiving, titles and data.
+- [Keyboard shortcuts](https://useflotilla.com/docs/0.1.0/shortcuts.md): Flotilla's keyboard shortcuts on the Mac and Linux.
+- [The CLI](https://useflotilla.com/docs/0.1.0/cli.md): The flotilla command: run and set up a server, pair devices, and start, follow and manage threads from a terminal.
 
 ## Help
 
-- [FAQ and troubleshooting](https://useflotilla.com/docs/main/faq.md): Answers about what Flotilla costs, where your data lives, and what to do about common messages such as Hand-off limit reached or a failing setup check.
+- [FAQ and troubleshooting](https://useflotilla.com/docs/0.1.0/faq.md): Answers about what Flotilla costs, where your data lives, and what to do about common messages such as Hand-off limit reached or a failing setup check.

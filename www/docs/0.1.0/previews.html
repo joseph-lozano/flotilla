@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Previews and services · Flotilla docs</title>
+<meta name="description" content="Open any port in a thread&#x27;s VM in your browser, run dev servers with .agents/services.yml, and share a public link for an hour, a day, a week or until you stop it.">
+<link rel="canonical" href="https://useflotilla.com/docs/0.1.0/previews.html">
+<link rel="alternate" type="text/markdown" href="previews.md">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FCFAFD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1322" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Flotilla">
+<meta property="og:title" content="Previews and services · Flotilla docs">
+<meta property="og:description" content="Open any port in a thread&#x27;s VM in your browser, run dev servers with .agents/services.yml, and share a public link for an hour, a day, a week or until you stop it.">
+<meta property="og:image" content="https://useflotilla.com/og.png">
+<link rel="stylesheet" href="docs.css">
+<script src="docs.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="sail-shape" d="M2 0h1v1h1v1h1v1h1v1h1v1h1v1H2z"/>
+    <path id="hull-shape" d="M0 7h8v2H0z"/>
+    <g id="mark">
+      <g fill="#F37173" transform="translate(0 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#F6BC63" transform="translate(10 0)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#C2A7E2" transform="translate(20 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+    </g>
+  </defs>
+</svg>
+
+<header class="wrap site-header">
+  <a class="brand" href="../../" aria-label="Flotilla, home">
+    <svg viewBox="0 0 28 11" width="42" height="17" shape-rendering="crispEdges" aria-hidden="true"><use href="#mark"/></svg>
+    <span class="word">Flotilla</span>
+  </a>
+  <a class="crumb" href="./">Docs</a>
+  <label class="version">
+    <span class="visually-hidden">Docs version</span>
+    <select id="version" data-current="0.1.0"><option value="0.1.0" selected>0.1.0</option></select>
+  </label>
+  <a class="md-link" href="previews.md" title="This page as Markdown">Markdown</a>
+  <span class="tag">Alpha</span>
+  <nav class="site-nav" aria-label="Main">
+    <a class="nav-text" href="../../">Home</a>
+    <a class="nav-github" href="https://github.com/joseph-lozano/flotilla">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span class="label">GitHub</span>
+    </a>
+  </nav>
+</header>
+
+<div class="wrap docs">
+  <aside class="sidebar" aria-label="Docs">
+    <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc">Contents<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
+    <div class="toc" id="toc">
+      <div class="search" role="search">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.75"/><path d="M10.5 10.5L14 14"/></svg>
+        <label class="visually-hidden" for="docs-search">Search the docs</label>
+        <input id="docs-search" type="search" placeholder="Search the docs" autocomplete="off" spellcheck="false">
+        <ul class="results" id="search-results" aria-live="polite"></ul>
+      </div>
+      <nav aria-label="Pages">
+      <p class="group">Start here</p>
+      <ul class="pages">
+        <li><a href="./">Overview</a></li>
+        <li><a href="getting-started.html">Getting started</a></li>
+      </ul>
+      <p class="group">Guides</p>
+      <ul class="pages">
+        <li><a href="threads.html">Threads</a></li>
+        <li><a href="projects.html">Projects and pull requests</a></li>
+        <li><a href="previews.html" aria-current="page">Previews and services</a>
+          <ul class="sections">
+            <li><a href="#port">Preview a port</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#public">Share a public link</a></li>
+          </ul>
+        </li>
+        <li><a href="agents.html">Agents working together</a></li>
+        <li><a href="questions.html">Questions from agents</a></li>
+        <li><a href="schedules.html">Scheduled prompts</a></li>
+        <li><a href="server.html">Run a server</a></li>
+        <li><a href="iphone.html">The iPhone app</a></li>
+        <li><a href="agent-api.html">The agent API</a></li>
+      </ul>
+      <p class="group">Reference</p>
+      <ul class="pages">
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="shortcuts.html">Keyboard shortcuts</a></li>
+        <li><a href="cli.html">The CLI</a></li>
+      </ul>
+      <p class="group">Help</p>
+      <ul class="pages">
+        <li><a href="faq.html">FAQ and troubleshooting</a></li>
+      </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="content" class="doc">
+    <p class="version-note" hidden></p>
+    <h1>Previews and services</h1>
+    <p class="lede">See what an agent built: open any port in its VM in your browser, keep dev servers running with a services file, and share a link with someone who isn't signed in.</p>
+
+    <h2 id="port">Preview a port</h2>
+    <p>In a thread with no services, the header has a <strong>Preview…</strong> button:</p>
+    <ol>
+      <li>Press <strong>Preview…</strong>. <strong>Open a preview</strong> asks for the <strong>Port in the VM</strong> (3000 unless you change it).</li>
+      <li>Press <strong>Open</strong>. The port opens in your browser through a private link.</li>
+    </ol>
+    <p>If the VM is stopped, it wakes first. Once a thread has services or a public link, the button becomes a menu, named <strong>Preview</strong>, or <strong>Public</strong> while anything is public. Its last item, <strong>Another port…</strong>, opens any other port.</p>
+    <p>From a terminal, <code>flotilla preview &lt;thread&gt; &lt;port&gt;</code> prints the same private link.</p>
+
+    <h2 id="services">Services</h2>
+    <p>Services are the processes that should keep running in a project thread's VM: a dev server, a worker, an API. List them in <code>.agents/services.yml</code> in your repo:</p>
+    <div class="cmd"><div class="label">.agents/services.yml</div><pre><code>services:
+  web:
+    command: npm run dev -- --port $PORT
+    health: /
+    portal: true
+  worker:
+    command: npm run worker</code></pre></div>
+    <p>Flotilla starts any that aren't running after a thread's first message and after every wake, and waits up to 2 minutes for each to be ready. Services you stop stay stopped. A repo set up for Amp's <code>.amp/services.yaml</code> works as it is: Flotilla reads that file when there's no <code>.agents/services.yml</code>.</p>
+
+    <h3 id="services-fields">Fields</h3>
+    <p>Name each service with lowercase letters, digits and <code>-</code>, up to 32 characters.</p>
+    <div class="table"><table>
+      <thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><code>command</code></td><td class="wrap-ok">Required. What to run, in a login shell.</td></tr>
+        <tr><td><code>cwd</code></td><td class="wrap-ok">A folder inside the repo to run it in.</td></tr>
+        <tr><td><code>port</code></td><td class="wrap-ok">The port it listens on. Without one, Flotilla picks one from 4100 up, the same for the life of the thread, and passes it in <code>$PORT</code>.</td></tr>
+        <tr><td><code>env</code></td><td class="wrap-ok">Environment variables. A value can use <code>${services.&lt;name&gt;.publicURL}</code>, another service's address, when that service has a portal.</td></tr>
+        <tr><td><code>health</code></td><td class="wrap-ok">A path, starting with <code>/</code>, that answers 2xx or 3xx when the service is ready. Without it, ready means the port takes connections.</td></tr>
+        <tr><td><code>portal</code></td><td class="wrap-ok"><code>true</code> to show it in the Preview menu with <strong>Open</strong>, or <code>{url, title}</code> to open a path or a link under a name of its own.</td></tr>
+        <tr><td><code>portals</code></td><td class="wrap-ok">More links: a list of <code>{url, title}</code>.</td></tr>
+        <tr><td><code>platforms</code></td><td class="wrap-ok"><code>linux</code>, <code>darwin</code> or both. VMs run Linux, so a service without <code>linux</code> is skipped.</td></tr>
+      </tbody>
+    </table></div>
+    <p>Each service also sees <code>FLOTILLA=1</code>, <code>FLOTILLA_THREAD_ID</code>, <code>FLOTILLA_BRANCH</code>, <code>PORT</code> and, when it has a preview, <code>PUBLIC_URL</code>. Its output is in the VM at <code>~/.cache/flotilla/logs/service-&lt;name&gt;.log</code>, and the agent can read the services' names, ports, links and states in <code>~/.cache/flotilla/services.json</code>.</p>
+
+    <h3 id="services-menu">In the Preview menu</h3>
+    <p>Each service has a row with its state, such as <em>ready · :4100</em>, <em>starting…</em>, <em>not responding on :4100</em>, <em>exited 1</em> or <em>stopped</em>, and buttons:</p>
+    <ul>
+      <li><strong>Open</strong>, and a button for each extra portal;</li>
+      <li><strong>Output</strong>: the last 80 lines it printed, with <strong>Restart</strong>;</li>
+      <li><strong>Restart</strong>, <strong>Start</strong> or <strong>Stop</strong>;</li>
+      <li><strong>Make public…</strong></li>
+    </ul>
+    <p>A service that exited also shows under the thread's title, with <strong>Output</strong> and <strong>Restart</strong>. A mistake in the services file shows at the top of the menu.</p>
+    <figure>
+      <picture>
+        <source srcset="img/preview-night.webp" media="(prefers-color-scheme: dark)">
+        <img src="img/preview-day.webp" width="1200" height="547" loading="lazy" decoding="async" alt="The Public menu in a thread's header. The web service is ready on port 4100, with Open, Storybook, Output, Restart and Stop, and is public with 60 minutes left, with Copy link and Make private. The worker service is stopped, with Output and Start. The api service exited with code 1. Port 5173 is public until you stop it. Another port… is at the bottom.">
+      </picture>
+      <figcaption>The Preview menu, named Public while a link is public.</figcaption>
+    </figure>
+    <p>From a terminal: <code>flotilla services &lt;thread&gt;</code> lists them, and <code>ensure</code>, <code>restart &lt;name&gt;</code> and <code>stop &lt;name&gt;</code> manage them.</p>
+
+    <h2 id="public">Share a public link</h2>
+    <p>A public link opens the port for anyone who has it, without signing in: for a teammate's review, a phone on another network, or a webhook.</p>
+    <ol>
+      <li>In the Preview menu, press <strong>Make public…</strong> on a service, or on a port you opened.</li>
+      <li>Pick how long: <strong>1 hour</strong>, <strong>1 day</strong>, <strong>1 week</strong> or <strong>Until I stop it</strong>.</li>
+    </ol>
+    <p>Flotilla copies the link. While it's public, the row says so, for example <em>Public · 58 min left</em>, with <strong>Copy link</strong> and <strong>Make private</strong>. Picking a time again starts the clock over.</p>
+    <ul>
+      <li>The clock runs while the VM is stopped, and a stopped VM serves nothing. When the VM wakes, a link with time left works again; one whose time ran out stays private.</li>
+      <li>Archiving or deleting the thread makes its links private.</li>
+      <li><strong>Make private</strong> also changes the private link, so old private links stop working too.</li>
+      <li>Only you can make a port public. Agents that use Flotilla through <a href="agent-api.html">the agent API</a> can open private previews, not public ones.</li>
+    </ul>
+
+    <nav class="pager" aria-label="Previous and next">
+    <a class="prev" href="projects.html"><span>Previous</span>Projects and pull requests</a>
+    <a class="next" href="agents.html"><span>Next</span>Agents working together</a>
+    </nav>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Joseph Lozano</span>
+    <nav aria-label="Footer">
+      <a href="../../">Home</a>
+      <a href="./">Docs</a>
+      <a href="https://github.com/joseph-lozano/flotilla">GitHub</a>
+      <a href="https://github.com/joseph-lozano/flotilla/blob/main/LICENSE">MIT License</a>
+      <a href="../../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

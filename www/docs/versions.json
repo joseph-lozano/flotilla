@@ -1,6 +1,15 @@
 {
-  "default": "main",
+  "default": "0.1.0",
   "versions": [
-    { "name": "main", "path": "main", "label": "main" }
+    {
+      "name": "main",
+      "path": "main",
+      "label": "main (unreleased)"
+    },
+    {
+      "name": "0.1.0",
+      "path": "0.1.0",
+      "label": "0.1.0"
+    }
   ]
 }

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flotilla docs</title>
+<meta name="description" content="How to use Flotilla: run Claude Code, Codex and OpenCode side by side, each alone in its own cloud VM, from your Mac, Linux desktop or iPhone.">
+<link rel="canonical" href="https://useflotilla.com/docs/0.1.0/">
+<link rel="alternate" type="text/markdown" href="index.md">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FCFAFD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1322" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Flotilla">
+<meta property="og:title" content="Flotilla docs">
+<meta property="og:description" content="How to use Flotilla: run Claude Code, Codex and OpenCode side by side, each alone in its own cloud VM, from your Mac, Linux desktop or iPhone.">
+<meta property="og:image" content="https://useflotilla.com/og.png">
+<link rel="stylesheet" href="docs.css">
+<script src="docs.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="sail-shape" d="M2 0h1v1h1v1h1v1h1v1h1v1h1v1H2z"/>
+    <path id="hull-shape" d="M0 7h8v2H0z"/>
+    <g id="mark">
+      <g fill="#F37173" transform="translate(0 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#F6BC63" transform="translate(10 0)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#C2A7E2" transform="translate(20 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+    </g>
+  </defs>
+</svg>
+
+<header class="wrap site-header">
+  <a class="brand" href="../../" aria-label="Flotilla, home">
+    <svg viewBox="0 0 28 11" width="42" height="17" shape-rendering="crispEdges" aria-hidden="true"><use href="#mark"/></svg>
+    <span class="word">Flotilla</span>
+  </a>
+  <a class="crumb" href="./">Docs</a>
+  <label class="version">
+    <span class="visually-hidden">Docs version</span>
+    <select id="version" data-current="0.1.0"><option value="0.1.0" selected>0.1.0</option></select>
+  </label>
+  <a class="md-link" href="index.md" title="This page as Markdown">Markdown</a>
+  <span class="tag">Alpha</span>
+  <nav class="site-nav" aria-label="Main">
+    <a class="nav-text" href="../../">Home</a>
+    <a class="nav-github" href="https://github.com/joseph-lozano/flotilla">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span class="label">GitHub</span>
+    </a>
+  </nav>
+</header>
+
+<div class="wrap docs">
+  <aside class="sidebar" aria-label="Docs">
+    <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc">Contents<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
+    <div class="toc" id="toc">
+      <div class="search" role="search">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.75"/><path d="M10.5 10.5L14 14"/></svg>
+        <label class="visually-hidden" for="docs-search">Search the docs</label>
+        <input id="docs-search" type="search" placeholder="Search the docs" autocomplete="off" spellcheck="false">
+        <ul class="results" id="search-results" aria-live="polite"></ul>
+      </div>
+      <nav aria-label="Pages">
+      <p class="group">Start here</p>
+      <ul class="pages">
+        <li><a href="./" aria-current="page">Overview</a>
+          <ul class="sections">
+            <li><a href="#what-it-is">What Flotilla is</a></li>
+            <li><a href="#how-it-fits">How the pieces fit</a></li>
+            <li><a href="#words">Words these docs use</a></li>
+            <li><a href="#pages">Find your way</a></li>
+          </ul>
+        </li>
+        <li><a href="getting-started.html">Getting started</a></li>
+      </ul>
+      <p class="group">Guides</p>
+      <ul class="pages">
+        <li><a href="threads.html">Threads</a></li>
+        <li><a href="projects.html">Projects and pull requests</a></li>
+        <li><a href="previews.html">Previews and services</a></li>
+        <li><a href="agents.html">Agents working together</a></li>
+        <li><a href="questions.html">Questions from agents</a></li>
+        <li><a href="schedules.html">Scheduled prompts</a></li>
+        <li><a href="server.html">Run a server</a></li>
+        <li><a href="iphone.html">The iPhone app</a></li>
+        <li><a href="agent-api.html">The agent API</a></li>
+      </ul>
+      <p class="group">Reference</p>
+      <ul class="pages">
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="shortcuts.html">Keyboard shortcuts</a></li>
+        <li><a href="cli.html">The CLI</a></li>
+      </ul>
+      <p class="group">Help</p>
+      <ul class="pages">
+        <li><a href="faq.html">FAQ and troubleshooting</a></li>
+      </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="content" class="doc">
+    <p class="version-note" hidden></p>
+    <h1>Flotilla docs</h1>
+    <p class="lede">Flotilla runs coding agents in the cloud. Each agent works alone in its own VM on <a href="https://boat.dev">boat.dev</a>, and you run the whole fleet from your Mac, your Linux desktop or your iPhone.</p>
+
+    <h2 id="what-it-is">What Flotilla is</h2>
+    <p>You give an agent a task in a <strong>thread</strong>: one conversation with one agent, Claude Code, Codex or OpenCode, on the model you pick. Every thread gets a VM of its own, with its own files and processes, so agents never share a working copy, a port or your laptop.</p>
+    <ul>
+      <li>Start as many threads as you like. The sidebar puts the ones that need you first, and a small model sums up each reply in a line.</li>
+      <li>Idle VMs stop after a few minutes and wake when you send, so a quiet thread uses no VM time.</li>
+      <li>Add a GitHub repo as a <strong>project</strong>, and each thread starts with the repo set up on a branch of its own. The thread's pull request sits above the message box, with its checks, buttons that write the next prompt, and <strong>Hold to merge</strong>.</li>
+      <li>Agents can hand work to other agents, and ask you questions you answer with a tap.</li>
+    </ul>
+
+    <h2 id="how-it-fits">How the pieces fit</h2>
+    <p>Three things work together. You install the first; the other two are services you sign up for.</p>
+    <div class="table"><table>
+      <thead><tr><th>Piece</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Flotilla</td><td class="wrap-ok">The desktop app for the Mac and Linux, the iPhone app, and Flotilla's server, which keeps your threads and talks to boat.dev and GitHub. The desktop app has a server built in, <strong>This Mac</strong>, which runs while the app is open. You can also run the server on a Linux machine that stays on.</td></tr>
+        <tr><td>boat.dev</td><td class="wrap-ok">Runs the VMs and the agents in them. You need an account on a paid plan, and boat.dev bills VM time.</td></tr>
+        <tr><td>Your model providers</td><td class="wrap-ok">Bill the tokens the agents use, as they would anyway.</td></tr>
+      </tbody>
+    </table></div>
+    <p>Agents work in their VMs, so a turn keeps going with your laptop shut. The rest of Flotilla, such as hand-offs between agents, scheduled prompts and your iPhone, needs the server to be running: see <a href="server.html">Run a server</a>.</p>
+
+    <h2 id="words">Words these docs use</h2>
+    <p>A few words come up on every page.</p>
+    <dl>
+      <dt>Thread</dt><dd>One conversation with one agent, in a VM of its own.</dd>
+      <dt>Turn</dt><dd>One round of work: the agent's answer to a message, from when you send until it stops and waits for you.</dd>
+      <dt>Steer</dt><dd>A message sent while a turn runs. It goes into that turn without stopping it.</dd>
+      <dt>VM</dt><dd>The cloud machine on boat.dev a thread runs in. It stops when idle and wakes when you send.</dd>
+      <dt>Project</dt><dd>A GitHub repo you've added. Its threads start with the repo set up, each on a branch of its own.</dd>
+      <dt>Setup</dt><dd>The scripts that install and build a project, so threads start ready to work.</dd>
+      <dt>Hand-off</dt><dd>Work an agent gives to another agent, in its VM or in a new thread.</dd>
+      <dt>Server</dt><dd>The part of Flotilla that keeps your threads and talks to boat.dev and GitHub: inside the desktop app (<strong>This Mac</strong>), or on a machine that stays on.</dd>
+    </dl>
+
+    <h2 id="pages">Find your way</h2>
+    <p>New to Flotilla? Start with <a href="getting-started.html">Getting started</a>. The guides show how to do things; the reference pages list every setting and shortcut, and the common commands.</p>
+    <ul class="cards">
+      <li><a href="getting-started.html"><strong>Getting started</strong><span>Install the app, connect boat.dev, start a thread</span></a></li>
+      <li><a href="threads.html"><strong>Threads</strong><span>Models, follow-ups, search, archiving, idle VMs, usage</span></a></li>
+      <li><a href="projects.html"><strong>Projects and pull requests</strong><span>Repos, setup scripts, branches, Fix, Hold to merge</span></a></li>
+      <li><a href="previews.html"><strong>Previews and services</strong><span>Open a port, run dev servers, share a public link</span></a></li>
+      <li><a href="agents.html"><strong>Agents working together</strong><span>Reviews by another model, work in a VM of its own</span></a></li>
+      <li><a href="questions.html"><strong>Questions from agents</strong><span>Answer from the Mac, Linux or your phone</span></a></li>
+      <li><a href="schedules.html"><strong>Scheduled prompts</strong><span>Send later, once or every day</span></a></li>
+      <li><a href="server.html"><strong>Run a server</strong><span>Keep going with your laptop shut, pair devices</span></a></li>
+      <li><a href="iphone.html"><strong>The iPhone app</strong><span>Pair, follow threads, answer, hold to merge</span></a></li>
+      <li><a href="agent-api.html"><strong>The agent API</strong><span>Let Claude Code, OpenClaw or Grok use Flotilla</span></a></li>
+      <li><a href="settings.html"><strong>Settings</strong><span>Every section, as you see it</span></a></li>
+      <li><a href="shortcuts.html"><strong>Keyboard shortcuts</strong><span>On the Mac and Linux</span></a></li>
+      <li><a href="cli.html"><strong>The CLI</strong><span>The flotilla command, from a terminal</span></a></li>
+      <li><a href="faq.html"><strong>FAQ and troubleshooting</strong><span>Costs, where data lives, common messages</span></a></li>
+    </ul>
+
+    <nav class="pager" aria-label="Previous and next">
+    <a class="next" href="getting-started.html"><span>Next</span>Getting started</a>
+    </nav>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Joseph Lozano</span>
+    <nav aria-label="Footer">
+      <a href="../../">Home</a>
+      <a href="./">Docs</a>
+      <a href="https://github.com/joseph-lozano/flotilla">GitHub</a>
+      <a href="https://github.com/joseph-lozano/flotilla/blob/main/LICENSE">MIT License</a>
+      <a href="../../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

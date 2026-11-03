@@ -1,10 +1,10 @@
-# Flotilla docs (main)
+# Flotilla docs (0.1.0)
 
-Every page of https://useflotilla.com/docs/main/, as Markdown, in the sidebar's order.
+Every page of https://useflotilla.com/docs/0.1.0/, as Markdown, in the sidebar's order.
 
 ---
 
-<!-- https://useflotilla.com/docs/main/index.md -->
+<!-- https://useflotilla.com/docs/0.1.0/index.md -->
 
 # Flotilla docs
 
@@ -29,7 +29,7 @@ Three things work together. You install the first; the other two are services yo
 | boat.dev | Runs the VMs and the agents in them. You need an account on a paid plan, and boat.dev bills VM time. |
 | Your model providers | Bill the tokens the agents use, as they would anyway. |
 
-Agents work in their VMs, so a turn keeps going with your laptop shut. The rest of Flotilla, such as hand-offs between agents, scheduled prompts and your iPhone, needs the server to be running: see [Run a server](https://useflotilla.com/docs/main/server.md).
+Agents work in their VMs, so a turn keeps going with your laptop shut. The rest of Flotilla, such as hand-offs between agents, scheduled prompts and your iPhone, needs the server to be running: see [Run a server](https://useflotilla.com/docs/0.1.0/server.md).
 
 ## Words these docs use
 
@@ -46,26 +46,26 @@ A few words come up on every page.
 
 ## Find your way
 
-New to Flotilla? Start with [Getting started](https://useflotilla.com/docs/main/getting-started.md). The guides show how to do things; the reference pages list every setting and shortcut, and the common commands.
+New to Flotilla? Start with [Getting started](https://useflotilla.com/docs/0.1.0/getting-started.md). The guides show how to do things; the reference pages list every setting and shortcut, and the common commands.
 
-- [Getting started](https://useflotilla.com/docs/main/getting-started.md): Install the app, connect boat.dev, start a thread
-- [Threads](https://useflotilla.com/docs/main/threads.md): Models, follow-ups, search, archiving, idle VMs, usage
-- [Projects and pull requests](https://useflotilla.com/docs/main/projects.md): Repos, setup scripts, branches, Fix, Hold to merge
-- [Previews and services](https://useflotilla.com/docs/main/previews.md): Open a port, run dev servers, share a public link
-- [Agents working together](https://useflotilla.com/docs/main/agents.md): Reviews by another model, work in a VM of its own
-- [Questions from agents](https://useflotilla.com/docs/main/questions.md): Answer from the Mac, Linux or your phone
-- [Scheduled prompts](https://useflotilla.com/docs/main/schedules.md): Send later, once or every day
-- [Run a server](https://useflotilla.com/docs/main/server.md): Keep going with your laptop shut, pair devices
-- [The iPhone app](https://useflotilla.com/docs/main/iphone.md): Pair, follow threads, answer, hold to merge
-- [The agent API](https://useflotilla.com/docs/main/agent-api.md): Let Claude Code, OpenClaw or Grok use Flotilla
-- [Settings](https://useflotilla.com/docs/main/settings.md): Every section, as you see it
-- [Keyboard shortcuts](https://useflotilla.com/docs/main/shortcuts.md): On the Mac and Linux
-- [The CLI](https://useflotilla.com/docs/main/cli.md): The flotilla command, from a terminal
-- [FAQ and troubleshooting](https://useflotilla.com/docs/main/faq.md): Costs, where data lives, common messages
+- [Getting started](https://useflotilla.com/docs/0.1.0/getting-started.md): Install the app, connect boat.dev, start a thread
+- [Threads](https://useflotilla.com/docs/0.1.0/threads.md): Models, follow-ups, search, archiving, idle VMs, usage
+- [Projects and pull requests](https://useflotilla.com/docs/0.1.0/projects.md): Repos, setup scripts, branches, Fix, Hold to merge
+- [Previews and services](https://useflotilla.com/docs/0.1.0/previews.md): Open a port, run dev servers, share a public link
+- [Agents working together](https://useflotilla.com/docs/0.1.0/agents.md): Reviews by another model, work in a VM of its own
+- [Questions from agents](https://useflotilla.com/docs/0.1.0/questions.md): Answer from the Mac, Linux or your phone
+- [Scheduled prompts](https://useflotilla.com/docs/0.1.0/schedules.md): Send later, once or every day
+- [Run a server](https://useflotilla.com/docs/0.1.0/server.md): Keep going with your laptop shut, pair devices
+- [The iPhone app](https://useflotilla.com/docs/0.1.0/iphone.md): Pair, follow threads, answer, hold to merge
+- [The agent API](https://useflotilla.com/docs/0.1.0/agent-api.md): Let Claude Code, OpenClaw or Grok use Flotilla
+- [Settings](https://useflotilla.com/docs/0.1.0/settings.md): Every section, as you see it
+- [Keyboard shortcuts](https://useflotilla.com/docs/0.1.0/shortcuts.md): On the Mac and Linux
+- [The CLI](https://useflotilla.com/docs/0.1.0/cli.md): The flotilla command, from a terminal
+- [FAQ and troubleshooting](https://useflotilla.com/docs/0.1.0/faq.md): Costs, where data lives, common messages
 
 ---
 
-<!-- https://useflotilla.com/docs/main/getting-started.md -->
+<!-- https://useflotilla.com/docs/0.1.0/getting-started.md -->
 
 # Getting started
 
@@ -77,8 +77,8 @@ Paste this prompt into Claude Code, Codex or OpenCode on the computer you're set
 
 ```text
 Set up Flotilla on this computer for me. It's a Mac and Linux desktop app that runs coding agents, each in its own boat.dev VM. Read these first, and where their commands differ from the steps below, use theirs:
-https://useflotilla.com/docs/main/getting-started.md
-https://useflotilla.com/docs/main/faq.md
+https://useflotilla.com/docs/0.1.0/getting-started.md
+https://useflotilla.com/docs/0.1.0/faq.md
 
 Rules, which always hold, whatever the docs say:
 - Secrets stay with me. Never ask me for a key, token or password in chat, and never read, print or save one. When a step makes or takes a secret, give me the command or tell me where to paste it, and wait while I do it myself, in my own terminal or the app, not through you.
@@ -162,7 +162,7 @@ A thread starts a VM, starts the agent in it and sends your prompt.
 3. Optional: pick the agent and model, the reasoning effort, and **Fast**, under the prompt.
 4. Press Enter.
 
-![The New thread page: a prompt box that asks What should the agent do?, with the model Opus 5.5, effort High and Fast under it, and No project below. The sidebar lists threads under Unread and Idle.](https://useflotilla.com/docs/main/img/new-thread-day.webp)
+![The New thread page: a prompt box that asks What should the agent do?, with the model Opus 5.5, effort High and Fast under it, and No project below. The sidebar lists threads under Unread and Idle.](https://useflotilla.com/docs/0.1.0/img/new-thread-day.webp)
 
 New thread. The model, effort and Fast sit under the prompt; the project menu is below it.
 
@@ -174,13 +174,13 @@ Titles and summaries come from a small Claude model, run by the Claude Code CLI 
 
 Once your first thread works:
 
-- [Threads](https://useflotilla.com/docs/main/threads.md): follow-ups, steering a running turn, search, and how idle VMs stop and wake.
-- [Projects and pull requests](https://useflotilla.com/docs/main/projects.md): add a GitHub repo, so each thread starts with it set up on its own branch.
-- [Run a server](https://useflotilla.com/docs/main/server.md): keep hand-offs, schedules and your iPhone going with your laptop shut.
+- [Threads](https://useflotilla.com/docs/0.1.0/threads.md): follow-ups, steering a running turn, search, and how idle VMs stop and wake.
+- [Projects and pull requests](https://useflotilla.com/docs/0.1.0/projects.md): add a GitHub repo, so each thread starts with it set up on its own branch.
+- [Run a server](https://useflotilla.com/docs/0.1.0/server.md): keep hand-offs, schedules and your iPhone going with your laptop shut.
 
 ---
 
-<!-- https://useflotilla.com/docs/main/threads.md -->
+<!-- https://useflotilla.com/docs/0.1.0/threads.md -->
 
 # Threads
 
@@ -191,8 +191,8 @@ A thread is one conversation with one agent, in a VM of its own. This page cover
 Open **New thread** with ⌘N or the **New** button at the top of the sidebar, type what the agent should do, and press Enter.
 
 - Enter starts the thread and opens it. ⌘Enter starts it and leaves you on New thread, with the project, branch and models kept, ready for the next one.
-- The project menu under the prompt picks a GitHub repo, or **No project** for a blank VM. See [Projects and pull requests](https://useflotilla.com/docs/main/projects.md).
-- The clock by the start button sends the prompt later instead. See [Scheduled prompts](https://useflotilla.com/docs/main/schedules.md).
+- The project menu under the prompt picks a GitHub repo, or **No project** for a blank VM. See [Projects and pull requests](https://useflotilla.com/docs/0.1.0/projects.md).
+- The clock by the start button sends the prompt later instead. See [Scheduled prompts](https://useflotilla.com/docs/0.1.0/schedules.md).
 
 ## Pick the agent and model
 
@@ -239,7 +239,7 @@ Three characters open a menu of things the agent in the VM can use. The menus re
 | `$` | Codex's skills, on Codex threads. Elsewhere, `$` is a dollar sign. |
 | `@` | Files and folders in the thread's repo. Picking a folder opens it. |
 
-Move with ↑ and ↓, pick with Enter or Tab, and close with Esc. To give every agent your own skills or standing instructions, use **Skills for every agent** and **Instructions for every agent** in [Settings](https://useflotilla.com/docs/main/settings.md#instructions-and-skills-for-every-agent).
+Move with ↑ and ↓, pick with Enter or Tab, and close with Esc. To give every agent your own skills or standing instructions, use **Skills for every agent** and **Instructions for every agent** in [Settings](https://useflotilla.com/docs/0.1.0/settings.md#instructions-and-skills-for-every-agent).
 
 ## Search
 
@@ -250,7 +250,7 @@ Press ⌘K to search threads, messages and commands.
 - **In messages** finds what was said in threads. It looks up words of three letters or more, in any case. Pick a result to open its thread at that message.
 - Start with `>` to see only commands.
 
-![The search box with fractional typed, showing one result under In messages: the thread Median function with subtle bug, a snippet with the word highlighted, and 2 matches.](https://useflotilla.com/docs/main/img/palette-day.webp)
+![The search box with fractional typed, showing one result under In messages: the thread Median function with subtle bug, a snippet with the word highlighted, and 2 matches.](https://useflotilla.com/docs/0.1.0/img/palette-day.webp)
 
 A word found in a thread's messages. Picking it opens the thread at that message.
 
@@ -276,7 +276,7 @@ Archive a thread when you're done with it. Its VM stops, and if the repo has an 
 - For 5 seconds after, **Undo** (⌘Z) brings it back.
 - **Unarchive**, in the thread's header or menu, brings it back later. Its VM wakes on your next message.
 
-Flotilla can archive for you, when a thread's pull request merges or after it's been idle a while: see [Archiving](https://useflotilla.com/docs/main/settings.md#archiving) in Settings.
+Flotilla can archive for you, when a thread's pull request merges or after it's been idle a while: see [Archiving](https://useflotilla.com/docs/0.1.0/settings.md#archiving) in Settings.
 
 **Delete…** deletes the thread's VM and its history. It can't be undone.
 
@@ -310,7 +310,7 @@ The bottom of the sidebar shows boat.dev's counts, such as *7/60 starts/h*, and,
 - **VMs**: VMs running, starts in the last minute, hour and 24 hours, VM hours used this plan period, and extra starts, each against its limit. When boat.dev won't start VMs, it says why and when they can start again. **Billing on boat.dev** opens your plan.
 - **Agents**: each agent account's weekly limit, how much is used and when it resets, then the last 30 days: what the agents' tokens would cost at API prices, what the cache saved, by day and by model.
 
-![The Usage popover on its VMs tab: VMs running 3 of 100, starts in the last minute 0 of 12, last hour 7 of 60, last 24 hours 120 of 200, VM hours used 7 of 556 renewing Nov 29, extra starts off, and Refresh and Billing on boat.dev.](https://useflotilla.com/docs/main/img/usage-day.webp)
+![The Usage popover on its VMs tab: VMs running 3 of 100, starts in the last minute 0 of 12, last hour 7 of 60, last 24 hours 120 of 200, VM hours used 7 of 556 renewing Nov 29, extra starts off, and Refresh and Billing on boat.dev.](https://useflotilla.com/docs/0.1.0/img/usage-day.webp)
 
 Usage, on the VMs tab.
 
@@ -324,11 +324,11 @@ Beside the send button, a ring shows how full the agent's context window is, onc
 
 When Flotilla's window isn't in front, a notification tells you when a thread needs you: a turn finished, an agent asks a question, the agents a thread handed work to answered, a thread couldn't start, a pull request merged, a scheduled prompt didn't run, or a project's setup failed. Click it to open the thread. Threads that agents started don't notify; their answers come back to the thread that asked.
 
-The Dock icon (on Linux, the launcher) shows how many threads are unread. In the window, a thread you're not looking at shows **Thread finished** or **Thread asks**, with **Open**. Turn banners and the count off in [Settings](https://useflotilla.com/docs/main/settings.md#notifications).
+The Dock icon (on Linux, the launcher) shows how many threads are unread. In the window, a thread you're not looking at shows **Thread finished** or **Thread asks**, with **Open**. Turn banners and the count off in [Settings](https://useflotilla.com/docs/0.1.0/settings.md#notifications).
 
 ---
 
-<!-- https://useflotilla.com/docs/main/projects.md -->
+<!-- https://useflotilla.com/docs/0.1.0/projects.md -->
 
 # Projects and pull requests
 
@@ -383,7 +383,7 @@ Commit these files to the repo, and Flotilla runs them in every thread's VM. It'
 | `.agents/setup` | In every setup, and as each thread starts, after the project's scripts. Up to 20 minutes. | Installing dependencies and building. Keep it quick when nothing changed. |
 | `.agents/resume` | When a stopped VM wakes, before your message is sent. Up to 10 seconds; then the message goes anyway. | Signing back in, reconnecting. |
 | `.agents/archive` | When a thread is archived, or deleted without being archived first, before the VM stops. Up to 2 minutes; the archive goes ahead whatever it does. | Cleaning up outside the VM, like deleting a database branch. A stopped VM wakes to run it, which uses a VM start. |
-| `.agents/services.yml` | After the first message, and after every wake. | Dev servers and anything else that should keep running. See [Services](https://useflotilla.com/docs/main/previews.md#services). |
+| `.agents/services.yml` | After the first message, and after every wake. | Dev servers and anything else that should keep running. See [Services](https://useflotilla.com/docs/0.1.0/previews.md#services). |
 
 - An executable script runs with its own `#!` line; otherwise bash runs it.
 - Every script sees `FLOTILLA=1`. In a thread, scripts also see `FLOTILLA_THREAD_ID` and `FLOTILLA_BRANCH`; setup runs for the project's copy don't, so a script can tell the two apart. `.agents/setup` also sees `FLOTILLA_SETUP`: `fresh` on a fresh clone, `update` otherwise.
@@ -405,7 +405,7 @@ To pick up existing work, choose a project on New thread, then open the branch m
 
 When the thread's branch has a pull request, it shows above the message box. To show one Flotilla didn't find, pick **Link a PR…** in the thread menu and give its number or link.
 
-![A project thread on the Mac. Above the message box, pull request #42, Fix the even-length median, shows 12/12 checks, plus 48 and minus 12 lines, Ready to merge, and a Hold to merge button. Above the reply are two cards for the agents that reviewed the code.](https://useflotilla.com/docs/main/img/thread-day.webp)
+![A project thread on the Mac. Above the message box, pull request #42, Fix the even-length median, shows 12/12 checks, plus 48 and minus 12 lines, Ready to merge, and a Hold to merge button. Above the reply are two cards for the agents that reviewed the code.](https://useflotilla.com/docs/0.1.0/img/thread-day.webp)
 
 Pull request #42 on its thread: checks passing, ready to merge.
 
@@ -423,11 +423,11 @@ The bar shows the pull request's number and title (click to open it on GitHub), 
 
 ## Archive on merge
 
-When a thread's pull request merges, Flotilla archives the thread and says *#42 merged into main · Archived*, with **Undo**. It leaves the thread alone if a turn is running, if **Keep running** is on, or if you wrote in it or unarchived it after the merge. Turn this off in [Settings](https://useflotilla.com/docs/main/settings.md#archiving) under **Archiving**.
+When a thread's pull request merges, Flotilla archives the thread and says *#42 merged into main · Archived*, with **Undo**. It leaves the thread alone if a turn is running, if **Keep running** is on, or if you wrote in it or unarchived it after the merge. Turn this off in [Settings](https://useflotilla.com/docs/0.1.0/settings.md#archiving) under **Archiving**.
 
 ---
 
-<!-- https://useflotilla.com/docs/main/previews.md -->
+<!-- https://useflotilla.com/docs/0.1.0/previews.md -->
 
 # Previews and services
 
@@ -490,7 +490,7 @@ Each service has a row with its state, such as *ready · :4100*, *starting…*, 
 
 A service that exited also shows under the thread's title, with **Output** and **Restart**. A mistake in the services file shows at the top of the menu.
 
-![The Public menu in a thread's header. The web service is ready on port 4100, with Open, Storybook, Output, Restart and Stop, and is public with 60 minutes left, with Copy link and Make private. The worker service is stopped, with Output and Start. The api service exited with code 1. Port 5173 is public until you stop it. Another port… is at the bottom.](https://useflotilla.com/docs/main/img/preview-day.webp)
+![The Public menu in a thread's header. The web service is ready on port 4100, with Open, Storybook, Output, Restart and Stop, and is public with 60 minutes left, with Copy link and Make private. The worker service is stopped, with Output and Start. The api service exited with code 1. Port 5173 is public until you stop it. Another port… is at the bottom.](https://useflotilla.com/docs/0.1.0/img/preview-day.webp)
 
 The Preview menu, named Public while a link is public.
 
@@ -508,11 +508,11 @@ Flotilla copies the link. While it's public, the row says so, for example *Publi
 - The clock runs while the VM is stopped, and a stopped VM serves nothing. When the VM wakes, a link with time left works again; one whose time ran out stays private.
 - Archiving or deleting the thread makes its links private.
 - **Make private** also changes the private link, so old private links stop working too.
-- Only you can make a port public. Agents that use Flotilla through [the agent API](https://useflotilla.com/docs/main/agent-api.md) can open private previews, not public ones.
+- Only you can make a port public. Agents that use Flotilla through [the agent API](https://useflotilla.com/docs/0.1.0/agent-api.md) can open private previews, not public ones.
 
 ---
 
-<!-- https://useflotilla.com/docs/main/agents.md -->
+<!-- https://useflotilla.com/docs/0.1.0/agents.md -->
 
 # Agents working together
 
@@ -550,7 +550,7 @@ Each agent the thread starts gets a card in the thread: its task's title, its ag
 - A delegate's card has **Open thread**. Its thread sits under the thread that started it in the sidebar, its first prompt reads *From* and the title of that thread, and its header links back.
 - Threads that agents started don't notify you; their answers go to the thread that asked.
 
-![A thread where the agent handed a review to two other agents. Two cards at the top, Codex review of median.py on GPT-5.6 Terra and Haiku review of median.py on Claude Code with Haiku 5.5, each show their calls, time and the start of their answer. Below the agent's reply, a line reads 2 agents answered, followed by its summary of both reviews.](https://useflotilla.com/docs/main/img/thread-day.webp)
+![A thread where the agent handed a review to two other agents. Two cards at the top, Codex review of median.py on GPT-5.6 Terra and Haiku review of median.py on Claude Code with Haiku 5.5, each show their calls, time and the start of their answer. Below the agent's reply, a line reads 2 agents answered, followed by its summary of both reviews.](https://useflotilla.com/docs/0.1.0/img/thread-day.webp)
 
 Two reviewers in the same VM, and the summary after both answered.
 
@@ -572,7 +572,7 @@ The last one stops agents from handing work back and forth all night. When it's 
 
 ---
 
-<!-- https://useflotilla.com/docs/main/questions.md -->
+<!-- https://useflotilla.com/docs/0.1.0/questions.md -->
 
 # Questions from agents
 
@@ -596,7 +596,7 @@ The question shows in the thread as a card marked *waiting*, and the thread move
 2. Or press **Other** and type your own answer. On a pick-one question, it takes the place of the option you picked; on a pick-several question, it's added to your picks.
 3. Press **Send**.
 
-![A question card in a thread, marked waiting: Which file name should I create? with the options alpha.txt (recommended) and beta.txt, Other, and a Send button.](https://useflotilla.com/docs/main/img/ask-day.webp)
+![A question card in a thread, marked waiting: Which file name should I create? with the options alpha.txt (recommended) and beta.txt, Other, and a Send button.](https://useflotilla.com/docs/0.1.0/img/ask-day.webp)
 
 A question with two options, the recommended one first.
 
@@ -604,15 +604,15 @@ Once answered, the card shows your answers and says *answered*. If you send an o
 
 ## Answer on your iPhone
 
-The iPhone app shows the same card, with **Other** and **Send**. With notifications set up on your server, a question also comes as a notification; tap it to open the thread. See [notifications](https://useflotilla.com/docs/main/iphone.md#notifications).
+The iPhone app shows the same card, with **Other** and **Send**. With notifications set up on your server, a question also comes as a notification; tap it to open the thread. See [notifications](https://useflotilla.com/docs/0.1.0/iphone.md#notifications).
 
 ## From other agents
 
-An agent that another agent started asks in its final message instead, so the question reaches the agent that started it. Assistants that use Flotilla through [the agent API](https://useflotilla.com/docs/main/agent-api.md) can answer a thread's questions too.
+An agent that another agent started asks in its final message instead, so the question reaches the agent that started it. Assistants that use Flotilla through [the agent API](https://useflotilla.com/docs/0.1.0/agent-api.md) can answer a thread's questions too.
 
 ---
 
-<!-- https://useflotilla.com/docs/main/schedules.md -->
+<!-- https://useflotilla.com/docs/0.1.0/schedules.md -->
 
 # Scheduled prompts
 
@@ -630,7 +630,7 @@ The clock beside the send button opens **Send later**. Where you open it decides
 3. Or pick **Repeat**, then **Daily**, **Weekdays**, **Weekly** (choose the days) or **Cron**, and the time.
 4. Check the line under it, such as *Sends today 17:10*, and press **Schedule**.
 
-![The Send later form: a prompt box asking What should the agent do?, To Median function with subtle bug, Once and Repeat, a date and time with shortcuts In 1 hour, Tomorrow 09:00 and Monday 09:00, the line Sends today 17:10, and Cancel and Schedule buttons.](https://useflotilla.com/docs/main/img/later-day.webp)
+![The Send later form: a prompt box asking What should the agent do?, To Median function with subtle bug, Once and Repeat, a date and time with shortcuts In 1 hour, Tomorrow 09:00 and Monday 09:00, the line Sends today 17:10, and Cancel and Schedule buttons.](https://useflotilla.com/docs/0.1.0/img/later-day.webp)
 
 Send later, from a thread: each run is a follow-up to it.
 
@@ -668,7 +668,7 @@ One-off schedules leave the list 7 days after they run.
 
 ## Where schedules run
 
-Schedules run on Flotilla's server. On **This Mac**, that's the app, so they run only while Flotilla is open, and the list says so. To have them run with your laptop shut, [run a server](https://useflotilla.com/docs/main/server.md).
+Schedules run on Flotilla's server. On **This Mac**, that's the app, so they run only while Flotilla is open, and the list says so. To have them run with your laptop shut, [run a server](https://useflotilla.com/docs/0.1.0/server.md).
 
 ## From the command line
 
@@ -688,7 +688,7 @@ Times take `--at HH:MM` or `--at "YYYY-MM-DD HH:MM"`, `--in 30m`, `--daily`, `--
 
 ---
 
-<!-- https://useflotilla.com/docs/main/server.md -->
+<!-- https://useflotilla.com/docs/0.1.0/server.md -->
 
 # Run a server
 
@@ -704,7 +704,7 @@ Agents work in their boat.dev VMs, so a turn keeps going with your laptop shut e
 - notifications to your iPhone, and the iPhone app itself;
 - archiving on merge, and public links ending on time.
 
-A server needs little: outbound HTTPS to boat.dev and GitHub, a few MB of memory, and one database file. Any Linux machine will do. It answers only on its own machine (`127.0.0.1`, port 7777); your devices reach it through [Tailscale](https://useflotilla.com/docs/main/server.md#reach-it-over-tailscale) or a proxy such as [Caddy](https://useflotilla.com/docs/main/server.md#reach-it-from-the-internet-with-caddy).
+A server needs little: outbound HTTPS to boat.dev and GitHub, a few MB of memory, and one database file. Any Linux machine will do. It answers only on its own machine (`127.0.0.1`, port 7777); your devices reach it through [Tailscale](https://useflotilla.com/docs/0.1.0/server.md#reach-it-over-tailscale) or a proxy such as [Caddy](https://useflotilla.com/docs/0.1.0/server.md#reach-it-from-the-internet-with-caddy).
 
 ## Set it up with an agent
 
@@ -712,8 +712,8 @@ Paste this prompt into Claude Code, Codex or OpenCode on the Linux machine. The 
 
 ```text
 Set up a Flotilla server on this Linux machine for me. It stays on, so hand-offs between agents, scheduled prompts, project setup and my iPhone keep going with my laptop shut. If you aren't running on that machine, ask me how to reach it. Read these first, and where their commands differ from the steps below, use theirs:
-https://useflotilla.com/docs/main/server.md
-https://useflotilla.com/docs/main/faq.md
+https://useflotilla.com/docs/0.1.0/server.md
+https://useflotilla.com/docs/0.1.0/faq.md
 
 Rules, which always hold, whatever the docs say:
 - Secrets stay with me. Never ask me for a key, token, password or pairing code in chat, and never read, print or save one. When a step makes or takes a secret, give me the command, and wait while I run it myself, in my own terminal, not through you.
@@ -772,7 +772,7 @@ To set up without questions, put the key in a file only you can read and pass it
 flotilla setup --non-interactive --boat-key-file ~/boat-key --tailscale-serve
 ```
 
-Notifications to your iPhone go through Flotilla's push relay, encrypted so the relay can't read them. `--no-push-relay` turns that off. See [how they reach your phone](https://useflotilla.com/docs/main/iphone.md#how-they-reach-your-phone).
+Notifications to your iPhone go through Flotilla's push relay, encrypted so the relay can't read them. `--no-push-relay` turns that off. See [how they reach your phone](https://useflotilla.com/docs/0.1.0/iphone.md#how-they-reach-your-phone).
 
 ## Run it as a service
 
@@ -804,8 +804,8 @@ The service finds `gh`, `claude` and `tailscale` where they were when you instal
 | Titles and previews | That the `claude` CLI is there and answers with the chosen model. *Off* if you turned titles off. |
 | Tailscale | That Tailscale is connected, with MagicDNS and HTTPS on, and forwards the server's address to it. |
 | Database | That Flotilla can write its database. |
-| Push | How notifications reach iPhones: through Flotilla's push relay, your own Apple key, or off. See [how they reach your phone](https://useflotilla.com/docs/main/iphone.md#how-they-reach-your-phone). |
-| Remote MCP | Whether remote MCP is on, and public. See [remote MCP](https://useflotilla.com/docs/main/agent-api.md#remote-mcp-for-assistants-in-other-clouds). |
+| Push | How notifications reach iPhones: through Flotilla's push relay, your own Apple key, or off. See [how they reach your phone](https://useflotilla.com/docs/0.1.0/iphone.md#how-they-reach-your-phone). |
+| Remote MCP | Whether remote MCP is on, and public. See [remote MCP](https://useflotilla.com/docs/0.1.0/agent-api.md#remote-mcp-for-assistants-in-other-clouds). |
 | Other Flotillas | For information: VMs on the same boat.dev account that another Flotilla made. This one leaves them alone. |
 
 ## Pair your devices
@@ -819,7 +819,7 @@ flotilla pair
 It prints a link and a QR code. Then:
 
 - **On a Mac or Linux desktop**, open the link, check the address, and press **Connect**. Or pick **Flotilla → Connect to a Server…** (on Linux, **Settings → Server → Connect to a server…**) and paste the link or type the address and code.
-- **On your iPhone**, scan the QR code in the app. See [The iPhone app](https://useflotilla.com/docs/main/iphone.md#pair-with-your-server).
+- **On your iPhone**, scan the QR code in the app. See [The iPhone app](https://useflotilla.com/docs/0.1.0/iphone.md#pair-with-your-server).
 
 A code works once, for 5 minutes. `flotilla pair --ttl 2h` gives it longer, up to `24h`. `flotilla pair --list` shows codes not used yet, and `--revoke` cancels one. From any paired device, **Add device** in **Settings → Devices** makes a code too, with its QR code and link.
 
@@ -838,7 +838,7 @@ On a Mac or Linux desktop, **Settings → Server** switches between the paired s
 With Tailscale on the server and your devices, and MagicDNS and HTTPS turned on for your tailnet ([DNS settings](https://login.tailscale.com/admin/dns)), `flotilla setup --tailscale-serve` is all it takes. While the server runs, Tailscale forwards `https://box.tail1234.ts.net` (your machine's name on your tailnet) to it, and pairing links use that address. Only your tailnet can reach it.
 
 - On Linux, let your user change Tailscale's settings once: `sudo tailscale set --operator=$USER`.
-- Flotilla uses Tailscale's port 443 and nothing else, unless you publish [remote MCP](https://useflotilla.com/docs/main/agent-api.md#remote-mcp-for-assistants-in-other-clouds) with Funnel. If something else already serves that port on the machine, Flotilla leaves it alone and says so.
+- Flotilla uses Tailscale's port 443 and nothing else, unless you publish [remote MCP](https://useflotilla.com/docs/0.1.0/agent-api.md#remote-mcp-for-assistants-in-other-clouds) with Funnel. If something else already serves that port on the machine, Flotilla leaves it alone and says so.
 
 ## Reach it from the internet with Caddy
 
@@ -925,7 +925,7 @@ The app on your Mac and a server can share one boat.dev account. Each keeps to t
 
 ---
 
-<!-- https://useflotilla.com/docs/main/iphone.md -->
+<!-- https://useflotilla.com/docs/0.1.0/iphone.md -->
 
 # The iPhone app
 
@@ -933,21 +933,21 @@ The iPhone app shows the same threads as your Mac, live. Start a thread with a p
 
 > **Alpha.** The iPhone app isn't on the App Store or TestFlight yet. It needs iOS 26 or later. To try it now, build it from the `ios` folder of the repo with Xcode; its [README](https://github.com/joseph-lozano/flotilla/blob/main/ios/README.md) has the steps.
 
-![The iPhone app's Threads screen: two unread threads, Pick a file name and Median function with subtle bug with pull request #42, then four idle ones, each with a summary of its latest reply and its model or project. The bottom bar shows 3/100 VMs and 62% of an agent account's week, beside New thread and the search box.](https://useflotilla.com/docs/main/img/iphone-threads-day.webp)
+![The iPhone app's Threads screen: two unread threads, Pick a file name and Median function with subtle bug with pull request #42, then four idle ones, each with a summary of its latest reply and its model or project. The bottom bar shows 3/100 VMs and 62% of an agent account's week, beside New thread and the search box.](https://useflotilla.com/docs/0.1.0/img/iphone-threads-day.webp)
 
 Threads, grouped by what needs you.
 
-![A thread on the iPhone: two reviewer cards, the agent's summary of what they found, and pull request #42 with 12 checks passing and Hold to merge above the message box.](https://useflotilla.com/docs/main/img/iphone-merge-day.webp)
+![A thread on the iPhone: two reviewer cards, the agent's summary of what they found, and pull request #42 with 12 checks passing and Hold to merge above the message box.](https://useflotilla.com/docs/0.1.0/img/iphone-merge-day.webp)
 
 A thread, with its pull request ready to merge.
 
-![New thread on the iPhone: a prompt, Opus 5.5 on High with Fast, the project flotilla-playground on a new branch, and Start.](https://useflotilla.com/docs/main/img/iphone-new-thread-day.webp)
+![New thread on the iPhone: a prompt, Opus 5.5 on High with Fast, the project flotilla-playground on a new branch, and Start.](https://useflotilla.com/docs/0.1.0/img/iphone-new-thread-day.webp)
 
 New thread, in a project on a new branch.
 
 ## Pair with your server
 
-The iPhone app connects to a Flotilla server: one you [run on a machine that stays on](https://useflotilla.com/docs/main/server.md), or [your Mac](https://useflotilla.com/docs/main/server.md#use-your-mac-as-the-server) while Flotilla is open there. Your phone needs to reach it, for example over Tailscale.
+The iPhone app connects to a Flotilla server: one you [run on a machine that stays on](https://useflotilla.com/docs/0.1.0/server.md), or [your Mac](https://useflotilla.com/docs/0.1.0/server.md#use-your-mac-as-the-server) while Flotilla is open there. Your phone needs to reach it, for example over Tailscale.
 
 1. On the server, run `flotilla pair`, or on a paired Mac open **Settings → Devices → Add device**.
 2. Open the app. **Connect to a server** shows the camera: point it at the QR code. The form fills in.
@@ -974,24 +974,24 @@ Replies, tool calls and the cards of agents the thread handed work to stream in 
 - The message box says **Ask a follow-up…**, or **Steer…** while a turn runs. The send button follows the same rules as on the Mac: **Send**, **Steer**, or **Resume and send** when the VM is stopped. **Stop the turn** interrupts it.
 - The paperclip attaches photos or files: up to 12, each up to 25 MB, 64 MB in all.
 - The model, effort and context ring sit under the message box; tap the ring for the context window.
-- The clock is **Send later**. See [Scheduled prompts](https://useflotilla.com/docs/main/schedules.md).
+- The clock is **Send later**. See [Scheduled prompts](https://useflotilla.com/docs/0.1.0/schedules.md).
 - **⋯** has the thread's menu, and the globe opens **Preview**.
 
 ### Questions and pull requests
 
-An agent's question shows as a card: pick an option or tap **Other**, then **Send**. See [Questions from agents](https://useflotilla.com/docs/main/questions.md).
+An agent's question shows as a card: pick an option or tap **Other**, then **Send**. See [Questions from agents](https://useflotilla.com/docs/0.1.0/questions.md).
 
 A thread's pull request shows above the message box with its checks. **Fix**, **Resolve** and **Address review** write a prompt for you to check and send. **Hold to merge** fills under your thumb and merges when full. **Ready for review** is on the desktop app only.
 
 ### Preview
 
-The globe in a thread's toolbar opens **Preview**. With no services, it asks for a port and opens it. With services, it lists each with **Open**, **Output**, **Restart** or **Start**, **Stop** and **Make public…**, and has **Another port…**. Pages open in Safari inside the app. Public links work as on the Mac; see [Share a public link](https://useflotilla.com/docs/main/previews.md#share-a-public-link).
+The globe in a thread's toolbar opens **Preview**. With no services, it asks for a port and opens it. With services, it lists each with **Open**, **Output**, **Restart** or **Start**, **Stop** and **Make public…**, and has **Another port…**. Pages open in Safari inside the app. Public links work as on the Mac; see [Share a public link](https://useflotilla.com/docs/0.1.0/previews.md#share-a-public-link).
 
-![A question card in a thread on the iPhone, marked waiting: Which file name should I create? with alpha.txt (recommended), beta.txt, Other and Send.](https://useflotilla.com/docs/main/img/iphone-ask-day.webp)
+![A question card in a thread on the iPhone, marked waiting: Which file name should I create? with alpha.txt (recommended), beta.txt, Other and Send.](https://useflotilla.com/docs/0.1.0/img/iphone-ask-day.webp)
 
 A question waiting for you.
 
-![The Preview sheet on the iPhone: the web service ready on port 4100 and public for under an hour more, the worker stopped, the api exited, port 5173 public until you stop it, and Another port.](https://useflotilla.com/docs/main/img/iphone-preview-day.webp)
+![The Preview sheet on the iPhone: the web service ready on port 4100 and public for under an hour more, the worker stopped, the api exited, port 5173 public until you stop it, and Another port.](https://useflotilla.com/docs/0.1.0/img/iphone-preview-day.webp)
 
 Preview: services, ports and public links.
 
@@ -1056,7 +1056,7 @@ Keep running, adding projects, and the other settings are in the desktop app.
 
 ---
 
-<!-- https://useflotilla.com/docs/main/agent-api.md -->
+<!-- https://useflotilla.com/docs/0.1.0/agent-api.md -->
 
 # The agent API
 
@@ -1130,7 +1130,7 @@ Each assistant gets these twelve tools.
 
 Grok Bot, grok.com and Muse run in their own clouds, so they can't run `flotilla mcp` or reach your tailnet. Remote MCP gives them the same tools, as the same kind of agent device, over HTTPS.
 
-It's **off unless you turn it on**, and it runs on a [server](https://useflotilla.com/docs/main/server.md), not on This Mac. When it's on, it's a listener of its own (port 8787 unless you change it) that serves only MCP and its sign-in page, so you publish that port alone and the rest of the server stays private.
+It's **off unless you turn it on**, and it runs on a [server](https://useflotilla.com/docs/0.1.0/server.md), not on This Mac. When it's on, it's a listener of its own (port 8787 unless you change it) that serves only MCP and its sign-in page, so you publish that port alone and the rest of the server stays private.
 
 ### Turn it on with Tailscale Funnel
 
@@ -1201,33 +1201,33 @@ Remote MCP is the one part of Flotilla you can put on the internet, so it keeps 
 
 ---
 
-<!-- https://useflotilla.com/docs/main/settings.md -->
+<!-- https://useflotilla.com/docs/0.1.0/settings.md -->
 
 # Settings
 
 Open Settings with ⌘,, or the gear at the bottom of the sidebar. The sections appear in this order. Settings marked *this device* stay on the Mac or Linux desktop you set them on; the rest are the server's, shared by every device connected to it.
 
-On Linux, **This Mac** reads **This computer**. If the server can't be reached, Settings shows only Server, Devices, Appearance and Notifications. The iPhone's settings are on [The iPhone app](https://useflotilla.com/docs/main/iphone.md#settings).
+On Linux, **This Mac** reads **This computer**. If the server can't be reached, Settings shows only Server, Devices, Appearance and Notifications. The iPhone's settings are on [The iPhone app](https://useflotilla.com/docs/0.1.0/iphone.md#settings).
 
 ## Server
 
-Which Flotilla server this app uses: **This Mac**, the server built into the app, or the server you paired with. The one in use has a tick; **Use** switches to the other at once. The paired server has **Forget**, which removes the pairing. **Connect to a server…** pairs with one; it reads **Connect to a different server…** once you have one, which it replaces. See [Pair your devices](https://useflotilla.com/docs/main/server.md#pair-your-devices).
+Which Flotilla server this app uses: **This Mac**, the server built into the app, or the server you paired with. The one in use has a tick; **Use** switches to the other at once. The paired server has **Forget**, which removes the pairing. **Connect to a server…** pairs with one; it reads **Connect to a different server…** once you have one, which it replaces. See [Pair your devices](https://useflotilla.com/docs/0.1.0/server.md#pair-your-devices).
 
 ## Devices
 
-The devices paired with the server in use, each with its kind (macOS, Linux, iOS, or Agent for an [assistant](https://useflotilla.com/docs/main/agent-api.md)), and whether it's connected or when it was last seen. Every device has **Rename**; every device but this one has **Revoke**, which disconnects it at once. **Add device** makes a pairing code, with its QR code and link.
+The devices paired with the server in use, each with its kind (macOS, Linux, iOS, or Agent for an [assistant](https://useflotilla.com/docs/0.1.0/agent-api.md)), and whether it's connected or when it was last seen. Every device has **Rename**; every device but this one has **Revoke**, which disconnects it at once. **Add device** makes a pairing code, with its QR code and link.
 
-On **This Mac**, **Let other devices connect** lets other devices pair with this Mac while Flotilla is open, and **Over Tailscale** lets them reach it from your tailnet. Both are off by default. See [Use your Mac as the server](https://useflotilla.com/docs/main/server.md#use-your-mac-as-the-server).
+On **This Mac**, **Let other devices connect** lets other devices pair with this Mac while Flotilla is open, and **Over Tailscale** lets them reach it from your tailnet. Both are off by default. See [Use your Mac as the server](https://useflotilla.com/docs/0.1.0/server.md#use-your-mac-as-the-server).
 
 ## Setup
 
-Called **Server setup** when you use a paired server. The checks Flotilla needs to pass, with how many pass, such as *6/7*. It opens on its own when a check fails or warns. Each check says what it found and gives the commands that fix it, each with **Copy**. **Check again** runs them all again. The checks are listed under [Check it](https://useflotilla.com/docs/main/server.md#check-it).
+Called **Server setup** when you use a paired server. The checks Flotilla needs to pass, with how many pass, such as *6/7*. It opens on its own when a check fails or warns. Each check says what it found and gives the commands that fix it, each with **Copy**. **Check again** runs them all again. The checks are listed under [Check it](https://useflotilla.com/docs/0.1.0/server.md#check-it).
 
 On **This Mac**, the **boat API key** check has a field to paste a new key, and **Replace**.
 
 ## Projects
 
-Your projects, each with its state, such as *Ready on main@1a2b3c4* or *Setup failed at* a step. **Add project** adds a GitHub repo, and each project's **Settings** opens its setup scripts, setup history and **Remove project…**. See [Projects and pull requests](https://useflotilla.com/docs/main/projects.md).
+Your projects, each with its state, such as *Ready on main@1a2b3c4* or *Setup failed at* a step. **Add project** adds a GitHub repo, and each project's **Settings** opens its setup scripts, setup history and **Remove project…**. See [Projects and pull requests](https://useflotilla.com/docs/0.1.0/projects.md).
 
 **Branch prefix** puts new threads' branches in a folder: `you` becomes `you/`. It applies to new branches only. Flotilla drops characters git doesn't allow, and says so.
 
@@ -1251,13 +1251,13 @@ The model new threads start on, with its **Effort** and **Fast** where the model
 
 ## Stop idle VMs after
 
-**5 min**, **10 min** (the default) or **30 min**. A change applies from each thread's next turn. See [Idle VMs](https://useflotilla.com/docs/main/threads.md#idle-vms-stop-wake-and-keep-running).
+**5 min**, **10 min** (the default) or **30 min**. A change applies from each thread's next turn. See [Idle VMs](https://useflotilla.com/docs/0.1.0/threads.md#idle-vms-stop-wake-and-keep-running).
 
 ## Archiving
 
 Flotilla can archive threads for you. You can undo either kind of archive.
 
-- **Archive a thread when its pull request merges**: On by default. See [Archive on merge](https://useflotilla.com/docs/main/projects.md#archive-on-merge).
+- **Archive a thread when its pull request merges**: On by default. See [Archive on merge](https://useflotilla.com/docs/0.1.0/projects.md#archive-on-merge).
 - **Archive threads idle for**: **Never** (the default), 3, 7, 14 or 30 days. A thread a schedule sends to isn't archived for being idle.
 
 ## Titles and previews
@@ -1278,7 +1278,7 @@ Called **Data on the server** when you use a paired server. Where the database i
 
 ---
 
-<!-- https://useflotilla.com/docs/main/shortcuts.md -->
+<!-- https://useflotilla.com/docs/0.1.0/shortcuts.md -->
 
 # Keyboard shortcuts
 
@@ -1312,7 +1312,7 @@ In the message box, and on New thread.
 | ⌘Enter | On New thread, start the thread and stay, to start another. |
 | ⇧Enter | A new line. |
 | ↑, ↓ | In an empty message box, bring back earlier prompts, and go forward again. |
-| /, $, @ | Open the menu of skills and commands, Codex's skills, or files. See [Slash commands, skills and @-mentions](https://useflotilla.com/docs/main/threads.md#slash-commands-skills-and--mentions). |
+| /, $, @ | Open the menu of skills and commands, Codex's skills, or files. See [Slash commands, skills and @-mentions](https://useflotilla.com/docs/0.1.0/threads.md#slash-commands-skills-and--mentions). |
 | ↑, ↓, Enter or Tab, Esc | In those menus: move, pick, close. |
 
 ## In search
@@ -1339,7 +1339,7 @@ On the Mac, most of these are also in the menu bar, under **Flotilla**, **View**
 
 ---
 
-<!-- https://useflotilla.com/docs/main/cli.md -->
+<!-- https://useflotilla.com/docs/0.1.0/cli.md -->
 
 # The CLI
 
@@ -1354,7 +1354,7 @@ cargo build --release -p flotilla-cli
 cp target/release/flotilla ~/.local/bin/
 ```
 
-It works with the Flotilla on the same machine: through the server or the app when one is running, or on its own when neither is. With `--server <address>`, the thread commands go to another server instead, as an [agent device](https://useflotilla.com/docs/main/agent-api.md).
+It works with the Flotilla on the same machine: through the server or the app when one is running, or on its own when neither is. With `--server <address>`, the thread commands go to another server instead, as an [agent device](https://useflotilla.com/docs/0.1.0/agent-api.md).
 
 ## Server
 
@@ -1368,7 +1368,7 @@ Run these on the machine that serves Flotilla.
 | `flotilla service install` | Run the server as a systemd user service on Linux. Also `status`, `start`, `stop`, `restart`, `uninstall`. |
 | `flotilla pair` | Make a one-time pairing code, with a link and a QR code. `--agent` for an assistant, `--ttl` for longer than 5 minutes, `--list`, `--revoke`. |
 | `flotilla devices` | List paired devices. `flotilla devices revoke <id>` signs one out. |
-| `flotilla import <path>` | Bring a Mac's threads to this server. See [Move your Mac's threads](https://useflotilla.com/docs/main/server.md#move-your-macs-threads-to-the-server). |
+| `flotilla import <path>` | Bring a Mac's threads to this server. See [Move your Mac's threads](https://useflotilla.com/docs/0.1.0/server.md#move-your-macs-threads-to-the-server). |
 
 ## Threads
 
@@ -1393,7 +1393,7 @@ Commands that take a thread take its id, or the first few characters of it.
 
 ## Scheduled prompts
 
-`flotilla schedule add`, `list`, `pause`, `resume`, `run` and `rm`. See [Scheduled prompts](https://useflotilla.com/docs/main/schedules.md#from-the-command-line).
+`flotilla schedule add`, `list`, `pause`, `resume`, `run` and `rm`. See [Scheduled prompts](https://useflotilla.com/docs/0.1.0/schedules.md#from-the-command-line).
 
 ## Assistants
 
@@ -1405,7 +1405,7 @@ For assistants that use Flotilla over MCP.
 | `flotilla connect <address>` | Pair this machine with a server as an agent device. |
 | `flotilla disconnect <address>` | Sign that agent device out, and forget its token. |
 
-See [The agent API](https://useflotilla.com/docs/main/agent-api.md).
+See [The agent API](https://useflotilla.com/docs/0.1.0/agent-api.md).
 
 ## boat.dev
 
@@ -1432,7 +1432,7 @@ These work with any command.
 
 ---
 
-<!-- https://useflotilla.com/docs/main/faq.md -->
+<!-- https://useflotilla.com/docs/0.1.0/faq.md -->
 
 # FAQ and troubleshooting
 
@@ -1443,7 +1443,7 @@ Short answers to common questions, and what to do about the messages you're most
 Flotilla itself is free and open source, under the MIT License. You pay for what runs:
 
 - **boat.dev** bills VM time, on a paid plan. Each thread is a VM, and so is each delegate an agent starts. Your plan includes a number of VM starts (waking a stopped VM is one); starts beyond them are *extra starts*, if you've turned those on in boat.dev.
-- **Your model providers** bill the agents' tokens, as they would anyway. The **Agents** tab in [Usage](https://useflotilla.com/docs/main/threads.md#usage-and-limits) shows what the last 30 days would cost at API prices.
+- **Your model providers** bill the agents' tokens, as they would anyway. The **Agents** tab in [Usage](https://useflotilla.com/docs/0.1.0/threads.md#usage-and-limits) shows what the last 30 days would cost at API prices.
 
 Idle VMs stop on their own, so a quiet thread uses no VM time. **Keep running** keeps a VM up, and billing, until you turn it off.
 
@@ -1466,21 +1466,21 @@ Running turns carry on in their VMs, and idle VMs still stop on time. Without a 
 - a repeating scheduled prompt whose time passes is skipped, and a one-off runs late;
 - your iPhone can't connect.
 
-With a [server](https://useflotilla.com/docs/main/server.md), all of it keeps going.
+With a [server](https://useflotilla.com/docs/0.1.0/server.md), all of it keeps going.
 
 ## Can I use more than one computer?
 
-Yes. Run a [server](https://useflotilla.com/docs/main/server.md) and pair each Mac and Linux desktop with it; they all see the same threads. Or, as a preview, let other devices connect to the Mac that has your threads: see [Use your Mac as the server](https://useflotilla.com/docs/main/server.md#use-your-mac-as-the-server).
+Yes. Run a [server](https://useflotilla.com/docs/0.1.0/server.md) and pair each Mac and Linux desktop with it; they all see the same threads. Or, as a preview, let other devices connect to the Mac that has your threads: see [Use your Mac as the server](https://useflotilla.com/docs/0.1.0/server.md#use-your-mac-as-the-server).
 
 ## Messages you might see
 
 What these messages mean, and what to do.
 
-- **Hand-off limit reached (20 since your last message). Send a message to continue.**: Agents in this thread, and the threads it handed work to, have handed off 20 tasks since you last wrote. Read what they did, then send a message, even *carry on*, to let them go on. See [Limits](https://useflotilla.com/docs/main/agents.md#limits).
-- **Can't start VMs**: boat.dev won't start another VM now, usually because a start limit is used up. [Usage](https://useflotilla.com/docs/main/threads.md#usage-and-limits) shows which limit and when VMs can start again.
+- **Hand-off limit reached (20 since your last message). Send a message to continue.**: Agents in this thread, and the threads it handed work to, have handed off 20 tasks since you last wrote. Read what they did, then send a message, even *carry on*, to let them go on. See [Limits](https://useflotilla.com/docs/0.1.0/agents.md#limits).
+- **Can't start VMs**: boat.dev won't start another VM now, usually because a start limit is used up. [Usage](https://useflotilla.com/docs/0.1.0/threads.md#usage-and-limits) shows which limit and when VMs can start again.
 - **boat can't see *owner/repo* yet**: Give boat.dev access to the repo in boat's dashboard, under **Environment → GitHub repositories**, then add the project again.
 - **gh isn't signed in to github.com, or gh is too old**: Run `gh auth login --hostname github.com`, or update the GitHub CLI to 2.81 or newer, then press **Check again** in Settings.
-- **Setup failed at a step**: A project's setup scripts or `.agents/setup` failed. Press **Fix in a new thread** to have an agent fix it, or open the project's settings for the log. See [When setup fails](https://useflotilla.com/docs/main/projects.md#when-setup-fails).
+- **Setup failed at a step**: A project's setup scripts or `.agents/setup` failed. Press **Fix in a new thread** to have an agent fix it, or open the project's settings for the log. See [When setup fails](https://useflotilla.com/docs/0.1.0/projects.md#when-setup-fails).
 - **Hold to merge isn't there**: It shows only when the pull request is open, not a draft, mergeable, with no failing or pending checks, and no review needed. The bar says what's in the way, such as *Conflicts with main* or *Changes requested*, with the button that helps.
 - **Flotilla can't show banners: they're off in System Settings.**: Press **Open System Settings** and allow notifications for Flotilla.
 - **Flotilla is already running on this Mac as a server.**: On Linux, *this computer*. Only one Flotilla can use a database at a time, and a server on the same machine is using it. Press **Connect to it**: no pairing needed.
@@ -1488,7 +1488,7 @@ What these messages mean, and what to do.
 
 ## What do the setup checks mean?
 
-`flotilla doctor`, and **Setup** in Settings, check what Flotilla needs and give the command that fixes each problem. The checks are listed in [Check it](https://useflotilla.com/docs/main/server.md#check-it). A check that's *Off*, such as Push or Remote MCP when you haven't set them up, isn't counted. If the boat API key or the database check fails, the app shows the checks in place of New thread until it's fixed.
+`flotilla doctor`, and **Setup** in Settings, check what Flotilla needs and give the command that fixes each problem. The checks are listed in [Check it](https://useflotilla.com/docs/0.1.0/server.md#check-it). A check that's *Off*, such as Push or Remote MCP when you haven't set them up, isn't counted. If the boat API key or the database check fails, the app shows the checks in place of New thread until it's fixed.
 
 ## Linux notes
 
