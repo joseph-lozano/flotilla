@@ -1,6 +1,6 @@
 # Getting started
 
-Build the desktop app, give it a boat.dev key and start your first thread. Most of the time goes into the build.
+Install the desktop app, give it a boat.dev key and start your first thread.
 
 ## Set it up with an agent
 
@@ -32,21 +32,40 @@ When you're done, tell me what you installed, and anything left for me to do.
 
 ## What you need
 
-Flotilla has no download yet, so you build it from source.
-
-- A Mac with Xcode, or a Linux desktop running Debian or Ubuntu, on X11 or Wayland.
-- [Rust](https://rustup.rs), to build the app.
+- A Mac with Apple silicon or Intel, on macOS 13 or later, or a Linux desktop on X11 or Wayland.
 - A [boat.dev](https://boat.dev) account on a paid plan, and boat's command-line tool, signed in, to make an API key. The agents use the model accounts you connect to boat.dev; Flotilla never asks for them.
 - For projects: the [GitHub CLI](https://cli.github.com), version 2.81 or newer, signed in with `gh auth login`. boat.dev also needs access to the repos you add.
 - Optional: the [Claude Code CLI](https://docs.claude.com/en/docs/claude-code), signed in, for thread titles and one-line summaries.
 
 ## Install the app
 
-Clone the repo and build the app for your system.
-
 ### On a Mac
 
-This builds `Flotilla.app` and opens it:
+Download [Flotilla.dmg](https://github.com/joseph-lozano/flotilla/releases/latest/download/Flotilla.dmg), open it and drag Flotilla to Applications.
+
+### On Linux
+
+On Debian or Ubuntu, download the package for your machine and install it, then open Flotilla from your apps:
+
+```
+curl -fLO https://github.com/joseph-lozano/flotilla/releases/latest/download/Flotilla-$(dpkg --print-architecture).deb
+sudo apt install ./Flotilla-$(dpkg --print-architecture).deb
+```
+
+On any other distribution, use the AppImage:
+
+```
+curl -fLO https://github.com/joseph-lozano/flotilla/releases/latest/download/Flotilla-$(uname -m).AppImage
+chmod +x Flotilla-$(uname -m).AppImage && ./Flotilla-$(uname -m).AppImage
+```
+
+On Linux, Ctrl takes the place of ⌘ in every shortcut, and there's no menu bar: everything in the Mac's menus is in **Settings** and in search (Ctrl+K).
+
+Every release, with its notes and `SHA256SUMS`, is on the [Releases page](https://github.com/joseph-lozano/flotilla/releases).
+
+### Build it from source
+
+Building needs [Rust](https://rustup.rs). On a Mac, with Xcode, this builds `Flotilla.app` and opens it:
 
 ```
 git clone https://github.com/joseph-lozano/flotilla.git
@@ -55,19 +74,15 @@ script/bundle-macos
 open target/release/Flotilla.app
 ```
 
-### On Linux
-
-Install the build tools, build a `.deb` package, and install it:
+On Debian or Ubuntu, install the build tools, build a `.deb` package, and install it:
 
 ```
 sudo apt install build-essential cmake pkg-config libfontconfig-dev libxkbcommon-x11-dev dpkg-dev imagemagick
 git clone https://github.com/joseph-lozano/flotilla.git
 cd flotilla
 script/bundle-linux
-sudo apt install ./target/release/flotilla_0.1.0_amd64.deb
+sudo apt install ./target/release/flotilla_0.1.0_$(dpkg --print-architecture).deb
 ```
-
-Then open Flotilla from your apps. On Linux, Ctrl takes the place of ⌘ in every shortcut, and there's no menu bar: everything in the Mac's menus is in **Settings** and in search (Ctrl+K).
 
 ## Connect boat.dev
 

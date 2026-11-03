@@ -8,7 +8,15 @@ A server needs very little: outbound HTTPS to boat.dev and GitHub, a few MB of m
 
 ## Install
 
-Build the `flotilla` command and put it somewhere lasting:
+Download the `flotilla` command into `~/.local/bin`. It's linked statically, so it runs on any Linux:
+
+```sh
+mkdir -p ~/.local/bin
+curl -fL https://github.com/joseph-lozano/flotilla/releases/latest/download/flotilla-cli-linux-$(uname -m).tar.gz |
+  tar -xz --strip-components=1 -C ~/.local/bin flotilla-cli-linux-$(uname -m)/flotilla
+```
+
+Or build it from source, and put it somewhere lasting:
 
 ```sh
 git clone https://github.com/joseph-lozano/flotilla.git
@@ -236,12 +244,19 @@ What faces the internet:
 
 ## The Linux desktop app
 
-The app you use on a Mac runs on Linux desktops too, on X11 or Wayland. It runs threads itself while it's open (**This computer**), or connects to a server. Build it as a `.deb`, for Debian, Ubuntu and their relatives:
+The app you use on a Mac runs on Linux desktops too, on X11 or Wayland. It runs threads itself while it's open (**This computer**), or connects to a server. Download it for Debian, Ubuntu and their relatives:
+
+```sh
+curl -fLO https://github.com/joseph-lozano/flotilla/releases/latest/download/Flotilla-$(dpkg --print-architecture).deb
+sudo apt install ./Flotilla-$(dpkg --print-architecture).deb
+```
+
+On any other distribution, use the AppImage from the [latest release](https://github.com/joseph-lozano/flotilla/releases/latest): `chmod +x` it and run it. Or build the `.deb` yourself:
 
 ```sh
 sudo apt install build-essential cmake pkg-config libfontconfig-dev libxkbcommon-x11-dev dpkg-dev imagemagick
 script/bundle-linux
-sudo apt install ./target/release/flotilla_0.1.0_amd64.deb
+sudo apt install ./target/release/flotilla_0.1.0_$(dpkg --print-architecture).deb
 ```
 
 This installs `flotilla-app`, its icon, and `com.useflotilla.flotilla.desktop`, which opens `flotilla://` pairing links. apt brings what it needs to run: Vulkan or EGL from your graphics driver, `xdg-utils` and `desktop-file-utils`. `script/bundle-linux --dev` builds Flotilla Dev, which installs beside it.

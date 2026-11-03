@@ -109,7 +109,7 @@
   <main id="content" class="doc">
     <p class="version-note" hidden></p>
     <h1>Getting started</h1>
-    <p class="lede">Build the desktop app, give it a boat.dev key and start your first thread. Most of the time goes into the build.</p>
+    <p class="lede">Install the desktop app, give it a boat.dev key and start your first thread.</p>
 
     <h2 id="agent-setup">Set it up with an agent</h2>
     <p>Paste this prompt into Claude Code, Codex or OpenCode on the computer you're setting up. The agent reads these pages, checks what's installed, gets the app and checks each step. The steps with secrets are yours: signing in, making the boat.dev key and pasting it into the app. It never asks for a key.</p>
@@ -136,33 +136,40 @@ Rules, which always hold, whatever the docs say:
 When you're done, tell me what you installed, and anything left for me to do.</code></pre></div>
 
     <h2 id="requirements">What you need</h2>
-    <p>Flotilla has no download yet, so you build it from source.</p>
     <ul>
-      <li>A Mac with Xcode, or a Linux desktop running Debian or Ubuntu, on X11 or Wayland.</li>
-      <li><a href="https://rustup.rs">Rust</a>, to build the app.</li>
+      <li>A Mac with Apple silicon or Intel, on macOS 13 or later, or a Linux desktop on X11 or Wayland.</li>
       <li>A <a href="https://boat.dev">boat.dev</a> account on a paid plan, and boat's command-line tool, signed in, to make an API key. The agents use the model accounts you connect to boat.dev; Flotilla never asks for them.</li>
       <li>For projects: the <a href="https://cli.github.com">GitHub CLI</a>, version 2.81 or newer, signed in with <code>gh auth login</code>. boat.dev also needs access to the repos you add.</li>
       <li>Optional: the <a href="https://docs.claude.com/en/docs/claude-code">Claude Code CLI</a>, signed in, for thread titles and one-line summaries.</li>
     </ul>
 
     <h2 id="install">Install the app</h2>
-    <p>Clone the repo and build the app for your system.</p>
 
     <h3 id="install-mac">On a Mac</h3>
-    <p>This builds <code>Flotilla.app</code> and opens it:</p>
+    <p>Download <a href="https://github.com/joseph-lozano/flotilla/releases/latest/download/Flotilla.dmg">Flotilla.dmg</a>, open it and drag Flotilla to Applications.</p>
+
+    <h3 id="install-linux">On Linux</h3>
+    <p>On Debian or Ubuntu, download the package for your machine and install it, then open Flotilla from your apps:</p>
+    <div class="cmd"><pre><code>curl -fLO https://github.com/joseph-lozano/flotilla/releases/latest/download/Flotilla-$(dpkg --print-architecture).deb
+sudo apt install ./Flotilla-$(dpkg --print-architecture).deb</code></pre></div>
+    <p>On any other distribution, use the AppImage:</p>
+    <div class="cmd"><pre><code>curl -fLO https://github.com/joseph-lozano/flotilla/releases/latest/download/Flotilla-$(uname -m).AppImage
+chmod +x Flotilla-$(uname -m).AppImage &amp;&amp; ./Flotilla-$(uname -m).AppImage</code></pre></div>
+    <p>On Linux, <kbd>Ctrl</kbd> takes the place of <kbd>⌘</kbd> in every shortcut, and there's no menu bar: everything in the Mac's menus is in <strong>Settings</strong> and in search (<kbd>Ctrl</kbd>+<kbd>K</kbd>).</p>
+    <p>Every release, with its notes and <code>SHA256SUMS</code>, is on the <a href="https://github.com/joseph-lozano/flotilla/releases">Releases page</a>.</p>
+
+    <h3 id="install-source">Build it from source</h3>
+    <p>Building needs <a href="https://rustup.rs">Rust</a>. On a Mac, with Xcode, this builds <code>Flotilla.app</code> and opens it:</p>
     <div class="cmd"><pre><code>git clone https://github.com/joseph-lozano/flotilla.git
 cd flotilla
 script/bundle-macos
 open target/release/Flotilla.app</code></pre></div>
-
-    <h3 id="install-linux">On Linux</h3>
-    <p>Install the build tools, build a <code>.deb</code> package, and install it:</p>
+    <p>On Debian or Ubuntu, install the build tools, build a <code>.deb</code> package, and install it:</p>
     <div class="cmd"><pre><code>sudo apt install build-essential cmake pkg-config libfontconfig-dev libxkbcommon-x11-dev dpkg-dev imagemagick
 git clone https://github.com/joseph-lozano/flotilla.git
 cd flotilla
 script/bundle-linux
-sudo apt install ./target/release/flotilla_0.1.0_amd64.deb</code></pre></div>
-    <p>Then open Flotilla from your apps. On Linux, <kbd>Ctrl</kbd> takes the place of <kbd>⌘</kbd> in every shortcut, and there's no menu bar: everything in the Mac's menus is in <strong>Settings</strong> and in search (<kbd>Ctrl</kbd>+<kbd>K</kbd>).</p>
+sudo apt install ./target/release/flotilla_0.1.0_$(dpkg --print-architecture).deb</code></pre></div>
 
     <h2 id="boat-key">Connect boat.dev</h2>
     <p>Flotilla uses a boat.dev API key to start and run VMs. Make one with every permission Flotilla uses:</p>

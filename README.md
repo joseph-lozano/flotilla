@@ -98,12 +98,42 @@ Day and Night themes follow macOS, and everything is a keystroke away: ⌘N for 
 
 **You need**
 
-- A Mac with Xcode, or a Linux desktop (Debian or Ubuntu), and [Rust](https://rustup.rs) to build it.
+- A Mac (macOS 13 or later), or a Linux desktop.
 - A [boat.dev](https://boat.dev) account on a paid plan.
 - For projects: the [GitHub CLI](https://cli.github.com) signed in (`gh auth login`), and boat.dev's GitHub app installed on the repos you add.
 - Optional: the [Claude Code CLI](https://docs.claude.com/en/docs/claude-code) signed in, for thread titles and summaries.
 
-**Build it**
+**Download it**
+
+- **Mac**, Apple silicon or Intel: [Flotilla.dmg](https://github.com/joseph-lozano/flotilla/releases/latest/download/Flotilla.dmg). Open it and drag Flotilla to Applications.
+- **Linux desktop**, Debian or Ubuntu: the package for your machine, then install it:
+
+  ```sh
+  curl -fLO https://github.com/joseph-lozano/flotilla/releases/latest/download/Flotilla-$(dpkg --print-architecture).deb
+  sudo apt install ./Flotilla-$(dpkg --print-architecture).deb
+  ```
+
+  On any other distribution (Fedora, Arch and the rest), the AppImage:
+
+  ```sh
+  curl -fLO https://github.com/joseph-lozano/flotilla/releases/latest/download/Flotilla-$(uname -m).AppImage
+  chmod +x Flotilla-$(uname -m).AppImage && ./Flotilla-$(uname -m).AppImage
+  ```
+- **The `flotilla` command**, for a server on any Linux (then [Run Flotilla on a server](docs/server.md)) or the CLI on a Mac:
+
+  ```sh
+  mkdir -p ~/.local/bin
+  # Linux
+  curl -fL https://github.com/joseph-lozano/flotilla/releases/latest/download/flotilla-cli-linux-$(uname -m).tar.gz |
+    tar -xz --strip-components=1 -C ~/.local/bin flotilla-cli-linux-$(uname -m)/flotilla
+  # Mac
+  curl -fL https://github.com/joseph-lozano/flotilla/releases/latest/download/flotilla-cli-macos-universal.tar.gz |
+    tar -xz --strip-components=1 -C ~/.local/bin flotilla-cli-macos-universal/flotilla
+  ```
+
+Every release, with its notes and `SHA256SUMS`, is on the [Releases page](https://github.com/joseph-lozano/flotilla/releases).
+
+**Or build it** with Xcode (on a Mac) and [Rust](https://rustup.rs):
 
 ```sh
 git clone https://github.com/joseph-lozano/flotilla.git
@@ -117,7 +147,7 @@ open target/release/Flotilla.app
 ```sh
 sudo apt install build-essential cmake pkg-config libfontconfig-dev libxkbcommon-x11-dev dpkg-dev imagemagick
 script/bundle-linux
-sudo apt install ./target/release/flotilla_0.1.0_amd64.deb
+sudo apt install ./target/release/flotilla_0.1.0_$(dpkg --print-architecture).deb
 ```
 
 Then open Flotilla from your apps.
@@ -136,10 +166,9 @@ Then press ⌘N and tell an agent what to do. [Getting started](https://usefloti
 On your computer. Your boat.dev key is in the Keychain (on Linux, in a file only you can read), and your threads' history is in a local database. If you use a server, both live on it instead, with the files you attach and the skills you add.
 
 **Can I use it from more than one Mac, or my iPhone?**
-Yes. Agents keep working in their VMs with your laptop shut. To keep the rest going too (hand-offs between agents, schedules, setup, notifications, your iPhone), run Flotilla's server on a machine that's always on, like a Linux box, and pair your devices with it:
+Yes. Agents keep working in their VMs with your laptop shut. To keep the rest going too (hand-offs between agents, schedules, setup, notifications, your iPhone), run Flotilla's server on a machine that's always on, like a Linux box, and pair your devices with it. With [the `flotilla` command](#get-started) there:
 
 ```sh
-cargo build --release -p flotilla-cli && cp target/release/flotilla ~/.local/bin/
 flotilla setup --tailscale-serve
 flotilla service install
 ```

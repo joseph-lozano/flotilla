@@ -16,7 +16,7 @@
 # --appimage, patchelf and squashfs-tools too.
 #
 #   script/bundle-linux [--dev | --appimage] [artwork.png]
-#   sudo apt install ./target/release/flotilla_0.1.0_amd64.deb
+#   sudo apt install ./target/release/flotilla_0.1.0_$(dpkg --print-architecture).deb
 set -euo pipefail
 root=$(cd "$(dirname "$0")/.." && pwd)
 appimage=0

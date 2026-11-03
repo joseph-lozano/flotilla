@@ -45,7 +45,15 @@ When you're done, tell me the server's address (doctor's Tailscale line says it)
 
 ## Install
 
-Build the `flotilla` command and put it somewhere lasting:
+Download the `flotilla` command into `~/.local/bin`. It's linked statically, so it runs on any Linux:
+
+```
+mkdir -p ~/.local/bin
+curl -fL https://github.com/joseph-lozano/flotilla/releases/latest/download/flotilla-cli-linux-$(uname -m).tar.gz |
+  tar -xz --strip-components=1 -C ~/.local/bin flotilla-cli-linux-$(uname -m)/flotilla
+```
+
+Or build it from source, and put it somewhere lasting:
 
 ```
 git clone https://github.com/joseph-lozano/flotilla.git

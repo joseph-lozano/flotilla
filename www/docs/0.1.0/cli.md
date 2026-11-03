@@ -4,7 +4,19 @@ The `flotilla` command runs the server, sets it up and pairs devices. It also st
 
 ## Get it
 
-Build it from the repo, and put it on your `PATH`:
+Download it into `~/.local/bin`, and check that's on your `PATH`:
+
+```
+mkdir -p ~/.local/bin
+# Linux
+curl -fL https://github.com/joseph-lozano/flotilla/releases/latest/download/flotilla-cli-linux-$(uname -m).tar.gz |
+  tar -xz --strip-components=1 -C ~/.local/bin flotilla-cli-linux-$(uname -m)/flotilla
+# Mac
+curl -fL https://github.com/joseph-lozano/flotilla/releases/latest/download/flotilla-cli-macos-universal.tar.gz |
+  tar -xz --strip-components=1 -C ~/.local/bin flotilla-cli-macos-universal/flotilla
+```
+
+Or build it from the repo:
 
 ```
 cargo build --release -p flotilla-cli

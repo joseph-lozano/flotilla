@@ -113,7 +113,15 @@
     <p class="lede">The <code>flotilla</code> command runs the server, sets it up and pairs devices. It also starts, follows and manages threads from a terminal. This page lists the common commands; <code>flotilla --help</code> and <code>flotilla &lt;command&gt; --help</code> have every option.</p>
 
     <h2 id="install">Get it</h2>
-    <p>Build it from the repo, and put it on your <code>PATH</code>:</p>
+    <p>Download it into <code>~/.local/bin</code>, and check that's on your <code>PATH</code>:</p>
+    <div class="cmd"><pre><code>mkdir -p ~/.local/bin
+# Linux
+curl -fL https://github.com/joseph-lozano/flotilla/releases/latest/download/flotilla-cli-linux-$(uname -m).tar.gz |
+  tar -xz --strip-components=1 -C ~/.local/bin flotilla-cli-linux-$(uname -m)/flotilla
+# Mac
+curl -fL https://github.com/joseph-lozano/flotilla/releases/latest/download/flotilla-cli-macos-universal.tar.gz |
+  tar -xz --strip-components=1 -C ~/.local/bin flotilla-cli-macos-universal/flotilla</code></pre></div>
+    <p>Or build it from the repo:</p>
     <div class="cmd"><pre><code>cargo build --release -p flotilla-cli
 cp target/release/flotilla ~/.local/bin/</code></pre></div>
     <p>It works with the Flotilla on the same machine: through the server or the app when one is running, or on its own when neither is. With <code>--server &lt;address&gt;</code>, the thread commands go to another server instead, as an <a href="agent-api.html">agent device</a>.</p>
