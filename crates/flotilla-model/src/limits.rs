@@ -147,6 +147,107 @@ pub fn reached<'a>(
         .map(|w| (l, w))
 }
 
+/// Where a window is heading if it keeps being used at the rate it has been.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Pace {
+    /// Used up at `at_ms`, before the window resets.
+    RunsOut { at_ms: i64 },
+    /// About this share used (0 to 100) when it resets.
+    Ends { percent: f64 },
+}
+
+/// What a [`Pace`]'s rate is taken over.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PaceFrom {
+    /// The last day: from the window's reading a day or more back (`LimitWindow::earlier`),
+    /// once the window has run a day.
+    LastDay,
+    /// All the window has run since it reset.
+    Reset,
+}
+
+const DAY_MS: i64 = 86_400_000;
+/// Two paces whose window would be used up within this long of each other say the same
+/// thing: only the sooner is shown.
+pub const PACES_APART_MS: i64 = 12 * 3_600_000;
+
+/// Where `w`, read at `read_ms`, is heading by `now_ms`, at each pace there's one for: the
+/// last day's (once it has run a day, with a reading kept from a day back) and the one since
+/// it reset (once it has run a 28th: 6 hours of a week). When the two would use it up
+/// within [`PACES_APART_MS`] of each other (going on past the reset), only the sooner is
+/// given; else both, the last day's first. None once it's used up or not used yet, or
+/// without its reset.
+pub fn paces(w: &LimitWindow, read_ms: i64, now_ms: i64) -> Vec<(Pace, PaceFrom)> {
+    let day = pace_from(w, PaceFrom::LastDay, read_ms, now_ms);
+    let reset = pace_from(w, PaceFrom::Reset, read_ms, now_ms);
+    match (day, reset) {
+        (Some((d, d_out)), Some((r, r_out))) => {
+            let close = d_out
+                .zip(r_out)
+                .is_some_and(|(a, b)| (a - b).abs() < PACES_APART_MS);
+            if !close {
+                vec![(d, PaceFrom::LastDay), (r, PaceFrom::Reset)]
+            } else if d_out <= r_out {
+                vec![(d, PaceFrom::LastDay)]
+            } else {
+                vec![(r, PaceFrom::Reset)]
+            }
+        }
+        (Some((d, _)), None) => vec![(d, PaceFrom::LastDay)],
+        (None, Some((r, _))) => vec![(r, PaceFrom::Reset)],
+        (None, None) => vec![],
+    }
+}
+
+/// `w`'s pace over `from`, and when at that rate it would be used up (past its reset too;
+/// None if it isn't being used).
+fn pace_from(
+    w: &LimitWindow,
+    from: PaceFrom,
+    read_ms: i64,
+    now_ms: i64,
+) -> Option<(Pace, Option<i64>)> {
+    if w.reached() || w.used == 0 {
+        return None;
+    }
+    let reset = resets_ms(w)?;
+    if reset <= now_ms {
+        return None;
+    }
+    let len = w.minutes.filter(|m| *m > 0).map(|m| i64::from(m) * 60_000);
+    let start = len.map(|l| reset - l);
+    let (from_used, from_at) = match from {
+        PaceFrom::LastDay => {
+            let e = w.earlier?;
+            let ran_a_day = start.is_none_or(|s| read_ms - s >= DAY_MS && e.at_ms >= s);
+            if !ran_a_day || e.at_ms >= read_ms {
+                return None;
+            }
+            (e.used, e.at_ms)
+        }
+        PaceFrom::Reset => {
+            let (len, start) = (len?, start?);
+            if read_ms - start < len / 28 {
+                return None;
+            }
+            (0, start)
+        }
+    };
+    // Percent per ms.
+    let rate = f64::from(w.used.saturating_sub(from_used)) / (read_ms - from_at) as f64;
+    let used = f64::from(w.used);
+    let out = (rate > 0.).then(|| read_ms + ((100. - used) / rate) as i64);
+    let pace = match out {
+        Some(at) if at < reset => Pace::RunsOut {
+            at_ms: at.max(now_ms),
+        },
+        _ => Pace::Ends {
+            percent: used + rate * (reset - read_ms) as f64,
+        },
+    };
+    Some((pace, out))
+}
+
 /// How long until `at_ms`: "4d 6h", "2h 13m", "12m", "under a minute".
 pub fn until(at_ms: i64, now_ms: i64) -> String {
     let mins = (at_ms - now_ms).max(0) / 60_000;
@@ -175,6 +276,7 @@ mod tests {
             resets_at: resets.map(Into::into),
             minutes: Some(10080),
             scope: None,
+            earlier: None,
         }
     }
 
@@ -256,6 +358,102 @@ mod tests {
             reached(std::slice::from_ref(&l), &c, now).is_none(),
             "a full 5-hour window isn't \"limit reached\""
         );
+    }
+
+    /// Each pace carries its rate on to the reset: the last day's (from a day into the
+    /// window) and the one since the reset, both unless they'd run out within 12 hours of
+    /// each other, then the sooner alone.
+    #[test]
+    fn paces_carry_each_rate_on_to_the_reset() {
+        let now = crate::util::iso_to_ms("2026-11-03T12:00:00Z").unwrap();
+        let (hour, day) = (3_600_000, 86_400_000);
+        let at = |ms: i64| {
+            chrono::DateTime::from_timestamp_millis(ms)
+                .unwrap()
+                .to_rfc3339()
+        };
+        let a_day_back = |used| {
+            Some(flotilla_proto::LimitReading {
+                used,
+                at_ms: now - day,
+            })
+        };
+        let froms = |p: &[(Pace, PaceFrom)]| p.iter().map(|(_, f)| *f).collect::<Vec<_>>();
+        let out_in = |p: Pace| match p {
+            Pace::RunsOut { at_ms } => Some((at_ms - now) / hour),
+            Pace::Ends { .. } => None,
+        };
+        // 2 days in at 73%, with no reading from a day back: 36.5% a day since the reset, so
+        // out in about 17 hours.
+        let fast = w(73, Some(&at(now + 5 * day)));
+        let p = paces(&fast, now, now);
+        assert_eq!(froms(&p), [PaceFrom::Reset]);
+        assert_eq!(out_in(p[0].0), Some(17));
+        // 32% of it in the last day: out in about 20 hours, within 12 of 17: the sooner alone.
+        let close = LimitWindow {
+            earlier: a_day_back(41),
+            ..fast.clone()
+        };
+        let p = paces(&close, now, now);
+        assert_eq!(froms(&p), [PaceFrom::Reset]);
+        assert_eq!(out_in(p[0].0), Some(17));
+        // 60% in the last day: out in about 11 hours, the sooner now.
+        let busy = LimitWindow {
+            earlier: a_day_back(13),
+            ..fast.clone()
+        };
+        assert_eq!(froms(&paces(&busy, now, now)), [PaceFrom::LastDay]);
+        // 3% in the last day: ending near 88%, far from the reset pace's 17 hours: both.
+        let calm = LimitWindow {
+            earlier: a_day_back(70),
+            ..fast.clone()
+        };
+        let p = paces(&calm, now, now);
+        assert_eq!(froms(&p), [PaceFrom::LastDay, PaceFrom::Reset]);
+        let Pace::Ends { percent } = p[0].0 else {
+            panic!("3% a day lasts");
+        };
+        assert_eq!(percent.round(), 88.);
+        // None in the last day: it ends where it is, and is never used up.
+        let idle = LimitWindow {
+            earlier: a_day_back(73),
+            ..fast.clone()
+        };
+        assert_eq!(
+            paces(&idle, now, now)[0],
+            (Pace::Ends { percent: 73. }, PaceFrom::LastDay)
+        );
+        // Read an hour ago: the projection runs from the reading, not from now.
+        let p = paces(&busy, now - hour, now);
+        assert_eq!(out_in(p[0].0), Some(9));
+        // Under a day since the reset: no last day's pace, whatever was kept.
+        let young = LimitWindow {
+            earlier: Some(flotilla_proto::LimitReading {
+                used: 1,
+                at_ms: now - day,
+            }),
+            ..w(30, Some(&at(now + 6 * day + hour)))
+        };
+        assert_eq!(froms(&paces(&young, now, now)), [PaceFrom::Reset]);
+        // Late in a slow week: 13% in 5 days 20 hours, about 16% by its reset.
+        let slow = w(13, Some(&at(now + day + 4 * hour)));
+        let p = paces(&slow, now, now);
+        let Pace::Ends { percent } = p[0].0 else {
+            panic!("13% in most of a week lasts");
+        };
+        assert_eq!(percent.round(), 16.);
+        // Too soon, used up, unused, or no reset: nothing to say.
+        assert!(paces(&w(40, Some(&at(now + 7 * day - hour))), now, now).is_empty());
+        assert!(paces(&w(100, Some(&at(now + day))), now, now).is_empty());
+        assert!(paces(&w(0, Some(&at(now + day))), now, now).is_empty());
+        assert!(paces(&w(50, None), now, now).is_empty());
+        // No length: only the last day's pace can say.
+        let untold = |w: &LimitWindow| LimitWindow {
+            minutes: None,
+            ..w.clone()
+        };
+        assert!(paces(&untold(&fast), now, now).is_empty());
+        assert_eq!(froms(&paces(&untold(&busy), now, now)), [PaceFrom::LastDay]);
     }
 
     #[test]

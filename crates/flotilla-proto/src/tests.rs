@@ -888,6 +888,7 @@ pub(crate) fn sample_views() -> Vec<View> {
                     resets_at: Some(s("2026-11-01T15:00:00Z")),
                     minutes: Some(10080),
                     scope: None,
+                    earlier: None,
                 }],
                 read_ms: 6,
             }],

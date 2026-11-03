@@ -18,7 +18,7 @@ use crate::lineage::Lineage;
 use crate::store::Store;
 use crate::util::{ellipsize, iso_to_ms};
 use chrono::{SecondsFormat, TimeZone, Utc};
-use flotilla_proto::{AccountLimits, ContextUse, LimitWindow};
+use flotilla_proto::{AccountLimits, ContextUse, LimitReading, LimitWindow};
 use serde_json::Value;
 
 const SESSION: &str = include_str!("session.sh");
@@ -296,6 +296,7 @@ pub fn claude_limits(u: &Value, now_ms: i64) -> AccountLimits {
                 resets_at: resets.and_then(rfc3339),
                 minutes: Some(minutes),
                 scope,
+                earlier: None,
             });
         }
     };
@@ -432,6 +433,7 @@ fn window(minutes: Option<u32>, used: &Value, resets: Option<&Value>) -> Option<
         resets_at: resets.and_then(from_epoch),
         minutes: Some(minutes),
         scope: None,
+        earlier: None,
     })
 }
 
@@ -489,11 +491,18 @@ pub fn all_limits(store: &Store) -> Vec<AccountLimits> {
         .into_iter()
         .filter_map(|(_, j)| serde_json::from_str(&j).ok())
         .collect();
+    for l in &mut all {
+        let log = limits_log(store, &l.account);
+        for w in &mut l.windows {
+            w.earlier = earlier(&log, w, l.read_ms);
+        }
+    }
     all.sort_by(|a, b| a.account.cmp(&b.account));
     all
 }
 
-/// Keep an account's limits, unless those kept were read later; whether they changed.
+/// Keep an account's limits, unless those kept were read later; whether they changed. Each
+/// is logged too (see [`Logged`]), for the pace over the last day.
 pub fn store_limits(store: &Store, l: &AccountLimits) -> Result<bool> {
     let key = format!("limits:{}", l.account);
     let old: Option<AccountLimits> = store
@@ -506,7 +515,82 @@ pub fn store_limits(store: &Store, l: &AccountLimits) -> Result<bool> {
         return Ok(false);
     }
     store.kv_set(&key, &serde_json::to_string(l)?)?;
+    log_limits(store, l)?;
     Ok(true)
+}
+
+/// How long one window's pace looks back: the last day.
+pub const PACE_SPAN_MS: i64 = 86_400_000;
+/// Readings logged at most this often; the rest in between are let go.
+const LOG_EVERY_MS: i64 = 30 * 60_000;
+/// Readings kept this long: a week's window and a day over.
+const LOG_KEEP_MS: i64 = 8 * 86_400_000;
+/// Two readings are of the same window if their resets are this close (a service may round).
+const SAME_RESET_MS: i64 = 3_600_000;
+
+/// An account's limits as read at a moment, as logged: each window's id, use and reset (ms).
+#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+struct Logged {
+    at: i64,
+    windows: Vec<(String, u8, Option<i64>)>,
+}
+
+fn log_key(account: &str) -> String {
+    format!("limits-log:{account}")
+}
+
+fn limits_log(store: &Store, account: &str) -> Vec<Logged> {
+    store
+        .kv_get(&log_key(account))
+        .ok()
+        .flatten()
+        .and_then(|j| serde_json::from_str(&j).ok())
+        .unwrap_or_default()
+}
+
+/// Log `l` if the latest logged is [`LOG_EVERY_MS`] older, letting go of what's past
+/// [`LOG_KEEP_MS`].
+fn log_limits(store: &Store, l: &AccountLimits) -> Result<()> {
+    let mut log = limits_log(store, &l.account);
+    if log
+        .last()
+        .is_some_and(|last| l.read_ms - last.at < LOG_EVERY_MS)
+    {
+        return Ok(());
+    }
+    log.retain(|e| e.at > l.read_ms - LOG_KEEP_MS);
+    log.push(Logged {
+        at: l.read_ms,
+        windows: l
+            .windows
+            .iter()
+            .map(|w| {
+                let resets = w.resets_at.as_deref().and_then(iso_to_ms);
+                (w.id.clone(), w.used, resets)
+            })
+            .collect(),
+    });
+    store.kv_set(&log_key(&l.account), &serde_json::to_string(&log)?)
+}
+
+/// `w`'s latest logged reading from [`PACE_SPAN_MS`] or more before `read_ms`, of this same
+/// window (one reset about when it does: not the window before).
+fn earlier(log: &[Logged], w: &LimitWindow, read_ms: i64) -> Option<LimitReading> {
+    let resets = w.resets_at.as_deref().and_then(iso_to_ms)?;
+    log.iter()
+        .rev()
+        .filter(|e| e.at <= read_ms - PACE_SPAN_MS)
+        .find_map(|e| {
+            e.windows
+                .iter()
+                .find(|(id, _, r)| {
+                    id == &w.id && r.is_some_and(|r| (r - resets).abs() < SAME_RESET_MS)
+                })
+                .map(|(_, used, _)| LimitReading {
+                    used: *used,
+                    at_ms: e.at,
+                })
+        })
 }
 
 #[cfg(test)]
@@ -605,7 +689,8 @@ mod tests {
                 used: 10,
                 resets_at: Some("2026-11-04T19:09:31Z".into()),
                 minutes: Some(10080),
-                scope: None
+                scope: None,
+                earlier: None,
             }]
         );
 
@@ -758,6 +843,62 @@ mod tests {
         assert_eq!(known_window(&store, "claude-code", "m"), Some(200_000));
         store.delete_thread("t1").unwrap();
         assert_eq!(stored_context(&store, "t1"), None);
+    }
+
+    /// Each account's readings are logged half-hourly, and each window it's read with comes
+    /// with its own reading from a day or more before: the latest such, of this window alone.
+    #[test]
+    fn limits_come_with_a_reading_from_a_day_before() {
+        let store = Store::open_in_memory().unwrap();
+        let (min, hour) = (60_000, 3_600_000);
+        let t0 = 1_793_540_000_000;
+        let l = |used, read_ms, resets: i64| AccountLimits {
+            account: "claude".into(),
+            windows: vec![LimitWindow {
+                id: "seven_day".into(),
+                used,
+                resets_at: Some(Utc.timestamp_millis_opt(resets).unwrap().to_rfc3339()),
+                minutes: Some(10080),
+                ..Default::default()
+            }],
+            read_ms,
+            plan: None,
+        };
+        let next = t0 + 100 * hour;
+        // The window before: never this one's earlier reading.
+        store_limits(&store, &l(90, t0, t0 + hour)).unwrap();
+        store_limits(&store, &l(10, t0 + 2 * hour, next)).unwrap();
+        // Ten minutes on: not logged.
+        store_limits(&store, &l(12, t0 + 2 * hour + 10 * min, next)).unwrap();
+        store_limits(&store, &l(20, t0 + 3 * hour, next)).unwrap();
+        assert_eq!(limits_log(&store, "claude").len(), 3);
+        let earlier_at = |read_ms| {
+            store_limits(&store, &l(50, read_ms, next)).unwrap();
+            all_limits(&store)[0].windows[0].earlier
+        };
+        assert_eq!(earlier_at(t0 + 20 * hour), None, "none a day back yet");
+        assert_eq!(
+            earlier_at(t0 + 26 * hour + 30 * min),
+            Some(LimitReading {
+                used: 10,
+                at_ms: t0 + 2 * hour
+            })
+        );
+        assert_eq!(
+            earlier_at(t0 + 27 * hour + 30 * min),
+            Some(LimitReading {
+                used: 20,
+                at_ms: t0 + 3 * hour
+            }),
+            "the latest a day back"
+        );
+        // A week on, what's past 8 days is let go.
+        store_limits(&store, &l(60, t0 + 9 * 24 * hour, next)).unwrap();
+        assert!(
+            limits_log(&store, "claude")
+                .iter()
+                .all(|e| e.at > t0 + 24 * hour)
+        );
     }
 
     /// A VM's home with a harness's records, and stand-ins for the commands that would ask

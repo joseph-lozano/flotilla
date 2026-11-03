@@ -1961,6 +1961,69 @@ impl FlotillaApp {
                 self.push_sizes(cx);
                 cx.notify();
             }
+            // The agent accounts' weekly limits, as they might read: ChatGPT's late in its
+            // week and well under (paced since its reset, with no reading from a day back);
+            // Claude's two days in: its weekly one as hard in the last day as before (the two
+            // paces close: the sooner alone), its Fable one eased off (both shown).
+            "limits" => {
+                let now = flotilla_model::util::now_ms();
+                let (hour, day) = (3_600_000, 86_400_000);
+                let at = |ms: i64| {
+                    chrono::DateTime::from_timestamp_millis(ms)
+                        .unwrap_or_default()
+                        .to_rfc3339()
+                };
+                let week =
+                    |id: &str,
+                     label: &str,
+                     used: u8,
+                     resets: i64,
+                     scope: Option<&str>,
+                     day_back: Option<u8>| flotilla_proto::LimitWindow {
+                        id: id.into(),
+                        label: label.into(),
+                        used,
+                        resets_at: Some(at(resets)),
+                        minutes: Some(10080),
+                        scope: scope.map(Into::into),
+                        earlier: day_back.map(|used| flotilla_proto::LimitReading {
+                            used,
+                            at_ms: now - day,
+                        }),
+                    };
+                self.limits = vec![
+                    flotilla_proto::AccountLimits {
+                        account: "chatgpt".into(),
+                        plan: Some("pro".into()),
+                        windows: vec![week(
+                            "primary",
+                            "Weekly",
+                            13,
+                            now + day + 4 * hour,
+                            None,
+                            None,
+                        )],
+                        read_ms: now,
+                    },
+                    flotilla_proto::AccountLimits {
+                        account: "claude".into(),
+                        plan: None,
+                        windows: vec![
+                            week("seven_day", "Weekly", 73, now + 5 * day, None, Some(41)),
+                            week(
+                                "seven_day_fable",
+                                "Weekly · Fable",
+                                55,
+                                now + 5 * day,
+                                Some("Fable"),
+                                Some(50),
+                            ),
+                        ],
+                        read_ms: now,
+                    },
+                ];
+                cx.notify();
+            }
             "usage-open" => {
                 self.usage_open = true;
                 self.usage_tab = crate::meter::UsageTab::Vms;
