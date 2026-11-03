@@ -1,5 +1,9 @@
 # Agents
 
+## Pull request descriptions
+
+When you open a pull request or update its description, follow [`.github/pull_request_template.md`](.github/pull_request_template.md). `gh pr create --body` doesn't apply it, so write the body from it yourself.
+
 ## Pull request checks
 
 Pull requests aren't checked on GitHub. After every push to a pull request's branch, run `script/signoff`: it runs the checks and signs off on each one with [gh-signoff](https://github.com/basecamp/gh-signoff), and the pull request can't merge without them.
