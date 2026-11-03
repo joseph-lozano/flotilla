@@ -29,7 +29,7 @@ pub use github::{
     Suggestions,
 };
 pub use history::{Cut, History, HistoryPage, PageMark};
-pub use limits::{AccountLimits, ContextUse, LimitWindow};
+pub use limits::{AccountLimits, ContextUse, LimitReading, LimitWindow};
 pub use msg::{
     Alert, AlertKind, ClientMsg, Connection, Note, ReqId, ServerMsg, View, ViewKey, through_json,
 };

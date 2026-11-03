@@ -81,6 +81,20 @@ pub struct LimitWindow {
     /// The model it's for alone ("Fable"), when it isn't the whole account's.
     #[serde(default)]
     pub scope: Option<String>,
+    /// This window's latest reading from a day or more before this one, as the server kept it:
+    /// what its pace over the last day is worked out from. None in its first day, or with
+    /// none kept that long ago.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub earlier: Option<LimitReading>,
+}
+
+/// A window's use as read at a moment.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct LimitReading {
+    /// Percent used, 0 to 100.
+    pub used: u8,
+    /// When it was read (ms since the epoch).
+    pub at_ms: i64,
 }
 
 impl LimitWindow {

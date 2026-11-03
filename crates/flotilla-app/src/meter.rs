@@ -259,14 +259,38 @@ pub fn shows_share(app: &FlotillaApp, width: f32) -> bool {
 /// A sidebar this wide shows the readout's share (boat's counts beside it keep what fits).
 pub const ROOMY: f32 = 330.;
 
-/// "Weekly  92%  [meter]", and under it when it resets.
-fn window_row(w: &LimitWindow, now: i64, theme: &Theme) -> Div {
+/// "Weekly  92%  [meter]", under it when it resets, and then where it's heading at the last
+/// day's pace and at the pace since its reset (the sooner alone when they'd run out within
+/// 12 hours of each other; see `lim::paces`): when it would run out (amber, as it needs the
+/// user), or about how much it ends at. `read_ms` is when it was read.
+fn window_row(w: &LimitWindow, read_ms: i64, now: i64, theme: &Theme) -> Div {
     let muted = theme.muted_foreground;
     let tone = lim::limit_tone(w.used);
     let lit = color(theme, tone);
     let resets = lim::resets_ms(w)
         .zip(w.resets_at.as_deref().and_then(|at| fmt::reset_at(at, now)))
         .map(|(ms, at)| format!("Resets {at} · in {}", lim::until(ms, now)));
+    let paces: Vec<(String, Hsla)> = lim::paces(w, read_ms, now)
+        .into_iter()
+        .filter_map(|(p, from)| {
+            let basis = match from {
+                lim::PaceFrom::LastDay => "Last 24h",
+                lim::PaceFrom::Reset => "Since reset",
+            };
+            match p {
+                lim::Pace::RunsOut { at_ms } => fmt::soon_at(at_ms, now).map(|at| {
+                    (
+                        format!("{basis}: runs out {at} · in {}", lim::until(at_ms, now)),
+                        theme.warning,
+                    )
+                }),
+                lim::Pace::Ends { percent } => Some((
+                    format!("{basis}: about {} used by reset", lim::percent(percent)),
+                    muted,
+                )),
+            }
+        })
+        .collect();
     v_flex()
         .gap(px(2.))
         .child(
@@ -300,6 +324,50 @@ fn window_row(w: &LimitWindow, now: i64, theme: &Theme) -> Div {
                 .text_color(if w.reached() { theme.danger } else { muted })
                 .child(r)
         }))
+        .children(
+            paces
+                .into_iter()
+                .map(|(text, ink)| div().text_color(ink).child(text)),
+        )
+}
+
+/// One account's limits, set apart from the next: its logo, name and plan over its windows,
+/// in a bordered panel of its own.
+fn account_panel(l: &AccountLimits, now: i64, theme: &Theme) -> Div {
+    let logo = lim::logo_of(&l.account)
+        .and_then(|p| crate::assets::provider_logo(p, theme.mode.is_dark()));
+    v_flex()
+        .gap_2()
+        .p_2()
+        .rounded(px(6.))
+        .border_1()
+        .border_color(theme.border)
+        .child(
+            h_flex()
+                .gap_2()
+                .child(match logo {
+                    Some(path) => img(path).size(px(14.)).flex_none().into_any_element(),
+                    None => Icon::new(IconName::Gauge)
+                        .xsmall()
+                        .text_color(theme.muted_foreground)
+                        .into_any_element(),
+                })
+                .child(div().flex_1().font_semibold().child(l.name().to_string()))
+                .children(l.plan.as_deref().map(|plan| {
+                    div()
+                        .flex_none()
+                        .px(px(6.))
+                        .rounded(px(4.))
+                        .bg(theme.muted)
+                        .text_color(theme.muted_foreground)
+                        .child(plan_name(plan))
+                })),
+        )
+        .children(
+            lim::windows(l, now)
+                .into_iter()
+                .map(|w| window_row(w, l.read_ms, now, theme)),
+        )
 }
 
 /// A plan as its service names it ("pro" → "Pro").
@@ -433,20 +501,7 @@ pub fn agents_body(
             v_flex()
                 .gap_2()
                 .child(div().font_semibold().child("Limits"))
-                .children(accounts.iter().map(|l| {
-                    let name = match &l.plan {
-                        Some(plan) => format!("{} · {}", l.name(), plan_name(plan)),
-                        None => l.name().to_string(),
-                    };
-                    v_flex()
-                        .gap(px(6.))
-                        .child(div().text_color(muted).child(name))
-                        .children(
-                            lim::windows(l, now)
-                                .into_iter()
-                                .map(|w| window_row(w, now, &theme)),
-                        )
-                })),
+                .children(accounts.iter().map(|l| account_panel(l, now, &theme))),
         );
     }
     if all.any() {

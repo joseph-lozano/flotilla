@@ -134,10 +134,17 @@ pub fn clock(iso: &str) -> Option<String> {
 /// When a limit resets: its time today or within a day ("3:00 PM"), else its day too
 /// ("Wed 7:09 PM").
 pub fn reset_at(iso: &str, now_ms: i64) -> Option<String> {
-    let t = DateTime::parse_from_rfc3339(iso)
-        .ok()?
-        .with_timezone(&Local);
-    let soon = t.timestamp_millis() - now_ms < 86_400_000;
+    soon_at(
+        DateTime::parse_from_rfc3339(iso).ok()?.timestamp_millis(),
+        now_ms,
+    )
+}
+
+/// A moment ahead (ms since the epoch) as [`reset_at`] writes it: "3:00 PM" within a day,
+/// "Wed 7:09 PM" after.
+pub fn soon_at(at_ms: i64, now_ms: i64) -> Option<String> {
+    let t = DateTime::from_timestamp_millis(at_ms)?.with_timezone(&Local);
+    let soon = at_ms - now_ms < 86_400_000;
     Some(
         t.format(if soon { "%-I:%M %p" } else { "%a %-I:%M %p" })
             .to_string(),
