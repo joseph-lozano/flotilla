@@ -1,7 +1,7 @@
 > [!WARNING]
-> **Archived.** This is the original Flotilla, a native app built with GPUI. It is no longer developed or supported, and its install links may no longer work.
+> **Archived.** This is the original Flotilla, a native app built with GPUI. It is no longer developed or supported, and its install and documentation links may no longer work.
 >
-> A new Flotilla is on the way: [useflotilla.com](https://useflotilla.com). The documentation that was on the website is now in [`docs/site`](docs/site/main/index.md).
+> A new Flotilla is on the way: [useflotilla.com](https://useflotilla.com).
 
 <p align="center"><img src="docs/images/icon.png" width="96" alt=""></p>
 
@@ -13,7 +13,7 @@
 
 <p align="center"><a href="docs/flotilla-demo.mp4"><img src="docs/images/flotilla.gif" width="820" alt="Flotilla: four coding agents at work, each in its own cloud VM, then a pull request merged with a press and hold"></a></p>
 
-<p align="center"><a href="docs/flotilla-demo.mp4"><strong>▶ Watch the two-minute video</strong></a> · <a href="docs/site/main/index.md"><strong>Read the docs</strong></a></p>
+<p align="center"><a href="docs/flotilla-demo.mp4"><strong>▶ Watch the two-minute video</strong></a> · <a href="https://useflotilla.com/docs/"><strong>Read the docs</strong></a></p>
 
 ## Why Flotilla
 
@@ -79,7 +79,7 @@ services:
     portal: true
 ```
 
-Services appear in the **Preview** menu with their state, output and Restart, and any port can be made public for an hour, a day, a week or until you stop it. A repo set up for Amp's `.amp/services.yaml` works as it is. [Projects](docs/site/main/projects.md#agents-folder) and [Previews](docs/site/main/previews.md) in the docs have every field and variable.
+Services appear in the **Preview** menu with their state, output and Restart, and any port can be made public for an hour, a day, a week or until you stop it. A repo set up for Amp's `.amp/services.yaml` works as it is. [Projects](https://useflotilla.com/docs/main/projects.html#agents-folder) and [Previews](https://useflotilla.com/docs/main/previews.html) in the docs have every field and variable.
 
 <p align="center"><img src="docs/images/services.png" width="720" alt="Services in the Preview menu"></p>
 
@@ -91,11 +91,11 @@ Claude Code, OpenClaw, Hermes Agent and other assistants can start threads, foll
 claude mcp add flotilla -- flotilla mcp
 ```
 
-Assistants in other clouds (Grok Bot, grok.com, Muse) use remote MCP, which is off unless you turn it on. [The agent API](docs/site/main/agent-api.md) in the docs has the setup for each.
+Assistants in other clouds (Grok Bot, grok.com, Muse) use remote MCP, which is off unless you turn it on. [The agent API](https://useflotilla.com/docs/main/agent-api.html) in the docs has the setup for each.
 
 ### Made for the Mac
 
-Day and Night themes follow macOS, and everything is a keystroke away: ⌘N for a new thread, ⌘K to search threads and what was said in them, ⇧⌘S to archive and open the next. On Linux, Ctrl takes ⌘'s place. [Keyboard shortcuts](docs/site/main/shortcuts.md) has the full list.
+Day and Night themes follow macOS, and everything is a keystroke away: ⌘N for a new thread, ⌘K to search threads and what was said in them, ⇧⌘S to archive and open the next. On Linux, Ctrl takes ⌘'s place. [Keyboard shortcuts](https://useflotilla.com/docs/main/shortcuts.html) has the full list.
 
 <p align="center"><img src="docs/images/night.png" width="720" alt="Flotilla at night"></p>
 
@@ -163,7 +163,7 @@ Then open Flotilla from your apps.
 boat api-key create Flotilla --ttl 365d --actions sandbox.create,sandbox.read,sandbox.update,sandbox.stop,sandbox.resume,sandbox.fork,sandbox.delete-own,agent.prompt,exec,host,snapshot.read,snapshot.write,environment.read,environment.write,account.read
 ```
 
-Then press ⌘N and tell an agent what to do. [Getting started](docs/site/main/getting-started.md) in the docs walks through it.
+Then press ⌘N and tell an agent what to do. [Getting started](https://useflotilla.com/docs/main/getting-started.html) in the docs walks through it.
 
 ## FAQ
 
@@ -178,7 +178,7 @@ flotilla setup --tailscale-serve
 flotilla service install
 ```
 
-[Run a server](docs/site/main/server.md) covers pairing, devices, Tailscale, Caddy, Docker and moving your Mac's threads over.
+[Run a server](https://useflotilla.com/docs/main/server.html) covers pairing, devices, Tailscale, Caddy, Docker and moving your Mac's threads over.
 
 **What does it cost?**
 Flotilla itself costs nothing. boat.dev bills VM time, and your model providers bill tokens, as they would anyway. Idle VMs stop on their own, so a quiet thread costs nothing.
