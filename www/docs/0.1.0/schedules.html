@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scheduled prompts · Flotilla docs</title>
+<meta name="description" content="Send a prompt later, once or at most once a day: daily, on weekdays, weekly or on a cron expression, to a thread or a new thread each run.">
+<link rel="canonical" href="https://useflotilla.com/docs/0.1.0/schedules.html">
+<link rel="alternate" type="text/markdown" href="schedules.md">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FCFAFD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1322" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Flotilla">
+<meta property="og:title" content="Scheduled prompts · Flotilla docs">
+<meta property="og:description" content="Send a prompt later, once or at most once a day: daily, on weekdays, weekly or on a cron expression, to a thread or a new thread each run.">
+<meta property="og:image" content="https://useflotilla.com/og.png">
+<link rel="stylesheet" href="docs.css">
+<script src="docs.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="sail-shape" d="M2 0h1v1h1v1h1v1h1v1h1v1h1v1H2z"/>
+    <path id="hull-shape" d="M0 7h8v2H0z"/>
+    <g id="mark">
+      <g fill="#F37173" transform="translate(0 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#F6BC63" transform="translate(10 0)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#C2A7E2" transform="translate(20 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+    </g>
+  </defs>
+</svg>
+
+<header class="wrap site-header">
+  <a class="brand" href="../../" aria-label="Flotilla, home">
+    <svg viewBox="0 0 28 11" width="42" height="17" shape-rendering="crispEdges" aria-hidden="true"><use href="#mark"/></svg>
+    <span class="word">Flotilla</span>
+  </a>
+  <a class="crumb" href="./">Docs</a>
+  <label class="version">
+    <span class="visually-hidden">Docs version</span>
+    <select id="version" data-current="0.1.0"><option value="0.1.0" selected>0.1.0</option></select>
+  </label>
+  <a class="md-link" href="schedules.md" title="This page as Markdown">Markdown</a>
+  <span class="tag">Alpha</span>
+  <nav class="site-nav" aria-label="Main">
+    <a class="nav-text" href="../../">Home</a>
+    <a class="nav-github" href="https://github.com/joseph-lozano/flotilla">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span class="label">GitHub</span>
+    </a>
+  </nav>
+</header>
+
+<div class="wrap docs">
+  <aside class="sidebar" aria-label="Docs">
+    <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc">Contents<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
+    <div class="toc" id="toc">
+      <div class="search" role="search">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.75"/><path d="M10.5 10.5L14 14"/></svg>
+        <label class="visually-hidden" for="docs-search">Search the docs</label>
+        <input id="docs-search" type="search" placeholder="Search the docs" autocomplete="off" spellcheck="false">
+        <ul class="results" id="search-results" aria-live="polite"></ul>
+      </div>
+      <nav aria-label="Pages">
+      <p class="group">Start here</p>
+      <ul class="pages">
+        <li><a href="./">Overview</a></li>
+        <li><a href="getting-started.html">Getting started</a></li>
+      </ul>
+      <p class="group">Guides</p>
+      <ul class="pages">
+        <li><a href="threads.html">Threads</a></li>
+        <li><a href="projects.html">Projects and pull requests</a></li>
+        <li><a href="previews.html">Previews and services</a></li>
+        <li><a href="agents.html">Agents working together</a></li>
+        <li><a href="questions.html">Questions from agents</a></li>
+        <li><a href="schedules.html" aria-current="page">Scheduled prompts</a>
+          <ul class="sections">
+            <li><a href="#send-later">Send later</a></li>
+            <li><a href="#rules">How runs go</a></li>
+            <li><a href="#list">The Scheduled list</a></li>
+            <li><a href="#where">Where schedules run</a></li>
+            <li><a href="#cli">From the command line</a></li>
+          </ul>
+        </li>
+        <li><a href="server.html">Run a server</a></li>
+        <li><a href="iphone.html">The iPhone app</a></li>
+        <li><a href="agent-api.html">The agent API</a></li>
+      </ul>
+      <p class="group">Reference</p>
+      <ul class="pages">
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="shortcuts.html">Keyboard shortcuts</a></li>
+        <li><a href="cli.html">The CLI</a></li>
+      </ul>
+      <p class="group">Help</p>
+      <ul class="pages">
+        <li><a href="faq.html">FAQ and troubleshooting</a></li>
+      </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="content" class="doc">
+    <p class="version-note" hidden></p>
+    <h1>Scheduled prompts</h1>
+    <p class="lede">Send a prompt later: once, or again at most once a day. A schedule sends to one thread as a follow-up, or starts a new thread each time.</p>
+
+    <h2 id="send-later">Send later</h2>
+    <p>The clock beside the send button opens <strong>Send later</strong>. Where you open it decides where the prompt goes:</p>
+    <ul>
+      <li>In a thread, each run sends a follow-up to that thread.</li>
+      <li>On New thread, each run starts a new thread with the models and project you picked there.</li>
+    </ul>
+    <ol>
+      <li>Type what the agent should do. <strong>To</strong> shows where it goes.</li>
+      <li>Pick <strong>Once</strong> and a date and time, or one of <strong>In 1 hour</strong>, <strong>Tomorrow 09:00</strong> and <strong>Monday 09:00</strong>.</li>
+      <li>Or pick <strong>Repeat</strong>, then <strong>Daily</strong>, <strong>Weekdays</strong>, <strong>Weekly</strong> (choose the days) or <strong>Cron</strong>, and the time.</li>
+      <li>Check the line under it, such as <em>Sends today 17:10</em>, and press <strong>Schedule</strong>.</li>
+    </ol>
+    <figure class="narrow">
+      <picture>
+        <source srcset="img/later-night.webp" media="(prefers-color-scheme: dark)">
+        <img src="img/later-day.webp" width="900" height="576" loading="lazy" decoding="async" alt="The Send later form: a prompt box asking What should the agent do?, To Median function with subtle bug, Once and Repeat, a date and time with shortcuts In 1 hour, Tomorrow 09:00 and Monday 09:00, the line Sends today 17:10, and Cancel and Schedule buttons.">
+      </picture>
+      <figcaption>Send later, from a thread: each run is a follow-up to it.</figcaption>
+    </figure>
+    <p>A scheduled prompt can't carry files.</p>
+
+    <h3 id="cron">Cron</h3>
+    <p>A cron expression has five fields: minute, hour, day of the month, month and day of the week. It must name one minute and one hour, so it runs at most once a day. For example, <code>0 9 * * 1-5</code> is 09:00 on weekdays, and <code>30 18 1 * *</code> is 18:30 on the first of each month.</p>
+
+    <h2 id="rules">How runs go</h2>
+    <p>Flotilla runs each schedule by these rules:</p>
+    <ul>
+      <li>Runs are at least a day apart.</li>
+      <li>Times are in the time zone of the device that set the schedule, and stay on the clock across daylight saving changes. A device in another zone sees <em>times in</em> and the zone.</li>
+      <li>If a turn is running in the thread, the run waits until it ends.</li>
+      <li>A run never wakes an archived thread or one whose VM is gone. It pauses the schedule instead, and says why.</li>
+      <li>A run that needs a VM start (a new thread, or waking a stopped VM) goes only if boat.dev has at least 5 starts left this hour. Otherwise it doesn't run, and a repeating schedule waits for its next time.</li>
+      <li>If the server was off at a repeating schedule's time, that run is skipped and noted as missed. A one-off runs late instead.</li>
+    </ul>
+    <p>When a run doesn't go, you get a <em>Didn't run</em> notification with a button that opens the list.</p>
+
+    <h2 id="list">The Scheduled list</h2>
+    <p>Open it from the clock at the bottom of the sidebar, which shows once you have a schedule, or by searching for <strong>Scheduled prompts</strong> with <kbd>⌘</kbd><kbd>K</kbd>. In a thread with a schedule, a line above the message box shows the next run and opens the list too.</p>
+    <p>Each schedule shows the start of its prompt, when it runs next, where it goes, and how its last run went. For each one:</p>
+    <ul>
+      <li>the switch pauses it, or resumes it from now;</li>
+      <li><strong>Run now</strong> sends it at once and leaves its next run as it is;</li>
+      <li><strong>Edit</strong> opens the form again;</li>
+      <li><strong>Delete</strong> deletes it at once, without asking.</li>
+    </ul>
+    <p>One-off schedules leave the list 7 days after they run.</p>
+
+    <h2 id="where">Where schedules run</h2>
+    <p>Schedules run on Flotilla's server. On <strong>This Mac</strong>, that's the app, so they run only while Flotilla is open, and the list says so. To have them run with your laptop shut, <a href="server.html">run a server</a>.</p>
+
+    <h2 id="cli">From the command line</h2>
+    <p>On the machine that runs the server, <code>flotilla schedule</code> does the same:</p>
+    <div class="cmd"><pre><code>flotilla schedule add --thread 7f3e --daily 09:00 "Check the overnight CI runs"
+flotilla schedule add --provider claude-code --model claude-haiku-5-5 --weekdays 08:30 "Triage new bugs"
+flotilla schedule add --thread 7f3e --in 2h "Merge it if the checks pass"
+flotilla schedule list
+flotilla schedule pause 2a87
+flotilla schedule run 2a87
+flotilla schedule rm 2a87</code></pre></div>
+    <p>Times take <code>--at HH:MM</code> or <code>--at "YYYY-MM-DD HH:MM"</code>, <code>--in 30m</code>, <code>--daily</code>, <code>--weekdays</code>, <code>--weekly mon,wed@18:00</code> or <code>--cron</code>, and <code>--zone</code> for another time zone. Ids can be shortened to their first few characters. Every command but <code>list</code> needs Flotilla running there: the server, or the app. New threads scheduled this way have no project.</p>
+
+    <nav class="pager" aria-label="Previous and next">
+    <a class="prev" href="questions.html"><span>Previous</span>Questions from agents</a>
+    <a class="next" href="server.html"><span>Next</span>Run a server</a>
+    </nav>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Joseph Lozano</span>
+    <nav aria-label="Footer">
+      <a href="../../">Home</a>
+      <a href="./">Docs</a>
+      <a href="https://github.com/joseph-lozano/flotilla">GitHub</a>
+      <a href="https://github.com/joseph-lozano/flotilla/blob/main/LICENSE">MIT License</a>
+      <a href="../../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

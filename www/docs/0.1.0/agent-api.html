@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The agent API · Flotilla docs</title>
+<meta name="description" content="Let Claude Code, OpenClaw, Hermes Agent, Grok and Muse start and follow Flotilla threads over MCP, as an agent device that can&#x27;t delete, merge or change settings.">
+<link rel="canonical" href="https://useflotilla.com/docs/0.1.0/agent-api.html">
+<link rel="alternate" type="text/markdown" href="agent-api.md">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FCFAFD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1322" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Flotilla">
+<meta property="og:title" content="The agent API · Flotilla docs">
+<meta property="og:description" content="Let Claude Code, OpenClaw, Hermes Agent, Grok and Muse start and follow Flotilla threads over MCP, as an agent device that can&#x27;t delete, merge or change settings.">
+<meta property="og:image" content="https://useflotilla.com/og.png">
+<link rel="stylesheet" href="docs.css">
+<script src="docs.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="sail-shape" d="M2 0h1v1h1v1h1v1h1v1h1v1h1v1H2z"/>
+    <path id="hull-shape" d="M0 7h8v2H0z"/>
+    <g id="mark">
+      <g fill="#F37173" transform="translate(0 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#F6BC63" transform="translate(10 0)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#C2A7E2" transform="translate(20 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+    </g>
+  </defs>
+</svg>
+
+<header class="wrap site-header">
+  <a class="brand" href="../../" aria-label="Flotilla, home">
+    <svg viewBox="0 0 28 11" width="42" height="17" shape-rendering="crispEdges" aria-hidden="true"><use href="#mark"/></svg>
+    <span class="word">Flotilla</span>
+  </a>
+  <a class="crumb" href="./">Docs</a>
+  <label class="version">
+    <span class="visually-hidden">Docs version</span>
+    <select id="version" data-current="0.1.0"><option value="0.1.0" selected>0.1.0</option></select>
+  </label>
+  <a class="md-link" href="agent-api.md" title="This page as Markdown">Markdown</a>
+  <span class="tag">Alpha</span>
+  <nav class="site-nav" aria-label="Main">
+    <a class="nav-text" href="../../">Home</a>
+    <a class="nav-github" href="https://github.com/joseph-lozano/flotilla">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span class="label">GitHub</span>
+    </a>
+  </nav>
+</header>
+
+<div class="wrap docs">
+  <aside class="sidebar" aria-label="Docs">
+    <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc">Contents<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
+    <div class="toc" id="toc">
+      <div class="search" role="search">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.75"/><path d="M10.5 10.5L14 14"/></svg>
+        <label class="visually-hidden" for="docs-search">Search the docs</label>
+        <input id="docs-search" type="search" placeholder="Search the docs" autocomplete="off" spellcheck="false">
+        <ul class="results" id="search-results" aria-live="polite"></ul>
+      </div>
+      <nav aria-label="Pages">
+      <p class="group">Start here</p>
+      <ul class="pages">
+        <li><a href="./">Overview</a></li>
+        <li><a href="getting-started.html">Getting started</a></li>
+      </ul>
+      <p class="group">Guides</p>
+      <ul class="pages">
+        <li><a href="threads.html">Threads</a></li>
+        <li><a href="projects.html">Projects and pull requests</a></li>
+        <li><a href="previews.html">Previews and services</a></li>
+        <li><a href="agents.html">Agents working together</a></li>
+        <li><a href="questions.html">Questions from agents</a></li>
+        <li><a href="schedules.html">Scheduled prompts</a></li>
+        <li><a href="server.html">Run a server</a></li>
+        <li><a href="iphone.html">The iPhone app</a></li>
+        <li><a href="agent-api.html" aria-current="page">The agent API</a>
+          <ul class="sections">
+            <li><a href="#agent-device">What an assistant can do</a></li>
+            <li><a href="#local">On the machine that runs Flotilla</a></li>
+            <li><a href="#other-machine">From another machine</a></li>
+            <li><a href="#tools">The tools</a></li>
+            <li><a href="#remote">Remote MCP, for assistants in other clouds</a></li>
+          </ul>
+        </li>
+      </ul>
+      <p class="group">Reference</p>
+      <ul class="pages">
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="shortcuts.html">Keyboard shortcuts</a></li>
+        <li><a href="cli.html">The CLI</a></li>
+      </ul>
+      <p class="group">Help</p>
+      <ul class="pages">
+        <li><a href="faq.html">FAQ and troubleshooting</a></li>
+      </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="content" class="doc">
+    <p class="version-note" hidden></p>
+    <h1>The agent API</h1>
+    <p class="lede">Other assistants can use Flotilla too. Claude Code, OpenClaw, Hermes Agent and other MCP clients can start threads, follow them, send follow-ups and answer their agents' questions, with <code>flotilla mcp</code>. Assistants in other clouds, such as Grok and Muse, use remote MCP.</p>
+
+    <h2 id="agent-device">What an assistant can do</h2>
+    <p>Each assistant connects as an <strong>agent device</strong>, with less power than your own devices.</p>
+    <div class="table"><table>
+      <thead><tr><th>It can</th><th>It can't</th></tr></thead>
+      <tbody>
+        <tr><td class="wrap-ok">Read and search threads, see projects and models, start threads, send follow-ups and steers, answer agents' questions, interrupt a turn, archive a thread, and open private previews.</td><td class="wrap-ok">Delete threads, merge pull requests, send files, make a port public or private, change settings, keys or projects, or pair and revoke other devices. Its reading a thread doesn't mark it read.</td></tr>
+      </tbody>
+    </table></div>
+    <p>It shows in <strong>Settings → Devices</strong> as an <em>Agent</em>, where <strong>Revoke</strong> signs it out at once.</p>
+
+    <h2 id="local">On the machine that runs Flotilla</h2>
+    <p>Where Flotilla runs, the server or the Mac with the app open, add <code>flotilla mcp</code> to the assistant as it is. For Claude Code:</p>
+    <div class="cmd"><pre><code>claude mcp add flotilla -- flotilla mcp</code></pre></div>
+
+    <h2 id="other-machine">From another machine</h2>
+    <p>Pair the assistant's machine with the server as an agent device first.</p>
+    <ol>
+      <li>On the server, make a code that pairs only an agent device:
+        <div class="cmd"><pre><code>flotilla pair --agent</code></pre></div>
+        Or use <strong>Add device</strong> in <strong>Settings → Devices</strong> on any paired device. Either way, what <code>flotilla connect</code> pairs is an agent device; a code from <code>pair --agent</code> can't pair anything more.</li>
+      <li>Where the assistant runs, with <code>flotilla</code> installed there too:
+        <div class="cmd"><pre><code>flotilla connect https://box.tail1234.ts.net</code></pre></div>
+        It asks for the code. <code>--name</code> sets what Settings calls the device.</li>
+      <li>Add the server to the assistant:
+        <div class="table"><table>
+          <thead><tr><th>Assistant</th><th>Setup</th></tr></thead>
+          <tbody>
+            <tr><td>Claude Code</td><td class="wrap-ok"><code>claude mcp add flotilla -- flotilla mcp --server https://box.tail1234.ts.net</code>, plus <code>--scope user</code> for every project.</td></tr>
+            <tr><td>OpenClaw</td><td class="wrap-ok"><code>openclaw mcp add flotilla --command flotilla --arg mcp --arg --server --arg https://box.tail1234.ts.net</code></td></tr>
+            <tr><td>Hermes Agent</td><td class="wrap-ok">In <code>~/.hermes/config.yaml</code>, under <code>mcp_servers:</code>, add <code>flotilla:</code> with <code>command: "flotilla"</code> and <code>args: ["mcp", "--server", "https://box.tail1234.ts.net"]</code>.</td></tr>
+          </tbody>
+        </table></div>
+      </li>
+    </ol>
+    <p>If the assistant can't find <code>flotilla</code>, use its full path; <code>flotilla connect</code> prints the command with it. <code>flotilla disconnect https://box.tail1234.ts.net</code> signs the device out and forgets its token. The CLI's own thread commands take <code>--server</code> too, as the same agent device.</p>
+
+    <h2 id="tools">The tools</h2>
+    <p>Each assistant gets these twelve tools.</p>
+    <div class="table"><table>
+      <thead><tr><th>Tool</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>list_threads</code></td><td class="wrap-ok">The threads, a line each; with <code>query</code>, the ones whose titles or messages match.</td></tr>
+        <tr><td><code>get_thread</code></td><td class="wrap-ok">A thread's state, model, project, branch, pull request, preview links, and any question it's waiting on.</td></tr>
+        <tr><td><code>read_thread</code></td><td class="wrap-ok">Its messages, newest last, with tool calls folded. <code>before</code> pages back, and <code>seq</code> gives one message whole.</td></tr>
+        <tr><td><code>list_projects</code>, <code>list_models</code></td><td class="wrap-ok">What a thread can start in, and on.</td></tr>
+        <tr><td><code>start_thread</code></td><td class="wrap-ok">A new thread on a model, in a project or a blank VM.</td></tr>
+        <tr><td><code>send_message</code></td><td class="wrap-ok">A follow-up, or a steer while a turn runs.</td></tr>
+        <tr><td><code>wait_for_turn</code></td><td class="wrap-ok">Waits for the turn to end, 45 seconds unless told otherwise and at most 10 minutes, then gives its answer.</td></tr>
+        <tr><td><code>answer_question</code></td><td class="wrap-ok">Answers the questions an agent is waiting on.</td></tr>
+        <tr><td><code>interrupt_turn</code>, <code>archive_thread</code>, <code>open_preview</code></td><td class="wrap-ok">Stops the turn, puts the thread away, or gives a private link to a port in its VM.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="remote">Remote MCP, for assistants in other clouds</h2>
+    <p>Grok Bot, grok.com and Muse run in their own clouds, so they can't run <code>flotilla mcp</code> or reach your tailnet. Remote MCP gives them the same tools, as the same kind of agent device, over HTTPS.</p>
+    <p>It's <strong>off unless you turn it on</strong>, and it runs on a <a href="server.html">server</a>, not on This Mac. When it's on, it's a listener of its own (port 8787 unless you change it) that serves only MCP and its sign-in page, so you publish that port alone and the rest of the server stays private.</p>
+
+    <h3 id="funnel">Turn it on with Tailscale Funnel</h3>
+    <p>For a server on your tailnet:</p>
+    <div class="cmd"><pre><code>flotilla setup --mcp-funnel
+flotilla service restart</code></pre></div>
+    <p>While the server runs, Funnel publishes remote MCP alone at <code>https://box.tail1234.ts.net:8443/mcp</code> (or port 10000 if 8443 is taken). The server itself stays private on 443. Funnel needs:</p>
+    <ul>
+      <li>HTTPS on for your tailnet (<a href="https://login.tailscale.com/admin/dns">DNS settings</a>);</li>
+      <li>the <code>funnel</code> attribute for the machine in your tailnet's policy file:
+        <div class="cmd"><pre><code>"nodeAttrs": [{ "target": ["autogroup:member"], "attr": ["funnel"] }]</code></pre></div></li>
+      <li>on Linux, your user allowed to change Tailscale's settings: <code>sudo tailscale set --operator=$USER</code>.</li>
+    </ul>
+    <p><code>flotilla doctor</code> says whether it's public, and if not, what to change.</p>
+
+    <h3 id="tunnel">Or publish it another way</h3>
+    <p>Behind a Cloudflare Tunnel, exe.dev or any HTTPS proxy, tell Flotilla the public address and point the proxy at port 8787:</p>
+    <div class="cmd"><pre><code>flotilla setup --mcp --mcp-url https://mcp.example.com
+flotilla service restart</code></pre></div>
+    <p>With Cloudflare, use a named tunnel, not a quick tunnel: quick tunnels don't carry the event streams MCP answers with. If the proxy can't reach <code>127.0.0.1</code>, add <code>--mcp-host 0.0.0.0</code>. <code>--mcp-port</code> changes the port, and <code>flotilla setup --no-mcp</code> turns remote MCP off.</p>
+
+    <h3 id="connect-assistant">Connect an assistant</h3>
+    <p>Each assistant gets an agent device of its own. There are two ways in.</p>
+    <p><strong>Sign in from the assistant.</strong> Grok Bot, grok.com and Muse need this. Add the address; the assistant opens Flotilla's sign-in page, which asks for a pairing code. Make one with <strong>Add device</strong> in <strong>Settings → Devices</strong>, or <code>flotilla pair --agent</code> on the server, type it, and press <strong>Allow</strong>.</p>
+    <p><strong>Or give it a token.</strong> For a client that sends a header, such as Muse Code or Claude Code:</p>
+    <div class="cmd"><pre><code>flotilla pair --agent --token --name "Muse Code"</code></pre></div>
+    <p>This prints the token once. The client sends it as <code>Authorization: Bearer &lt;token&gt;</code>.</p>
+    <div class="table"><table>
+      <thead><tr><th>Assistant</th><th>Setup</th></tr></thead>
+      <tbody>
+        <tr><td>Grok Bot</td><td class="wrap-ok">In a chat with your Bot: <em>Add the MCP server https://box.tail1234.ts.net:8443/mcp and call it Flotilla</em>. Press <strong>Authenticate</strong> on the card it shows, then sign in.</td></tr>
+        <tr><td>grok.com</td><td class="wrap-ok"><a href="https://grok.com/connectors">grok.com/connectors</a> → <strong>New Connector</strong> → <strong>Custom</strong>. Paste the address, then sign in.</td></tr>
+        <tr><td>Muse</td><td class="wrap-ok"><strong>Settings → Connectors → Add custom connector</strong>, or tell Muse: <em>Create a custom connector for the MCP server at https://box.tail1234.ts.net:8443/mcp (streamable HTTP, OAuth)</em>. Then sign in.</td></tr>
+        <tr><td>Muse Code</td><td class="wrap-ok">In <code>~/.config/muse/settings.json</code>, under <code>"mcpServers"</code>: <code>"flotilla": {"type": "streamable-http", "url": "https://box.tail1234.ts.net:8443/mcp", "headers": {"Authorization": "Bearer &lt;token&gt;"}, "tool_timeout_sec": 600}</code>. Or leave out <code>headers</code> and run <code>muse mcp login flotilla</code>. Start a new session after.</td></tr>
+        <tr><td>Claude Code</td><td class="wrap-ok"><code>claude mcp add --transport http flotilla https://box.tail1234.ts.net:8443/mcp --header "Authorization: Bearer &lt;token&gt;"</code>. Or leave out <code>--header</code> and sign in from <code>/mcp</code>.</td></tr>
+      </tbody>
+    </table></div>
+    <p>Over remote MCP, <code>wait_for_turn</code> waits at most 100 seconds, under the two minutes Grok Bot gives a call; it says to call again while the thread works.</p>
+
+    <h3 id="exposure">What faces the internet</h3>
+    <p>Remote MCP is the one part of Flotilla you can put on the internet, so it keeps strangers out:</p>
+    <ul>
+      <li>Only agent devices' tokens get in, checked on every request.</li>
+      <li>Wrong tokens, pairing codes, sign-ins and each device's requests are limited for each address, and in all.</li>
+      <li>Requests from web pages are refused.</li>
+      <li>A sign-in that isn't finished within two minutes revokes the device it made.</li>
+    </ul>
+
+    <nav class="pager" aria-label="Previous and next">
+    <a class="prev" href="iphone.html"><span>Previous</span>The iPhone app</a>
+    <a class="next" href="settings.html"><span>Next</span>Settings</a>
+    </nav>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Joseph Lozano</span>
+    <nav aria-label="Footer">
+      <a href="../../">Home</a>
+      <a href="./">Docs</a>
+      <a href="https://github.com/joseph-lozano/flotilla">GitHub</a>
+      <a href="https://github.com/joseph-lozano/flotilla/blob/main/LICENSE">MIT License</a>
+      <a href="../../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

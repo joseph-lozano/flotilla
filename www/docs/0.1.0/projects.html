@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projects and pull requests · Flotilla docs</title>
+<meta name="description" content="Add a GitHub repo as a project, set it up with scripts and the .agents folder, start threads on branches and pull requests, and fix, review and merge from the thread.">
+<link rel="canonical" href="https://useflotilla.com/docs/0.1.0/projects.html">
+<link rel="alternate" type="text/markdown" href="projects.md">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FCFAFD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1322" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Flotilla">
+<meta property="og:title" content="Projects and pull requests · Flotilla docs">
+<meta property="og:description" content="Add a GitHub repo as a project, set it up with scripts and the .agents folder, start threads on branches and pull requests, and fix, review and merge from the thread.">
+<meta property="og:image" content="https://useflotilla.com/og.png">
+<link rel="stylesheet" href="docs.css">
+<script src="docs.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="sail-shape" d="M2 0h1v1h1v1h1v1h1v1h1v1h1v1H2z"/>
+    <path id="hull-shape" d="M0 7h8v2H0z"/>
+    <g id="mark">
+      <g fill="#F37173" transform="translate(0 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#F6BC63" transform="translate(10 0)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+      <g fill="#C2A7E2" transform="translate(20 2)"><use href="#sail-shape"/><use href="#hull-shape"/></g>
+    </g>
+  </defs>
+</svg>
+
+<header class="wrap site-header">
+  <a class="brand" href="../../" aria-label="Flotilla, home">
+    <svg viewBox="0 0 28 11" width="42" height="17" shape-rendering="crispEdges" aria-hidden="true"><use href="#mark"/></svg>
+    <span class="word">Flotilla</span>
+  </a>
+  <a class="crumb" href="./">Docs</a>
+  <label class="version">
+    <span class="visually-hidden">Docs version</span>
+    <select id="version" data-current="0.1.0"><option value="0.1.0" selected>0.1.0</option></select>
+  </label>
+  <a class="md-link" href="projects.md" title="This page as Markdown">Markdown</a>
+  <span class="tag">Alpha</span>
+  <nav class="site-nav" aria-label="Main">
+    <a class="nav-text" href="../../">Home</a>
+    <a class="nav-github" href="https://github.com/joseph-lozano/flotilla">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span class="label">GitHub</span>
+    </a>
+  </nav>
+</header>
+
+<div class="wrap docs">
+  <aside class="sidebar" aria-label="Docs">
+    <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc">Contents<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg></button>
+    <div class="toc" id="toc">
+      <div class="search" role="search">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.75"/><path d="M10.5 10.5L14 14"/></svg>
+        <label class="visually-hidden" for="docs-search">Search the docs</label>
+        <input id="docs-search" type="search" placeholder="Search the docs" autocomplete="off" spellcheck="false">
+        <ul class="results" id="search-results" aria-live="polite"></ul>
+      </div>
+      <nav aria-label="Pages">
+      <p class="group">Start here</p>
+      <ul class="pages">
+        <li><a href="./">Overview</a></li>
+        <li><a href="getting-started.html">Getting started</a></li>
+      </ul>
+      <p class="group">Guides</p>
+      <ul class="pages">
+        <li><a href="threads.html">Threads</a></li>
+        <li><a href="projects.html" aria-current="page">Projects and pull requests</a>
+          <ul class="sections">
+            <li><a href="#add">Add a project</a></li>
+            <li><a href="#setup">Setup</a></li>
+            <li><a href="#agents-folder">The .agents folder</a></li>
+            <li><a href="#branches">Branches</a></li>
+            <li><a href="#pr">The pull request bar</a></li>
+            <li><a href="#archive-on-merge">Archive on merge</a></li>
+          </ul>
+        </li>
+        <li><a href="previews.html">Previews and services</a></li>
+        <li><a href="agents.html">Agents working together</a></li>
+        <li><a href="questions.html">Questions from agents</a></li>
+        <li><a href="schedules.html">Scheduled prompts</a></li>
+        <li><a href="server.html">Run a server</a></li>
+        <li><a href="iphone.html">The iPhone app</a></li>
+        <li><a href="agent-api.html">The agent API</a></li>
+      </ul>
+      <p class="group">Reference</p>
+      <ul class="pages">
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="shortcuts.html">Keyboard shortcuts</a></li>
+        <li><a href="cli.html">The CLI</a></li>
+      </ul>
+      <p class="group">Help</p>
+      <ul class="pages">
+        <li><a href="faq.html">FAQ and troubleshooting</a></li>
+      </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="content" class="doc">
+    <p class="version-note" hidden></p>
+    <h1>Projects and pull requests</h1>
+    <p class="lede">Add a GitHub repo as a project, and every thread in it starts in a fresh VM with the repo already set up, on a branch of its own. When the thread opens a pull request, it shows on the thread, ready to fix or merge.</p>
+
+    <h2 id="add">Add a project</h2>
+    <p>Before you start, sign the GitHub CLI in (<code>gh auth login</code>; version 2.81 or newer), and give boat.dev access to the repo in boat's dashboard, under <strong>Environment → GitHub repositories</strong>.</p>
+    <ol>
+      <li>Open <strong>Settings</strong> and press <strong>Add project</strong> under <strong>Projects</strong>. Or, on New thread, open the project menu and pick <strong>Add a project…</strong></li>
+      <li>Search your repos and pick one. Repos you've added are marked <em>added</em>.</li>
+      <li>Check the <strong>Setup scripts</strong>. Flotilla suggests some from the repo's files, such as <code>pnpm install</code> or <code>cargo build</code>. If the repo has an <code>.agents/setup</code> script, it runs after these, and nothing else is suggested. Edit, remove or add scripts as you need.</li>
+      <li>Press <strong>Add project</strong>.</li>
+    </ol>
+    <p>Flotilla clones the repo into a VM and runs setup once. New threads in the project then start from that copy in seconds.</p>
+    <p>If boat.dev can't see the repo, adding it says so: give boat.dev access, then try again.</p>
+
+    <h2 id="setup">Setup</h2>
+    <p>Setup keeps a ready copy of the project for new threads to start from. It runs:</p>
+    <ul>
+      <li>when you add the project;</li>
+      <li>when the default branch moves (Flotilla checks every minute);</li>
+      <li>when a thread's pull request merges;</li>
+      <li>every 12 days, to keep the copy fresh;</li>
+      <li>when you run it from the project's settings.</li>
+    </ul>
+    <p>It also runs as each thread starts, after the thread's branch is checked out: first the project's scripts, then <code>.agents/setup</code>. So keep them quick when nothing has changed. Mark a script <strong>From scratch only</strong> to run it only when setup starts from a fresh clone, not on updates.</p>
+    <p>A script has 45 minutes, and <code>.agents/setup</code> has 20. If setup fails or times out as a thread starts, the thread starts anyway: its header says where setup failed, with <strong>Show output</strong>.</p>
+
+    <h3 id="setup-fails">When setup fails</h3>
+    <p>When a new commit breaks the project's setup, you get <em>Setup failed</em> with <strong>Fix in a new thread</strong>. It opens New thread on a new branch, with a prompt that says where setup failed and shows the end of its output. Read it, send it, and merging the agent's fix runs setup again. Flotilla doesn't try a failed commit again until something changes.</p>
+
+    <h3 id="project-settings">A project's settings</h3>
+    <p>In <strong>Settings</strong>, under <strong>Projects</strong>, each project shows its state, such as <em>Ready on main@1a2b3c4</em>. Its <strong>Settings</strong> button opens the project:</p>
+    <ul>
+      <li><strong>Run setup again</strong> (<strong>Try again</strong> after a failure), <strong>Rebuild from scratch…</strong> (a fresh clone, then setup), and <strong>View log</strong>.</li>
+      <li><strong>Setup scripts</strong>: edit them, then <strong>Save</strong> or <strong>Save and run setup</strong>.</li>
+      <li><strong>Setup history</strong>: the last 8 runs, what started each, and how it went.</li>
+      <li><strong>Remove project…</strong>: threads already started keep their VMs.</li>
+    </ul>
+
+    <h2 id="agents-folder">The .agents folder</h2>
+    <p>Commit these files to the repo, and Flotilla runs them in every thread's VM. It's the same convention <a href="https://ampcode.com">Amp</a> uses.</p>
+    <div class="table"><table>
+      <thead><tr><th>File</th><th>Runs</th><th>Use it for</th></tr></thead>
+      <tbody>
+        <tr><td><code>.agents/setup</code></td><td class="wrap-ok">In every setup, and as each thread starts, after the project's scripts. Up to 20 minutes.</td><td class="wrap-ok">Installing dependencies and building. Keep it quick when nothing changed.</td></tr>
+        <tr><td><code>.agents/resume</code></td><td class="wrap-ok">When a stopped VM wakes, before your message is sent. Up to 10 seconds; then the message goes anyway.</td><td class="wrap-ok">Signing back in, reconnecting.</td></tr>
+        <tr><td><code>.agents/archive</code></td><td class="wrap-ok">When a thread is archived, or deleted without being archived first, before the VM stops. Up to 2 minutes; the archive goes ahead whatever it does.</td><td class="wrap-ok">Cleaning up outside the VM, like deleting a database branch. A stopped VM wakes to run it, which uses a VM start.</td></tr>
+        <tr><td><code>.agents/services.yml</code></td><td class="wrap-ok">After the first message, and after every wake.</td><td class="wrap-ok">Dev servers and anything else that should keep running. See <a href="previews.html#services">Services</a>.</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li>An executable script runs with its own <code>#!</code> line; otherwise bash runs it.</li>
+      <li>Every script sees <code>FLOTILLA=1</code>. In a thread, scripts also see <code>FLOTILLA_THREAD_ID</code> and <code>FLOTILLA_BRANCH</code>; setup runs for the project's copy don't, so a script can tell the two apart. <code>.agents/setup</code> also sees <code>FLOTILLA_SETUP</code>: <code>fresh</code> on a fresh clone, <code>update</code> otherwise.</li>
+      <li>Each script's output is in the VM at <code>~/.cache/flotilla/logs/</code> (<code>setup.log</code>, <code>resume.log</code>, <code>archive.log</code>), replaced each run.</li>
+    </ul>
+
+    <h2 id="branches">Branches</h2>
+    <p>Each new project thread gets a branch of its own, named from the first words of your prompt, or by the titles model when that's on. Clashes get <code>-2</code>, <code>-3</code> and so on. To put your branches in a folder, such as <code>you/</code>, set <strong>Branch prefix</strong> in Settings under <strong>Projects</strong>; it applies to new branches.</p>
+
+    <h3 id="existing-branch">Start on a branch or pull request</h3>
+    <p>To pick up existing work, choose a project on New thread, then open the branch menu beside it. It lists <strong>New branch</strong>, then the open pull requests, then the branches. Type to search, type <code>#123</code>, or paste a pull request's link.</p>
+    <ul>
+      <li>A branch another thread is on says <em>another thread is on it</em>.</li>
+      <li>Pull requests from forks can't be picked.</li>
+      <li>From a thread, <strong>New thread on this branch</strong> in the thread menu does the same.</li>
+    </ul>
+
+    <h2 id="pr">The pull request bar</h2>
+    <p>When the thread's branch has a pull request, it shows above the message box. To show one Flotilla didn't find, pick <strong>Link a PR…</strong> in the thread menu and give its number or link.</p>
+    <figure>
+      <picture>
+        <source srcset="img/thread-night.webp" media="(prefers-color-scheme: dark)">
+        <img src="img/thread-day.webp" width="1600" height="1058" loading="lazy" decoding="async" alt="A project thread on the Mac. Above the message box, pull request #42, Fix the even-length median, shows 12/12 checks, plus 48 and minus 12 lines, Ready to merge, and a Hold to merge button. Above the reply are two cards for the agents that reviewed the code.">
+      </picture>
+      <figcaption>Pull request #42 on its thread: checks passing, ready to merge.</figcaption>
+    </figure>
+    <p>The bar shows the pull request's number and title (click to open it on GitHub), its checks (click for the list, each with <strong>Details</strong>), the lines added and removed, and its state, such as <em>Ready to merge</em>, <em>Changes requested</em> or <em>Conflicts with main</em>. Then come the buttons that fit:</p>
+    <div class="table"><table>
+      <thead><tr><th>Button</th><th>Shows when</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Fix</strong></td><td class="wrap-ok">Checks fail.</td><td class="wrap-ok">Writes a prompt in the message box naming each failing check, and how to read its log.</td></tr>
+        <tr><td><strong>Resolve</strong></td><td class="wrap-ok">The branch conflicts with its base.</td><td class="wrap-ok">Writes a prompt to bring the branch up to date the way the repo does it, merge or rebase, check the build and tests, and push.</td></tr>
+        <tr><td><strong>Address review</strong></td><td class="wrap-ok">A reviewer requested changes.</td><td class="wrap-ok">Fetches the review and writes a prompt listing each comment, with its file and line.</td></tr>
+        <tr><td><strong>Ready for review</strong></td><td class="wrap-ok">The pull request is a draft.</td><td class="wrap-ok">Takes it out of draft, at once.</td></tr>
+        <tr><td><strong>Hold to merge</strong></td><td class="wrap-ok">It's open, not a draft, mergeable, has no failing or pending checks, and needs no review.</td><td class="wrap-ok">Press and hold until it fills (about a second), and it merges. Let go early and nothing happens. It merges the way GitHub offers you first on that repo.</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>Fix</strong>, <strong>Resolve</strong> and <strong>Address review</strong> never send anything: you read the prompt and send it. If the thread's VM is gone, they open a new thread on the branch instead.</p>
+
+    <h2 id="archive-on-merge">Archive on merge</h2>
+    <p>When a thread's pull request merges, Flotilla archives the thread and says <em>#42 merged into main · Archived</em>, with <strong>Undo</strong>. It leaves the thread alone if a turn is running, if <strong>Keep running</strong> is on, or if you wrote in it or unarchived it after the merge. Turn this off in <a href="settings.html#archiving">Settings</a> under <strong>Archiving</strong>.</p>
+
+    <nav class="pager" aria-label="Previous and next">
+    <a class="prev" href="threads.html"><span>Previous</span>Threads</a>
+    <a class="next" href="previews.html"><span>Next</span>Previews and services</a>
+    </nav>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Joseph Lozano</span>
+    <nav aria-label="Footer">
+      <a href="../../">Home</a>
+      <a href="./">Docs</a>
+      <a href="https://github.com/joseph-lozano/flotilla">GitHub</a>
+      <a href="https://github.com/joseph-lozano/flotilla/blob/main/LICENSE">MIT License</a>
+      <a href="../../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

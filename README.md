@@ -1,8 +1,3 @@
-> [!WARNING]
-> **Archived.** This is the original Flotilla, a native app built with GPUI. It is no longer developed or supported, and its install and documentation links may no longer work.
->
-> A new Flotilla is on the way: [useflotilla.com](https://useflotilla.com).
-
 <p align="center"><img src="docs/images/icon.png" width="96" alt=""></p>
 
 <h1 align="center">Flotilla</h1>
